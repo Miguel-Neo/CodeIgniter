@@ -1,0 +1,46 @@
+/*
+Esta plantilla css pertenece al template default
+*/
+html, body {
+    height:100%;
+}
+#cms_main_container{
+	position: relative;
+	min-height:100%;
+	margin-top: 51px;
+	padding-bottom: 44px;
+	border: 0.1px solid rgba(256, 256, 256, 0);
+}
+
+.navbar-static-top {
+  margin-bottom: 19px;
+}
+
+
+footer {
+    height: 44px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+/*!
+ * IE10 viewport hack for Surface/desktop Windows 8 bug
+ * Copyright 2014-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+/*
+ * See the Getting Started docs for more information:
+ * http://getbootstrap.com/getting-started/#support-ie10-width
+ */
+@-webkit-viewport { width: device-width; }
+@-moz-viewport    { width: device-width; }
+@-ms-viewport     { width: device-width; }
+@-o-viewport      { width: device-width; }
+@viewport         { width: device-width; }
+
+
+
+/* End of file custom.css */
+/* Location: ./assets/styles/templates/default/custom.css */

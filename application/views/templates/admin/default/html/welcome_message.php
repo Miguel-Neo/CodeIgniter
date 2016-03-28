@@ -1,0 +1,2 @@
+
+vista para el administrador

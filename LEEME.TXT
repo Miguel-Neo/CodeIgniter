@@ -1,0 +1,32 @@
+CodeIgniter HMVC extends MX_Controller, unable to use get_instance properly:
+http://stackoverflow.com/questions/12586125/codeigniter-hmvc-extends-mx-controller-unable-to-use-get-instance-properly
+
+
+
+Path of Config file in HMVC Codeigniter (HMVC + Tank Auth):
+http://stackoverflow.com/questions/6284921/path-of-config-file-in-hmvc-codeigniter-hmvc-tank-auth
+
+
+
+Se crea template para cargar un template y luego sus vistas 
+se pueden tener multiples templates
+la libreria template buscara el view que se le pide, 
+primero en la carpeta html del tema activo en ese momento,
+Si no lo encuentra lo buscara en la carpeta views del modulo si la llamada corresponde a un
+moduo. 
+si no encuentra lo buscara en la carpeta vews de codeigniter
+
+mensajes 
+
+Se pueden crear  mensajes de alerta ya sea para la misma vista o si se enviara a otra vista
+para hacer mas facil esto se hace uso de un helper para que el codigo de la 
+llamada a alerts no se ponga en el view
+
+idiomas 
+se hace uso de archivos de idioma 
+
+acl
+
+
+user
+
