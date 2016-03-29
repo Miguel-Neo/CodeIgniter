@@ -6,6 +6,7 @@ class ACL_Controller extends MY_Controller {
         parent::__construct();
         
         $this->load->model('Model_Acl');
+        $this->load->model('Model_Users');
       
     }
 	public function index()
@@ -13,6 +14,11 @@ class ACL_Controller extends MY_Controller {
 
 		$this->template->render('acl/index');
 	}
+/*
+=====================================================================================================================================
+* ROLES 
+=====================================================================================================================================
+*/
 	public function roles(){
 
 		$this->template->set('roles',$this->Model_Acl->getRoles());
@@ -101,4 +107,20 @@ class ACL_Controller extends MY_Controller {
         
         }
 	}
+/*
+=====================================================================================================================================
+*/
+	public function usuarios(){
+		$this->template->set('titulo', 'Usuarios');
+		$this->template->set('usuarios', $this->Model_Users->getUsuarios());
+		$this->template->render('acl/users/index');
+	}
+	public function permisosusuario($usuarioID){
+		echo $usuarioID;
+	}
+	public function algo (){
+
+		$this->Model_Users->get_users();
+	}
+
 }
