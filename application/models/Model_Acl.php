@@ -69,4 +69,16 @@ class Model_Acl extends CI_Model {
 		return $this->db->get_where($this->tables['permissions'],$where)->row()->name;
 	}
 
+	public function insertarRole($role)
+    {	
+    	$where['role'] = $role;
+		$existe = $this->db->get_where($this->tables['roles'],$where)->row();
+		if(!$existe){
+			$sql = "INSERT INTO roles VALUES (null, ".$this->db->escape($role).")";
+			$fds = $this->db->query($sql);
+			return true;
+		}
+		return false;
+    }
+
 }

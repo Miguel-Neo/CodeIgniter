@@ -14,6 +14,7 @@ class ACL_Controller extends MY_Controller {
 		$this->template->render('acl/index');
 	}
 	public function roles(){
+
 		$this->template->set('roles',$this->Model_Acl->getRoles());
 		$this->template->render('acl/roles'); 
 	}
@@ -30,6 +31,7 @@ class ACL_Controller extends MY_Controller {
 
 		if ( isset($_POST['save_permissionsRole']) && $_POST['save_permissionsRole'] == 1 ) {
 			$values = array_keys($_POST);
+
 			$replace = array();
 			$eliminar = array();
 
@@ -79,5 +81,24 @@ class ACL_Controller extends MY_Controller {
 		$this->template->set('permisos',$this->Model_Acl->getPermissionsRole($roleID));
 		$this->template->render('acl/permissions_role'); 
 
+	}
+	public function nuevo_role(){
+		$this->template->set('titulo','Nuevo Role');
+        
+        if(isset($_POST['guardar']) && $_POST['guardar'] == 1){
+            $this->template->set('datos', $_POST['role']);
+            
+            if(! $this->Model_Acl->insertarRole($_POST['role'])){
+            	$this->template->add_message(['error' => [$this->lang->line('acl_error_rol_duplicate')]]);
+                
+                $this->template->render('acl/nuevo_role');
+                
+            }else{
+	            redirect('admin/ACL_Controller/roles');
+        	}
+        }else{
+        	$this->template->render('acl/nuevo_role');
+        
+        }
 	}
 }

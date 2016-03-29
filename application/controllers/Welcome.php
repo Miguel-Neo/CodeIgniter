@@ -25,7 +25,7 @@ class Welcome extends MY_Controller {
 
 		$this->load->library('user',['lang'=>'spanish','id'=>2]);
 		
-		//$this->template->add_message(['error' => ['mensaje','mensaje'],'success'=>'hola']);
+		$this->template->add_message(['error' => ['mensaje','mensaje'],'success'=>'hola']);
 		
 		# se le envia el item seleccionado
 		$this->template->set(  'menu_principal'  ,  modules::run('menus/widgetMenuHeader','324')  );

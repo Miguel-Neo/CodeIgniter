@@ -1,5 +1,7 @@
  <h2>Aministracion de permisos de rol</h2>
  <h3><?php echo $role->role; ?></h3>
+
+ 
 <form action="" method="post">
 	<input type="hidden" name="save_permissionsRole" value="1">
 	<?php if (isset($permisos)):?>
