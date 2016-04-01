@@ -96,8 +96,8 @@ podria en un controlador hacer una validacion crear los mensajes de error por ej
 			if (! is_array($view)) {
 				$view = [$view];
 			}
-			array_unshift($view, "header");# Pongo al inicio del arreglo a header
-			$view[]='footer';# Pngo al final del arreglo a footer
+			//array_unshift($view, "header");# Pongo al inicio del arreglo a header
+			//$view[]='footer';# Pngo al final del arreglo a footer
 			
 			foreach ($view as $file) {
 				/*

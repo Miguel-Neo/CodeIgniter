@@ -10,12 +10,17 @@ class Modulo_modelo_menu extends CI_Model {
             [   
                 'id'    => 'demos_item_index',
                 'title' => 'Home',
-                'link'  => 'index.php/welcome/'
+                'link'  => 'admin/demos/index'
             ],
             [   
                 'id'    => 'demos_item_menus',
                 'title' => 'Menus',
-                'link'  => 'index.php/admin/demos/menus'
+                'link'  => 'admin/demos/menus'
+            ],
+            [   
+                'id'    => 'demos_item_galerias',
+                'title' => 'galerias',
+                'link'  => 'admin/demos/galerias'
             ]
         ];
         $menu['navigation'] = 

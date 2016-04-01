@@ -17,7 +17,9 @@ class Demos extends MY_Controller {
 		$this->template->set(  'menu_principal'  ,  modules::run('menus/menuPrincipal','demos','demos_item_index')  );
 		
 		$this->template->render('welcome_message');
+
 	}
+	
 	public function menus()
 	{
 		
@@ -27,5 +29,17 @@ class Demos extends MY_Controller {
 		$this->template->set(  'menu_principal'  ,  modules::run('menus/menuPrincipal','demos','demos_item_menus')  );
 		
 		$this->template->render(['welcome_message']);
+
+	}
+	public function galerias()
+	{
+		
+
+		$this->template->load_config_modules('menus/config_modulo_menu');
+		# se le envia el item seleccionado
+		$this->template->set(  'menu_principal'  ,  modules::run('menus/menuPrincipal','demos','demos_item_galerias')  );
+		
+		$this->template->render(['welcome_message']);
+
 	}
 }
