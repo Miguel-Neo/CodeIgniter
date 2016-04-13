@@ -15,7 +15,7 @@ class HomeHooks
 		if($this->ci->session->userdata('id') == FALSE)
 		{
 			//redirect(base_url('login');
-		//	echo "<h1>este es mensaje del hooks</h1>";
+			//echo "<h1>este es mensaje del hooks</h1>";
 		}
 	}
 }

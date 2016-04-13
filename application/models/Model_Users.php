@@ -2,6 +2,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_Users extends CI_Model {
+	private $tables = [
+		'roles'=>'roles',
+		'permissions'=>'permissions',
+		'role_permissions'=>'role_permissions'
+	];
 	public function __construct(){
 		parent::__construct();
 	}
@@ -70,38 +75,46 @@ class Model_Users extends CI_Model {
 		//echo "<pre>";
 		//print_r($usuarios->result_array());
 		//exit;
-        return $usuarios->result_array();
+        return $usuarios->row();
 	}
+	public function getPermissionsAll(){
+		$query = $this->db->get($this->tables['permissions']);
+		foreach($query->result() as $row){
+			$data[$row->name] = [
+				'permission'   => $row->name,
+				'title'  => $row->title,
+				'value' => 'x',
+				'inherited'=>'',
+				'id'    => $row->id
 
+			];
+		}
+		return $data;
+	}
 	public function getPermisosUsuario($usuarioID)
 	{
 		$User = new User(['id' => $usuarioID,'lang' => 'spanish']); # CREA ACL CON ID
 		//echo "<pre>";
-		//print_r($User->permissions());
+		$data = $User->permissions();
+		$data = array_merge($this->getPermissionsAll(),$data);
+		//print_r($data);
 		//exit;
-		return $User->permissions();
-	}
-
-	public function getPermisosRole($usuarioID)
-	{
-		$acl = new ACL($usuarioID);
-		role_permissions();
-        return $acl->getPermisosRole();
+		return $data;
 	}
 
 	public function eliminarPermiso($usuarioID, $permisoID)
 	{
 		$this->db->query(
-                "delete from permisos_usuario where ".
-                "usuario = $usuarioID and permiso = $permisoID"
+                "delete from user_permissions where ".
+                "user = $usuarioID and 	permission = $permisoID"
                 );
 	}
 
 	public function editarPermiso($usuarioID, $permisoID, $valor)
     {
         $this->db->query(
-                "replace into permisos_usuario set ".
-                "usuario = $usuarioID , permiso = $permisoID, valor ='$valor'"
+                "replace into user_permissions set ".
+                "user = $usuarioID , permission = $permisoID, value ='$valor'"
                 );
     }
 }

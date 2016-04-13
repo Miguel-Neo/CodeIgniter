@@ -110,20 +110,71 @@ class ACL_Controller extends MY_Controller {
      */
 
     public function usuarios() {
-        echo "hola mundo";
-        exit;
+        
         $this->template->set('titulo', 'Usuarios');
         $this->template->set('usuarios', $this->Model_Users->getUsuarios());
         $this->template->render('acl/users/index');
     }
 
     public function permisosusuario($usuarioID) {
-        echo $usuarioID;
+        if (!$usuarioID) {
+            redirect('admin/ACL_Controller/usuarios');
+        }
+        $row = $this->Model_Users->getUsuario($usuarioID);
+
+        if (!$row) {
+            redirect('admin/ACL_Controller/usuarios');
+        }
+
+
+        if (isset($_POST['save_permissionsUser']) && $_POST['save_permissionsUser'] == 1) {
+            $values = array_keys($_POST);
+
+            $replace = array();
+            $eliminar = array();
+
+            for ($i = 0; $i < count($values); $i ++) {
+                if (substr($values[$i], 0, 5) == 'perm_') {
+                    $permiso = (strlen($values[$i]) - 5 );
+                    if ($_POST[$values[$i]] == 'x') {
+                        $eliminar[] = array(
+                            'user' => $usuarioID,
+                            'permiso' => substr($values[$i], -$permiso),
+                        );
+                    } else {
+                        if ($_POST[$values[$i]] == 1) {
+                            $v = 1;
+                        } else {
+                            $v = 0;
+                        }
+
+                        $replace[] = array(
+                            'user' => $usuarioID,
+                            'permiso' => substr($values[$i], -1),
+                            'valor' => $v
+                        );
+                    }
+                }
+            }
+            for ($i = 0; $i < count($eliminar); $i ++) {
+                $this->Model_Users->eliminarPermiso(
+                        $eliminar[$i]['user'], $eliminar[$i]['permiso']
+                );
+            }
+            for ($i = 0; $i < count($replace); $i ++) {
+                $this->Model_Users->editarPermiso(
+                        $replace[$i]['user'], $replace[$i]['permiso'], $replace[$i]['valor']
+                );
+            }
+        }
+
+
+        $this->template->set('titulo', 'Administrador de permosos de Usuarios');
+        $this->template->set('user', $row);
+        $this->template->set('permisos', $this->Model_Users->getPermisosUsuario($usuarioID));
+        $this->template->render('acl/users/permissions_user');
     }
 
-    public function algo() {
-
-        $this->Model_Users->get_users();
-    }
+    
 
 }
