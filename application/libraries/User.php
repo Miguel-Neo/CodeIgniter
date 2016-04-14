@@ -4,9 +4,11 @@ require_once dirname(__FILE__).'/Acl.php';
 
 /**
  * Manejara al usuario autenticado. Hace uso de la libreria ./application/libraries/Acl.php
+ * 
+ * Esta libreria se carga desde el core (My_controller) 
  * En el controlador que funcione como login ara uso de esta libreria para verificar si el usuario 
  * tiene acceso al sistema con la funcion que se encuentra en esta libreria.
- * Si el usuario tiene acceso retorna true y el controlador podra crear la bariable se session con el id
+ * Si el usuario tiene acceso retorna true y el controlador podra crear la variable se session con el id
  * permitiendo asi poder validar en todo momento sus permisos 
  * 
  * login()                 Si el usuario cumple con todo retorna TRUE.
