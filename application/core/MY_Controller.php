@@ -20,7 +20,9 @@ configurado en el archivo config
 		*/
         $this->lang->load('cms_general'); 
 		$this->load->library(['template']); #CARGA LAS LIBRERIAS TEMPLATE Y USER
-		$this->load->library(['user']);
+		$this->load->library('user');
+		//$this->load->library('user',['id'=>1]); #probando con el usuario 1
+
 	}
 	public function admin_panel(){
 		/*
