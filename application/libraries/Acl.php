@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Esta librería es usada desde la librería ./application/libraries/User.php 
+ * El usuario registrado debe pertenecer a un Rol ya que si no pertenece solo 
+ * Tendra el permiso por default
+ */
 class Acl {
 	private $CI;
 	private $tables = [
@@ -19,17 +24,18 @@ class Acl {
 		$this->CI = & get_instance();
 		$this->CI->load->config('acl');
 		
-		# si existe el usuario pone si id sino pone 0  <----
+		# si existe el usuario pone su id sino pone 0  <----
 		$this->user_id = isset($options['id']) ? (int)$options['id'] : 0; 
 		if ($this->user_id > 0 ) {
-			# SI ESTE USUARIOI TINEN UN ROL PONE EL ID DEL SOL 
-			# SINO TIENE ROL PONE 0 <----
+
+			# SI ESTE USUARIOI TINEN UN ROL PONE EL ID DEL ROL 
 			# CARGA ROLe DE USUARIO
 			$user_role = $this->CI->db
 				->select('role')
 				->get_where($this->tables['users'],['id'=>$this->user_id])->row();
 
 			# SETEAR ID DEL ROLE
+			# SINO TIENE ROL PONE 0 <----
 			$this->user_role_id = isset($user_role->role) ? (int)$user_role->role : 0;
 		}
 
@@ -45,7 +51,7 @@ class Acl {
 		# SETEAR LOS PERMISOS DEL SITIO
 		# RECIBE LA CLAVE DEL ARCHIVO DE CONFIGURACION config/acl.php 
 		# Ese archivo contiene los nombre de los permisos del sitio 
-		# agrega a loas permisos del usuario el permoso del sitio que coincida
+		# agrega a los permisos del usuario el permoso del sitio que coincida con los permisos que tiene
 		# tambien le pasamos default public en caso de que el usuario no tenga ningu permiso 
 		# el usuario tendre por defecto public 
 		$this->user_site_permissions = $this->_permissions('acl_site_permissions','public');
@@ -59,27 +65,35 @@ class Acl {
 		}
 	}
 
-
+        /**
+         * Nos regresa los ids de los permisos aignados a el ROL que el user tiene asignado
+         * @return En caso de existir un ROL retorna sus permisos, pero si no existe 
+         *         ningun rol retorna un arrelgo vacio
+         */
 	public function role_permissions_ids(){
-		# nosregresa los ids de los permisos aignados a el ROL que el user tiene asignado
 		# Esta funcion es usada en user_permissions()
 		$ids = [];
 
-		if ($this->user_role_id > 0) {
+		if ($this->user_role_id > 0) { # SI EXISTE UN ID DE ROL
 			$perms = $this->CI->db
 					->select('permission')
 					->get_where($this->tables['role_perms'],['role'=>$this->user_role_id])
 					->result_array();
 			$ids = array_map(function ($item){
-				return $item['permission'];
+				return $item['permission'];# RETORNA EL VALOR DE CADA REGISTRO
 			},$perms);
-			array_filter($perms);
-		}
+			array_filter($perms); # ELIMINA LOS ELEMENTOS VACIOS EN CASO DE QUE EXISTA ALGUNO
+		} # SI NO EXISTE ROL RETORNA UN ARREGLO VACIO 
 		return $ids;
 	}
+        /**
+         * Nos reotna los permisos del ROL asignado a este usuario 
+         * @return Los permisos del ROL.
+         *         En caso de no tener ningun permiso Retorna el permiso public
+         *         
+         */
 	public function role_permissions(){
-		# nos reotna los permisos del rol asignado a ese usuario 
-		if ($this->user_role_id > 0) {
+		if ($this->user_role_id > 0) { # SI EXISTE UN ID DE ROL
 			$permissions = $this->CI->db
 						->from($this->tables['role_perms'].' r')
 						->select(['r.permission','r.value','p.name','p.title'])
@@ -107,10 +121,17 @@ class Acl {
 			}
 
 		}
+		# EN CASO DE QUE NO TENGA NINGUN PERMISO RETORNA EL PERMISO PUBLIC 
 		return $this->_permission('public');
 	}
+        /**
+         * Nos reotna los permisos usuario 
+         * @return Los permisos del usuario.
+         *		   En caso de que no tenga ningu permiso retornara un arreglo vacio.
+         *         Esto no genera ningun problema ya que al alcer arraymerge en el constructor
+         *         tendra los permisos que genera del rol, minimo tendra public
+         */
 	public function user_permissions(){
-		# nos reotna los permisos usuario 
 		$data = [];
 		# SI EXISTE EL USUARIO Y TIENE UN ROL 
 		if ($this->user_id > 0 && $this->user_role_id > 0) {
@@ -143,9 +164,14 @@ class Acl {
 		}
 		return $data;
 	}
+        /**
+         * FUNCION USADA PARA VERIFICAR SI EL USUARIO TIENE EL PREMISO 
+         * QUE SE LE PASA COMO PARAMETRO
+         * @param type $name ES EL NOMRE DEL PERMISO
+         * @return boolean NOS DEVUELVE VERDADERO O FALSO DEPENDIENDO DE SI 
+         *         EL USIARIO TIENE UN PERMISO HABILITADO O NO. 
+         */
 	public function has_permissions($name){
-		# NOS DEVUELVE VERDADERO O FALSO DEPENDIENDO DE SI EL USIARIO TIENE UN 
-		# PERMISO AVILITADO O NO 
 		if (array_key_exists($name, $this->user_permissions)) {
 			if ($this->user_permissions[$name]['value'] == TRUE) {
 				return TRUE;
@@ -153,11 +179,17 @@ class Acl {
 		}
 		return FALSE;
 	}
-
+        /**
+         * SETEAR LOS PERMISOS DEL SITIO
+         * Nos va a servir para realizar consultas a las bases de datos, 
+         * para traer consultas de acuedo a sus permisos
+         * @param type $line     CLAVE DEL ARCHIVO DE CONFIGURACION config/acl.php
+         * @param type $default  Es el permiso por default
+         * @return type array    Los permisos que se encuentran el el archivo de configuracion 
+         *          que coincidan con los pormisos que tienen el usuario 
+         *          en caso de que no coincida ninguno retornara el permiso por default
+         */
 	private function _permissions($line,$default){
-		# PERMISOS DEL SITIO RECIVE ELCONFIG Y EL DAFAULT Q ES PUBLIC
-		# SIRVE PARA HACER CONSULTAS A LAS BASES DE DATOS DE ACUERDO A LOS 
-		# PERMISOS Q TENGA EL USUARIO
 		$permissions = $this->CI->config->item($line);
 		$result = [];
 
@@ -173,8 +205,15 @@ class Acl {
 		}
 		return $result;
 	}
+        /**
+         * ESTE NOS DEVIELVE UN PERMISO EN PARTICULAR EN EL FORMATO USADO POR EL SISTEMA 
+         * @param type $name Es un nombre de que se conbertira en un permiso 
+         *        En el formato usado por el sistema, pensado por si el usuario no tiene 
+         *        ningu permiso aqui se creara uno por defau, 
+         *        usado en la funcion role_permissions() para definir el permiso public
+         * @return type retorna el $name en formato de permiso usado por el sistema
+         */
 	private function _permission($name){
-		# ESTE NOS DEVIELVE UN PERMISO EN PARTICULAR EN EL FORMATO USADO POR EL SISTMA 
 		$name = trim($name);
 		if (! empty($name)) {
 			$permission = $this->CI->db
