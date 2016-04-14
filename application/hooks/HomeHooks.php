@@ -12,6 +12,7 @@ class HomeHooks
 
 	public function check_login()
 	{
+		//print_r($this->ci->user->permissions());
 		if($this->ci->session->userdata('id') == FALSE)
 		{
 			//redirect(base_url('login');
