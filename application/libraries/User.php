@@ -6,11 +6,13 @@ require_once dirname(__FILE__).'/Acl.php';
  * Manejara al usuario autenticado. Hace uso de la libreria ./application/libraries/Acl.php
  * En el controlador que funcione como login ara uso de esta libreria para verificar si el usuario 
  * tiene acceso al sistema con la funcion que se encuentra en esta libreria.
+ * Si el usuario tiene acceso retorna true y el controlador podra crear la bariable se session con el id
+ * permitiendo asi poder validar en todo momento sus permisos 
  * 
  * login()                 Si el usuario cumple con todo retorna TRUE.
  * 
  * has_permission($name)   verifica que el usuario tenga el premiso que 
- *                         se le pasa como parametro.
+ *                         se le pasa como parametro y este habilitado.
  * 
  * permissions()           Me retorna todos los permisos que tenga el usuario 
  *                         tanto de user_permissions y role_permissions.
@@ -115,7 +117,7 @@ class User
     */
     public function has_permission($name)
     {
-        return $this->acl->has_permission($name);
+        return $this->acl->has_permissions($name);
     }
     /**
      * Verifica si este usuario esta logeado en el sistema
