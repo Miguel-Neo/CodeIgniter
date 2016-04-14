@@ -57,6 +57,12 @@ class Template {
     public function setTemplate($name) {
         $this->name = $name;
     }
+    public function getTemplate(){
+        return $this->name;
+    }
+    public function getPanel(){
+        return $this->panel;
+    }
 
     /**
      * Setear el data 
