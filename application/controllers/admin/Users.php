@@ -9,8 +9,7 @@ class Users extends MY_Controller {
     }
     public function index()
     {
-        $this->load->helper('form');
-        $this->template->render('users/login');
+        $this->template->render('welcome_message4');
     }
     
 	public function login()
