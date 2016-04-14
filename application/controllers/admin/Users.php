@@ -8,7 +8,12 @@ class Users extends MY_Controller {
         $this->lang->load('form_validation');   
     }
     public function index(){
-        echo "mi function index";
+        $this->load->library('user',['id'=>1]);
+        echo "<pre>";
+        print_r($this->user->site_permissions());
+        exit;
+        $this->template->render('welcome_message');
+        //echo "mi function index";
     }
 	public function login()
     {
