@@ -22,6 +22,7 @@ class MY_Controller extends MX_Controller {
           configurado en el archivo config
          */
         $this->lang->load('cms_general');
+        $this->lang->load('theme_default');
         $this->load->library(['template']); #CARGA LAS LIBRERIAS TEMPLATE Y USER
         $this->load->library('user');
         //$this->load->library('user',['id'=>1]); #probando con el usuario 1
@@ -42,8 +43,8 @@ class MY_Controller extends MX_Controller {
         /*
           En el controlador Languaje define el lenguaje a usa $this->session->set_userdata('global_lang',$lang);
          */
-        $lang = $this->session->userdata('global_lang'); // leo de session el lenguaje
-
+        $lang = $this->session->userdata('global_lang'); // leo de variable de session el lenguaje
+        
         if ($lang && in_array($lang, $this->config->item('cms_languages'))) {
             //si existe lang y ese idioma pertenece a  los que tenemos en nuestro archivo de configuracion
             $this->config->set_item('language', $lang);
