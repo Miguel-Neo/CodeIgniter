@@ -19,10 +19,8 @@ Le paso el nombre del archivo y si no le paso el segundo parametro carga el que 
 configurado en el archivo config
 		*/
         $this->lang->load('cms_general'); 
-		$this->load->library(['template', 'user']);
-
-#pruebas
-		$this->lang->load('calendar');  
+		$this->load->library(['template']); #CARGA LAS LIBRERIAS TEMPLATE Y USER
+		$this->load->library(['user']);
 	}
 	public function admin_panel(){
 		/*
