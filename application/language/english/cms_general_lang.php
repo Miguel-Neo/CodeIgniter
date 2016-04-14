@@ -1,6 +1,8 @@
 <?php
 
 // etiquetas
+$lang['cms_general_error_load_template'] = 'Error loading theme';
+$lang['cms_general_error_load_view'] = 'Error loading view';
 
 $lang['cms_general_label_id'] = 'Id';
 $lang['cms_general_label_user'] = 'User';
