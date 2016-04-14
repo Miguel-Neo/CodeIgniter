@@ -3,6 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ///*
 $config['templates']['front']['default'] = [
+        'languaje'=>[],
 	'regions' =>['header','main_menu','sidebar','footer'],
 	'scripts' =>[
 		['type'=>'lib','value'=>'jquery/jquery-2.2.0.min'],
