@@ -20,13 +20,13 @@
 <body>
 	<div id="cms_main_container">
   		
-  		<h1>PLANTILLA DEFAULT DEL FRONT-END</h1>
+  		<h1>PLANTILLA DEFAULT DEL BACK-END</h1>
 		
 		<!--  ================================================== -->
 		<!--  Insert views                                       -->
 		<!--  ================================================== -->
 
-  		<?php foreach ($_content as $_view) {include $_view;} ?>
+  		<?php foreach ($_views as $_view) {include $_view;} ?>
   		
   		<!--  ================================================== -->
 		<!--  ./Insert views                                     -->
