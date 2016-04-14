@@ -2,6 +2,26 @@
 
 require_once dirname(__FILE__).'/Acl.php';
 
+/**
+ * Manejara al usuario autenticado. Hace uso de la libreria ./application/libraries/Acl.php
+ * En el controlador que funcione como login ara uso de esta libreria para verificar si el usuario 
+ * tiene acceso al sistema con la funcion que se encuentra en esta libreria.
+ * 
+ * login()                 Si el usuario cumple con todo retorna TRUE.
+ * 
+ * has_permission($name)   verifica que el usuario tenga el premiso que 
+ *                         se le pasa como parametro.
+ * 
+ * permissions()           Me retorna todos los permisos que tenga el usuario 
+ *                         tanto de user_permissions y role_permissions.
+ * 
+ * site_permissions()      Me retorna un arreglo unidimencional con los keys 
+ *                         de los permisios de sitio que coinciden con los 
+ *                         permisos del usuario.
+ *  
+ * is_logged_in()          Verifica si esta logeado el usuario.
+ *                         Es usado en el logout() del controlador para cerrar session
+ */
 class User
 {
     private $CI;
@@ -39,9 +59,10 @@ class User
         else if((int) $this->CI->session->userdata('user_id') > 0)
         {
         	# SI NO LE PASAN UN ID 
-        	#VERIFICARA QUE SI HAY UNO EN VARIABLE DE SESSION 
+        	# VERIFICARA QUE SI HAY UNO EN VARIABLE DE SESSION 
             $row = $this->_row(['id' => $this->CI->session->userdata('user_id')]);
             
+            # si no hay usuario o esta desabilitado para el sistema lo carga como anonimo
             if(sizeof($row) == 0 || $row->active != 1 || $row->status != 1)
             {
                 $this->CI->session->sess_destroy();
@@ -69,34 +90,57 @@ class User
     	#devuelve los errores de la  libreria 
         return $this->errors;
     }
-
+    /**
+     * 
+     * @return type array retorna los permisos del usuario
+     */
     public function permissions()
     {
         return $this->acl->permissions;
     }
-    
+    /**
+     * 
+     * @return type array retorna los permisos del sitio que coinciden con los del usuario
+     */
     public function site_permissions()
     {
         return $this->acl->site_permissions;
     }
-    
+    /**
+    * FUNCION USADA PARA VERIFICAR SI EL USUARIO TIENE EL PREMISO 
+    * QUE SE LE PASA COMO PARAMETRO
+    * @param type $name ES EL NOMRE DEL PERMISO
+    * @return boolean NOS DEVUELVE VERDADERO O FALSO DEPENDIENDO DE SI 
+    *         EL USIARIO TIENE UN PERMISO HABILITADO O NO. 
+    */
     public function has_permission($name)
     {
         return $this->acl->has_permission($name);
     }
-    
+    /**
+     * Verifica si este usuario esta logeado en el sistema
+     * @return boolean true si esta logeado y falso si no esta logeado
+     */
     public function is_logged_in()
     {
     	#verifica si este usuario esta logeado en el sistema
         if($this->user_id > 0)
         {
             return $this->user_id == (int) $this->CI->session->userdata('user_id');
-            # Esta variable de seccion se crear en ellogin del sistema en un controlador aparte
+            # Esta variable de seccion se crear en el login del sistema en un controlador aparte
         }
         
         return FALSE;
     }
-
+    /**
+     * 
+     * @param type $user
+     * @param type $password
+     * @param type $hash
+     * @return boolean Si el usuario cumple con todo retorna TRUE y asi el controlador podra 
+     *          crear la variable de sesion con el id del usuario.
+     *          de lo contrario retorna fales
+     */
     public function login($user, $password, $hash = 'sha256')
     {
     	# se crea un login en el sistema (controlador)
@@ -124,7 +168,7 @@ class User
         }
         
         $this->CI->load->library('encrypt');#para enciptar las contraseñas
-        #sta libreria es MY_Encrypt.php
+        #Esta libreria es MY_Encrypt.php
         
         # peticion de un usuario
         $row = $this->_row(['user' => $user, 'password' => $this->CI->encrypt->password($password, $hash)]);
@@ -141,13 +185,19 @@ class User
         return TRUE;
     }
     
+    /**
+     * Cargara al usuario si esta registrado obtiene sus datos y sus permisos
+     * y si no esta registrado o esta desabilitado lo crea como anonimo y con un unico permiso que es el public 
+     * @param type $row es el usuario de la BD y es null crea a un usuario anonimo
+     * @return type nada, solo es para salir de la funcion
+     */
     private function _load($row = null)
     {
         if($row == null || sizeof($row) == 0)
         {
             $this->user_id = 0;
-            $this->user_user = $this->CI->lang->line('cms_general_label_site_visitor_user');
-            $this->user_name = $this->CI->lang->line('cms_general_label_site_visitor_name');
+            $this->user_user = $this->CI->lang->line('cms_general_label_site_visitor_user');#user para los usuarios invitados
+            $this->user_name = $this->CI->lang->line('cms_general_label_site_visitor_name');#nombre para los usuarios invitados
             $this->user_email = '';
             $this->user_active = 0;
             $this->user_status = 0;
@@ -165,6 +215,12 @@ class User
         $this->acl = new Acl(['id' => $row->id,'lang' => $this->lang]); # CREA ACL CON ID
     }
     
+    /**
+     * Realiza una consulta a la base de datos.
+     * @param type $where
+     * @param type $select
+     * @return type 
+     */
     private function _row($where = null, $select = null)
     {
         if(is_array($where))
