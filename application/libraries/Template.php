@@ -28,7 +28,7 @@ class Template {
 	protected $configs_modules;
 	
 	public function __construct(){
-		$this->CI = & get_instance()->controller; 
+		$this->CI = & get_instance()->controller;  #http://stackoverflow.com/questions/12586125/codeigniter-hmvc-extends-mx-controller-unable-to-use-get-instance-properly
 		$this->CI->load->config('templates');
 		$this->configs = $this->CI->config->item('templates');
 	//	echo '<pre>';print_r($this->configs);exit;
