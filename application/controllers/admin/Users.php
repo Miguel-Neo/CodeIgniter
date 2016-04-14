@@ -7,19 +7,11 @@ class Users extends MY_Controller {
         parent::__construct();
         $this->lang->load('form_validation');   
     }
-    public function index(){
-        //$this->load->library('user',['id'=>1]); // no funciona dado que ya se cargo en el core 
-        echo "<pre>";
-        print_r($this->user->permissions());
-        if($this->user->has_permission('public')){
-            echo "si";
-        }else{
-            echo "no";
-        }
-        exit;
-        $this->template->render('welcome_message');
-        //echo "mi function index";
+    public function index()
+    {
+            echo "mi function index";
     }
+    
 	public function login()
     {
         /*
