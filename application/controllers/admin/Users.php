@@ -9,7 +9,8 @@ class Users extends MY_Controller {
     }
     public function index()
     {
-            echo "mi function index";
+        $this->load->helper('form');
+        $this->template->render('users/login');
     }
     
 	public function login()

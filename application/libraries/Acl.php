@@ -249,7 +249,7 @@ class Acl {
 				$lang = $languages[0];
 			}
 		}
-		# si no se sobreescrivio antes la bariable esto quiere decir que si soporta
+		# si no se sobreescribio antes la variable esto quiere decir que si soporta
 		# el idioma que se le paso y lo carga
 		$this->CI->load->language('acl',$lang); // usa acl_lang.php 
 	}
