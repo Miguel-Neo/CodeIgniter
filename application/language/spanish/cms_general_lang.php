@@ -1,8 +1,9 @@
 <?php
 
 // etiquetas
-$lang['cms_general_error_load_template'] = 'Error al cargar el tema';
-$lang['cms_general_error_load_view'] = 'Error al cargar la vista';
+$lang['cms_general_error_load_template'] = 'Error al cargar el tema.';
+$lang['cms_general_error_load_view'] = 'Error al cargar la vista.';
+$lang['cms_general_error_set_lenguage'] = 'Error al cargar el idioma.';
 
 $lang['cms_general_label_id'] = 'Id';
 $lang['cms_general_label_user'] = 'Usuario';

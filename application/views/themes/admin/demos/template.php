@@ -17,7 +17,7 @@
 	<!-- Bootstrap core CSS -->
 	
 </head>
-<body>
+<body data-baseurl="<?php echo base_url(); ?>">
 	<div id="cms_main_container">
   		<!--  ================================================== -->
 		<!--  NavBar                                             -->

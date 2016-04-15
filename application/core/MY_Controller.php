@@ -22,7 +22,7 @@ class MY_Controller extends MX_Controller {
           configurado en el archivo config
          */
         $this->lang->load('cms_general');
-        $this->lang->load('theme_default');
+        $this->lang->load('theme');
         $this->load->library(['template']); #CARGA LAS LIBRERIAS TEMPLATE Y USER
         $this->load->library('user');
         //$this->load->library('user',['id'=>1]); #probando con el usuario 1
