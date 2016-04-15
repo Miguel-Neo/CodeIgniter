@@ -13,20 +13,59 @@ class Model_Users extends CI_Model {
     public function __construct() {
         parent::__construct();
     }
-
-    function get_users() {
-        /*
-          $this->db->insert('users',[
-          'name'=>'back-end'
+    function setUser(){
+         $this->load->helper('date');
+         date_default_timezone_set('America/Mexico_City');
+	$now = time();
+        ///*
+        $this->db->insert('users',[
+            'name'=>'back-end',
+              'created_at'=>unix_to_human($now, TRUE, 'eu')// Es un formato Europeo 24 horas y con seconds
           ]);
+        //*/
+    }
+    function get_users() {
+        $this->load->helper('date');
+        /*
+          SELECT * FROM wp_posts
+WHERE post_date >= '2014-03-19 00:00:00'
+AND post_date <= '2014-03-19 23:59:59'
+AND post_status = 'publish'
+ORDER BY post_date ASC
           // */
 //			/*
-        $this->getPermisosUsuario(1);
-        $query = $this->db->get('users');
+        
+        date_default_timezone_set('America/Mexico_City');
+	$fechaDeRegistro = time();
+        
+$now = time();
+echo unix_to_human($fechaDeRegistro, TRUE,'eu'); // Euro time with seconds
+ echo '<br>';
+echo unix_to_human($now, TRUE, 'us'); // U.S. time with seconds
+ echo '<br>';
+echo unix_to_human($now, TRUE, 'eu'); // Euro time with seconds
+echo '<br>';
+$datestring = 'Year: %Y Month: %m Day: %d - %h:%i %a';
+$time = time();
+echo mdate($datestring, $time);
+          echo '<br>';
+        print_r(time());
+        echo '<br>';
+        print_r(date('Y'));
+        echo '<br>';
+        echo '<br>';
+       $query = $this->db->query("SELECT * FROM users
+WHERE created_at >= '2016-04-01 11:00:00'
+AND created_at <= '2016-04-02 23:59:59'
+ORDER BY created_at ASC");
+       
+       $query = $this->db->query("SELECT  * FROM users
+");
 
-        foreach ($query->result() as $row) {
-            print_r($row);
-        }
+foreach ($query->result() as $row)
+{
+    print_r($row);
+}
 //*/
         //return $this->db->get('users')->row();
     }
@@ -67,6 +106,11 @@ class Model_Users extends CI_Model {
           // */
     }
 
+    
+/*****************************************************************************/    
+    
+    
+    
     public function getUsuarios() {
         $usuarios = $this->db->query("select u.*,r.role from users u, roles r where u.role = r.id");
         return $usuarios->result();

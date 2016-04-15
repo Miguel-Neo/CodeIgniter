@@ -24,4 +24,6 @@
     </table>
 <?php endif; ?>
 
+<p><a href="<?php echo base_url('admin/ACL_Controller/new_user');?>">Agregar Role</a></p>
+
 

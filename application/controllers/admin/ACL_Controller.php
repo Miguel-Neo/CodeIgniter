@@ -174,6 +174,17 @@ class ACL_Controller extends MY_Controller {
         $this->template->set('permisos', $this->Model_Users->getPermisosUsuario($usuarioID));
         $this->template->render('acl/users/permissions_user');
     }
+    
+    public function new_user(){
+        echo '<pre>';
+        $this->Model_Users->setUser();
+        //$this->template->render('acl/users/index');
+    }
+    public function get_users(){
+        echo '<pre>';
+        $this->Model_Users->get_users();
+        //$this->template->render('acl/users/index');
+    }
 
     
 
