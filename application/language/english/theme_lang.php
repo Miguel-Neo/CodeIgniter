@@ -1,4 +1,14 @@
 <?php
 
-$lang['theme_default_lang_test'] = 'Error loading theme';
-$lang['theme_default_lang_test2'] = 'Error loading view';
+$lang['theme_txt_00'] = 'Administrator access control list';
+
+$lang['theme_save'] = 'Save';
+
+$lang['theme_txt_add_user'] = 'Add user';
+$lang['theme_name'] = 'Name';
+$lang['theme_email'] = 'E-mail';
+$lang['theme_user'] = 'User';
+$lang['theme_password'] = 'Password';
+$lang['theme_role'] = 'Role';
+
+

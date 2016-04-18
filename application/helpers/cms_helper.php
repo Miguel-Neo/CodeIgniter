@@ -53,4 +53,11 @@ if(!function_exists('select_Languge')){
     }
 }
 
+if(!function_exists('dictionary')){
+    function dictionary($clave){
+        $CI = & get_instance(); 
+        echo $CI->lang->line($clave);
+    }
+}
+
    

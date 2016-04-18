@@ -7,15 +7,17 @@ class Model_Users extends CI_Model {
     private $tables = [
         'roles' => 'roles',
         'permissions' => 'permissions',
-        'role_permissions' => 'role_permissions'
+        'role_permissions' => 'role_permissions',
+        'users'=>'users'
     ];
 
     public function __construct() {
         parent::__construct();
     }
+    
     function setUser(){
-         $this->load->helper('date');
-         date_default_timezone_set('America/Mexico_City');
+         
+        date_default_timezone_set('America/Mexico_City');
 	$now = time();
         ///*
         $this->db->insert('users',[
@@ -118,13 +120,10 @@ foreach ($query->result() as $row)
 
     public function getUsuario($usuarioID) {
         $usuarios = $this->db->query("select u.name,r.role from users u, roles r where u.role = r.id AND u.id = $usuarioID");
-        //echo "<pre>";
-        //print_r($usuarios->result_array());
-        //exit;
         return $usuarios->row();
     }
 
-    public function getPermissionsAll() {
+    private function _getPermissionsAll() {
         $query = $this->db->get($this->tables['permissions']);
         foreach ($query->result() as $row) {
             $data[$row->name] = [
@@ -142,7 +141,7 @@ foreach ($query->result() as $row)
         $User = new User(['id' => $usuarioID, 'lang' => 'spanish']); # CREA ACL CON ID
         //echo "<pre>";
         $data = $User->permissions();
-        $data = array_merge($this->getPermissionsAll(), $data);
+        $data = array_merge($this->_getPermissionsAll(), $data);
         //print_r($data);
         //exit;
         return $data;
@@ -160,6 +159,28 @@ foreach ($query->result() as $row)
                 "replace into user_permissions set " .
                 "user = $usuarioID , permission = $permisoID, value ='$valor'"
         );
+    }
+    function insetUser($user){
+        $this->load->helper('date');
+        $this->load->library('encrypt');
+        
+        date_default_timezone_set('America/Mexico_City');
+	$now = time();
+        ///*
+        $this->db->insert($this->tables['users'],[
+            'name'=>$user['name'],
+            'email'=>$user['email'],
+            'user'=>$user['user'],
+            'password'=>$this->encrypt->password($user['password']),
+            'role'=>$user['role'],
+            'status'=>'1',
+            'active'=>'1',
+            #'last_login'=>'',
+            'created'=>$user['idcreator'],
+            'created_at'=>unix_to_human($now, TRUE, 'eu'),// Es un formato Europeo 24 horas y con seconds
+            'modified'=>$user['idcreator'],
+            'modified_at'=>unix_to_human($now, TRUE, 'eu')// Es un formato Europeo 24 horas y con seconds
+          ]);
     }
 
 }

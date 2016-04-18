@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ACL_Controller extends MY_Controller {
 
+    private $input;
+
     public function __construct() {
         parent::__construct();
 
@@ -110,7 +112,7 @@ class ACL_Controller extends MY_Controller {
      */
 
     public function usuarios() {
-        
+
         $this->template->set('titulo', 'Usuarios');
         $this->template->set('usuarios', $this->Model_Users->getUsuarios());
         $this->template->render('acl/users/index');
@@ -174,18 +176,29 @@ class ACL_Controller extends MY_Controller {
         $this->template->set('permisos', $this->Model_Users->getPermisosUsuario($usuarioID));
         $this->template->render('acl/users/permissions_user');
     }
-    
-    public function new_user(){
-        echo '<pre>';
-        $this->Model_Users->setUser();
-        //$this->template->render('acl/users/index');
+
+    public function new_user() {
+        if (isset($_POST['guardar']) && $_POST['guardar'] == 1) {
+            print_r($_POST);
+            $user = array(
+                'idcreator' =>$this->user->id,
+                'name' => $_POST['name'],
+                'email' => $_POST['email'],
+                'user' => $_POST['user'],
+                'password' => $_POST['password'],
+                'role' => $_POST['role']
+            );
+            $this->Model_Users->insetUser($user);
+        }
+
+        $this->template->set('roles', $this->Model_Acl->getRoles());
+        $this->template->render('acl/users/new_user');
     }
-    public function get_users(){
-        echo '<pre>';
+
+    public function get_users() {
+
         $this->Model_Users->get_users();
         //$this->template->render('acl/users/index');
     }
-
-    
 
 }

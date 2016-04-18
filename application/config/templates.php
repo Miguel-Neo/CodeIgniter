@@ -9,6 +9,7 @@ $config['templates']['front']['default'] = [
 		['type'=>'lib','value'=>'jquery/jquery-2.2.0.min'],
 		['type'=>'lib','value'=>'jqueryui/v1.11.4/jquery-ui.min'],
 		['type'=>'lib','value'=>'bootstrap_3.3.6/js/bootstrap.min'],
+		['type'=>'base','value'=>'function'],
 		['type'=>'template','value'=>'funciones_default']
 	],
 	'styles'  =>[
@@ -23,7 +24,8 @@ $config['templates']['admin']['default'] = [
 	'scripts' =>[
 		['type'=>'lib','value'=>'jquery/jquery-2.2.0.min'],
 		['type'=>'lib','value'=>'jqueryui/v1.11.4/jquery-ui.min'],
-		['type'=>'lib','value'=>'bootstrap_3.3.6/js/bootstrap.min']
+		['type'=>'lib','value'=>'bootstrap_3.3.6/js/bootstrap.min'],
+		['type'=>'base','value'=>'function'],
 	],
 	'styles'  =>[
 		['type'=>'lib','value'=>'bootstrap_3.3.6/css/bootstrap.min'],
