@@ -11,6 +11,7 @@ class ACL_Controller extends MY_Controller {
 
         $this->load->model('Model_Acl');
         $this->load->model('Model_Users');
+        $this->load->model('Model_Permissions');
     }
 
     public function index() {
@@ -179,7 +180,6 @@ class ACL_Controller extends MY_Controller {
 
     public function new_user() {
         if (isset($_POST['guardar']) && $_POST['guardar'] == 1) {
-            print_r($_POST);
             $user = array(
                 'idcreator' =>$this->user->id,
                 'name' => $_POST['name'],
@@ -188,7 +188,8 @@ class ACL_Controller extends MY_Controller {
                 'password' => $_POST['password'],
                 'role' => $_POST['role']
             );
-            $this->Model_Users->insetUser($user);
+            $this->Model_Users->insertUser($user);
+            redirect('admin/ACL_Controller/usuarios');
         }
 
         $this->template->set('roles', $this->Model_Acl->getRoles());
@@ -200,5 +201,31 @@ class ACL_Controller extends MY_Controller {
         $this->Model_Users->get_users();
         //$this->template->render('acl/users/index');
     }
-
+    /*
+      =====================================================================================================================================
+     */
+    public function permisos(){
+        if(isset($_POST['edit_permission']) && $_POST['edit_permission'] == 1){
+            $permission = array(
+                'id' => $_POST['id'],
+                'title' => $_POST['title'],
+                'name' => $_POST['name']
+            );
+            $this->Model_Permissions->editPermissions($permission);
+        }
+        $this->template->set('titulo', 'Usuarios');
+        $this->template->set('permissions', $this->Model_Permissions->getPermissions());
+        $this->template->render('acl/permissions/permissions');
+    }
+    public function addpermiso(){
+        if(isset($_POST['new_permission']) && $_POST['new_permission']==1){
+            $perm = array(
+                'title' =>$_POST['title'],
+                'name' => $_POST['name']
+            );
+            $this->Model_Permissions->insertpermission($perm);
+            redirect('admin/ACL_Controller/permisos');
+        }
+        $this->template->render('acl/permissions/new_permission');
+    }
 }

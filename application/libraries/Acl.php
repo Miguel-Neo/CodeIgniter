@@ -5,15 +5,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Esta librería es usada desde la librería ./application/libraries/User.php 
  * El usuario registrado debe pertenecer a un Rol ya que si no pertenece solo 
  * Tendra el permiso por default
+ * 
+ * De la tabla permission el campo title es solo una descripcion del permiso
  */
 class Acl {
 	private $CI;
 	private $tables = [
-		'users'=>'users',
-		'roles'=>'roles',
-		'perms'=>'permissions',
-		'user_perms'=>'user_permissions',
-		'role_perms'=>'role_permissions'
+		'users'=>'acl_users',
+		'roles'=>'acl_roles',
+		'perms'=>'acl_permissions',
+		'user_perms'=>'acl_user_permissions',
+		'role_perms'=>'acl_role_permissions'
 	];
 	private $user_id;  # SU ASIGNACION SE REALIZA EN __construct
 	private $user_role_id; # SU ASIGNACION SE REALIZA EN __construct
@@ -206,7 +208,8 @@ class Acl {
 		return $result;
 	}
         /**
-         * ESTE NOS DEVIELVE UN PERMISO EN PARTICULAR EN EL FORMATO USADO POR EL SISTEMA 
+         * ESTE NOS DEVIELVE UN PERMISO EN PARTICULAR EN EL FORMATO USADO POR EL SISTEMA
+         * El permiso que le pasamos tiene que existir en el la tabla permission 
          * @param type $name Es un nombre de que se conbertira en un permiso 
          *        En el formato usado por el sistema, pensado por si el usuario no tiene 
          *        ningu permiso aqui se creara uno por defau, 

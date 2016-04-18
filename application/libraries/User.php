@@ -29,7 +29,7 @@ require_once dirname(__FILE__).'/Acl.php';
 class User
 {
     private $CI;
-    private $table = 'users';
+    private $table = 'acl_users';
     private $lang;
     private $acl;
     private $errors = [];

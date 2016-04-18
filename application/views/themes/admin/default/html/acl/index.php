@@ -7,6 +7,6 @@
 <br>
 <a href="<?= base_url();?>admin/ACL_Controller/roles">roles</a>
 <br>
-<a href="<?= base_url();?>admin/ACL_Controller/roles">permisos</a>
+<a href="<?= base_url();?>admin/ACL_Controller/permisos">permisos</a>
 <br>
 <a href="<?= base_url();?>admin/ACL_Controller/usuarios">usuarios</a>

@@ -5,10 +5,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Model_Users extends CI_Model {
 
     private $tables = [
-        'roles' => 'roles',
-        'permissions' => 'permissions',
-        'role_permissions' => 'role_permissions',
-        'users'=>'users'
+        'roles' => 'acl_roles',
+        'permissions' => 'acl_permissions',
+        'role_permissions' => 'acl_role_permissions',
+        'user_permissions'=>'acl_user_permissions',
+        'users'=>'acl_users'
     ];
 
     public function __construct() {
@@ -114,12 +115,12 @@ foreach ($query->result() as $row)
     
     
     public function getUsuarios() {
-        $usuarios = $this->db->query("select u.*,r.role from users u, roles r where u.role = r.id");
+        $usuarios = $this->db->query("select u.*,r.role from ".$this->tables['users']." u, ".$this->tables['roles']." r where u.role = r.id");
         return $usuarios->result();
     }
 
     public function getUsuario($usuarioID) {
-        $usuarios = $this->db->query("select u.name,r.role from users u, roles r where u.role = r.id AND u.id = $usuarioID");
+        $usuarios = $this->db->query("select u.name,r.role from ".$this->tables['users']." u, ".$this->tables['roles']." r where u.role = r.id AND u.id = $usuarioID");
         return $usuarios->row();
     }
 
@@ -149,18 +150,18 @@ foreach ($query->result() as $row)
 
     public function eliminarPermiso($usuarioID, $permisoID) {
         $this->db->query(
-                "delete from user_permissions where " .
+                "delete from ".$this->tables['user_permissions']." where " .
                 "user = $usuarioID and 	permission = $permisoID"
         );
     }
 
     public function editarPermiso($usuarioID, $permisoID, $valor) {
         $this->db->query(
-                "replace into user_permissions set " .
+                "replace into ".$this->tables['user_permissions']." set " .
                 "user = $usuarioID , permission = $permisoID, value ='$valor'"
         );
     }
-    function insetUser($user){
+    function insertUser($user){
         $this->load->helper('date');
         $this->load->library('encrypt');
         
