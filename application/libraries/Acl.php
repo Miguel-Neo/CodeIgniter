@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Tendra el permiso por default
  * 
  * title es el permiso 
- * name es el key
+ * name es el key  no puede ser un numero tienen q ser letras o combinado
  */
 class Acl {
 	private $CI;

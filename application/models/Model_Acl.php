@@ -46,6 +46,7 @@ class Model_Acl extends CI_Model {
         if(! isset($data)){
             show_error("empty permissions");
         }
+        
         // Si no existe ningun permiso marca error
         return $data;
     }
@@ -77,7 +78,6 @@ class Model_Acl extends CI_Model {
             ];
             //*/
         }
-
         $data = array_merge($this->getPermissionsAll(), $data);
         return $data;
     }

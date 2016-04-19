@@ -139,10 +139,15 @@ foreach ($query->result() as $row)
     }
 
     public function getPermisosUsuario($usuarioID) {
+        /**
+         * Si no tiene rol no aparece como usuario
+         * si su rol no tiene ningun permiso, este usuario solo tendra el permiso
+         * que se da por defecto. para nuestro caso es public
+         */
         $User = new User(['id' => $usuarioID, 'lang' => 'spanish']); # CREA ACL CON ID
         //echo "<pre>";
         $data = $User->permissions();
-        $data = array_merge($this->_getPermissionsAll(), $data);
+        //$data = array_merge($this->_getPermissionsAll(), $data);
         //print_r($data);
         //exit;
         return $data;
@@ -176,11 +181,11 @@ foreach ($query->result() as $row)
             'role'=>$user['role'],
             'status'=>'1',
             'active'=>'1',
-            #'last_login'=>'',
-            'created'=>$user['idcreator'],
-            'created_at'=>unix_to_human($now, TRUE, 'eu'),// Es un formato Europeo 24 horas y con seconds
-            'modified'=>$user['idcreator'],
-            'modified_at'=>unix_to_human($now, TRUE, 'eu')// Es un formato Europeo 24 horas y con seconds
+            #'last_login'=>'',# Guarda la fecha y hora del ultimo inicio de sesion.
+            'created'=>$user['idcreator'],# Guarda el ID de quien creo a este usuario
+            'created_at'=>unix_to_human($now, TRUE, 'eu'),// Es un formato Europeo 24 horas y con seconds # Guarda fecha de creacion
+            'modified'=>$user['idcreator'],# Guarda el ID de quien modifico a este usuario
+            'modified_at'=>unix_to_human($now, TRUE, 'eu')// Es un formato Europeo 24 horas y con seconds # Guarda fecha de modificacion
           ]);
     }
 
