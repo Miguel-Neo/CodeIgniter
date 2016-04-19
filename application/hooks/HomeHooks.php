@@ -11,11 +11,24 @@ class HomeHooks
 	}	
 
 	public function check_login()
-	{
-		//print_r($this->ci->user->permissions());
-		if($this->ci->session->userdata('id') == FALSE)
+	{       
+            /*
+            echo '<pre>';
+                if($this->ci->session->userdata('user_id')){
+                    echo 'true';
+                }else{
+                    echo 'false';
+                }
+                if($this->ci->user->has_permission('public')){
+                    echo '<br>tengo permiso<br>';
+                }else{
+                    echo '<br>no tengo permiso <br>';
+                }
+                //*/
+                # Si no esta autenticado 
+		if($this->ci->session->userdata('user_id') == FALSE)
 		{
-			//redirect(base_url('login');
+			//redirect(base_url('users/login'));
 			//echo "<h1>este es mensaje del hooks</h1>";
 		}
 	}

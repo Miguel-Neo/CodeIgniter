@@ -8,7 +8,7 @@ hola plantilla
 <br>
 -----<?= $this->lang->line('cms_general_label_user'); ?>: Miguel
 <br>
------<?= $this->lang->line('cms_general_label_uwser'); ?>: Miguel
+-----<?= $this->lang->line('cms_general_label_user'); ?>: Miguel
 
 
 <h2>Test de lenguaje</h2>
@@ -57,3 +57,6 @@ Praesent elementum magna et pulvinar porta. Sed sit amet ultricies nulla. Intege
 
 Donec semper magna eu quam condimentum interdum. Donec turpis dolor, ultricies nec egestas vel, porta hendrerit lacus. Integer ornare massa at turpis pretium efficitur. Cras dapibus augue a iaculis varius. Etiam hendrerit ac turpis nec semper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer fermentum elit in enim congue viverra.
 </p>
+
+<?php echo  modules::run('gallery/widgetGallery'); ?>
+<?php echo  modules::run('tabs/widgettabs'); ?>

@@ -8,7 +8,7 @@ vista para el administrador
 <br>
 -----<?= $this->lang->line('cms_general_label_user'); ?>: Miguel
 <br>
------<?= $this->lang->line('cms_general_label_uwser'); ?>: Miguel
+-----<?= $this->lang->line('cms_general_label_user'); ?>: Miguel
 
 
 <h2>Test de lenguaje</h2>

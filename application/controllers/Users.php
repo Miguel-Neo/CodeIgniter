@@ -19,9 +19,7 @@ class Users extends MY_Controller {
         echo $this->encrypt->password('prueba');
         exit;
         //*/
-        echo "<pre>";
-        $this->Model_Acl->getPermissionsRole('1');
-        exit;
+        
         if($this->input->post('login') == 1)
         {
             $this->load->library('form_validation');
@@ -49,7 +47,7 @@ class Users extends MY_Controller {
                 	# CARGO EN VARIABLE DE SESSION EL ID DEL USUARIO
                     $this->session->set_userdata('user_id', $this->user->id);
                     
-                    redirect();
+                    redirect(base_url());
                 }
                 
                 $this->template->add_message(['error' => $this->user->errors()]);
@@ -67,6 +65,6 @@ class Users extends MY_Controller {
             $this->session->sess_destroy();          
         }
         
-        redirect();
+        redirect(base_url());
     }
 }
