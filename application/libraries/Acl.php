@@ -6,7 +6,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * El usuario registrado debe pertenecer a un Rol ya que si no pertenece solo 
  * Tendra el permiso por default
  * 
- * De la tabla permission el campo title es solo una descripcion del permiso
+ * title es el permiso 
+ * name es el key
  */
 class Acl {
 	private $CI;

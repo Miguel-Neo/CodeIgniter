@@ -25,7 +25,10 @@ class MY_Controller extends MX_Controller {
         $this->lang->load('theme');
         $this->load->library(['template']); #CARGA LAS LIBRERIAS TEMPLATE Y USER
         $this->load->library('user');
-        //$this->load->library('user',['id'=>1]); #probando con el usuario 1
+        
+        //echo '<pre>';
+        //$this->load->library('user',['id'=>null]); #probando con el usuario 1
+      
     }
 
     /**

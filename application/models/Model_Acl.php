@@ -28,12 +28,20 @@ class Model_Acl extends CI_Model {
         $query = $this->db->get($this->tables['permissions']);
         
         foreach ($query->result() as $row) {
+            $data[$row->name] = [
+                'permission' => $row->name,
+                'title' => $row->title,
+                'value' => 'x',
+                'id' => $row->id,
+            ];
+            /*
             $data[$row->title] = [
                 'key' => $row->title,
                 'value' => 'x',
                 'name' => $row->name,
                 'id' => $row->id
             ];
+            //*/
         }
         if(! isset($data)){
             show_error("empty permissions");
@@ -55,11 +63,19 @@ class Model_Acl extends CI_Model {
                 $v = 0;
             }
             $data[$key] = [
+                'permission' => $key,
+                'title' => $this->getPermissionsTitle($row->permission),
+                'value' => $v,
+                'id' => $row->permission,
+            ];
+            /*
+            $data[$key] = [
                 'key' => $key,
                 'value' => $v,
                 'name' => $this->getPermissionsName($row->permission),
                 'id' => $row->permission
             ];
+            //*/
         }
 
         $data = array_merge($this->getPermissionsAll(), $data);
@@ -76,12 +92,12 @@ class Model_Acl extends CI_Model {
 
     public function getPermissionsKey($permissionsID) {
         $where['id'] = $permissionsID;
-        return $this->db->get_where($this->tables['permissions'], $where)->row()->title;
+        return $this->db->get_where($this->tables['permissions'], $where)->row()->name;
     }
 
-    public function getPermissionsName($permissionsID) {
+    public function getPermissionsTitle($permissionsID) {
         $where['id'] = $permissionsID;
-        return $this->db->get_where($this->tables['permissions'], $where)->row()->name;
+        return $this->db->get_where($this->tables['permissions'], $where)->row()->title;
     }
 
     public function insertarRole($role) {
