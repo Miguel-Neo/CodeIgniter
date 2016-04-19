@@ -39,5 +39,12 @@ class Model_Permissions extends CI_Model {
             'name'=>$permission['name']
         ]);
     }
+    public function eliminarpermiso($IDpermission){
+        if($this->db->delete($this->tables['permissions'], array('id' => $IDpermission))){
+            return true;
+        }else{
+            return false;
+        }
+    }
     
 }

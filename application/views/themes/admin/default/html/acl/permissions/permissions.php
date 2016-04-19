@@ -5,6 +5,7 @@
             <td>Title</td>
             <td>Name</td>
             <td>Editar</td>
+            <td></td>
         </tr>
         <?php foreach ($permissions as $permission): ?>
 
@@ -19,6 +20,9 @@
 
                     <td>
                         <input type="submit" value="<?php dictionary('theme_save'); ?>" />
+                    </td>
+                    <td>
+                        <a href="<?php echo base_url('admin/ACL_Controller/eliminarpermiso').'/'.$permission->id; ?>">Eliminar</a>
                     </td>
                 </tr>
 

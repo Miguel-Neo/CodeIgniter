@@ -228,4 +228,12 @@ class ACL_Controller extends MY_Controller {
         }
         $this->template->render('acl/permissions/new_permission');
     }
+    public function eliminarpermiso($IDpermission){
+        if(! $this->Model_Permissions->eliminarpermiso($IDpermission)){
+            # imprimir mensaje de error 
+            # en formato development muestra pagina de error 
+            # en formato production no realizara cambios
+        }
+        redirect('admin/ACL_Controller/permisos');
+    }
 }
