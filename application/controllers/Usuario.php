@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Users extends MY_Controller {
+class Usuario extends MY_Controller {
 
     public function __construct(){
         parent::__construct();
@@ -47,7 +47,7 @@ class Users extends MY_Controller {
                 	# CARGO EN VARIABLE DE SESSION EL ID DEL USUARIO
                     $this->session->set_userdata('user_id', $this->user->id);
                     
-                    redirect(base_url());
+                    redirect(base_url().'welcome');
                 }
                 
                 $this->template->add_message(['error' => $this->user->errors()]);
