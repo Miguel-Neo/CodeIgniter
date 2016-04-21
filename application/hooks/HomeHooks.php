@@ -12,6 +12,16 @@ class HomeHooks
 
 	public function check_login()
 	{       
+           
+           if($this->ci->uri->segment(1) != "login")
+            {
+                if($this->ci->session->userdata('user_id') == FALSE)
+                {
+                    redirect(base_url('login'));
+                }
+            }
+            
+            //$this->uri->segment(1)
             /*
             echo '<pre>';
                 if($this->ci->session->userdata('user_id')){
@@ -26,11 +36,14 @@ class HomeHooks
                 }
                 //*/
                 # Si no esta autenticado 
+            
+            
+            /**
 		if($this->ci->session->userdata('user_id') == FALSE)
 		{
-			//redirect(base_url('users/login'));
-			//echo "<h1>este es mensaje del hooks</h1>";
-		}
+			redirect(base_url('Usuario/login'));
+                }
+                //*/
 	}
 }
 /*
