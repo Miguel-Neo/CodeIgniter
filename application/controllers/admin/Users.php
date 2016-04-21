@@ -9,7 +9,7 @@ class Users extends MY_Controller {
     }
     public function index()
     {
-        $this->template->render('welcome_message4');
+        //$this->template->render('welcome_message4');
     }
     
 	public function login()
