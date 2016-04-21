@@ -20,7 +20,6 @@
 <body data-baseurl="<?php echo base_url(); ?>">
 	<div id="cms_main_container">
   		
-  		<h1>PLANTILLA DEFAULT DEL FRONT-END</h1>
 		
 		<!--  ================================================== -->
 		<!--  Insert views                                       -->
