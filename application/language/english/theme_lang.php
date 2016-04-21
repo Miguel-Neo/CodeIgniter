@@ -1,5 +1,8 @@
 <?php
+# ENGLISH
 
+
+$lang['theme_html_lang'] = 'en';
 $lang['theme_txt_00'] = 'Administrator access control list';
 
 $lang['theme_save'] = 'Save';

@@ -1,5 +1,8 @@
 <?php
+# ESPANOL
 
+
+$lang['theme_html_lang'] = 'es';
 $lang['theme_txt_00'] = '<h1>Administrador de lista de control de accesos</h1>';
 
 $lang['theme_save'] = 'Guardar';
