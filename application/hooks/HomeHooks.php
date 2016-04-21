@@ -12,7 +12,11 @@ class HomeHooks
 
 	public function check_login()
 	{       
-           
+            /*
+            echo '<pre>';
+            print_r($this->ci->uri->rsegments);
+            exit;
+            //*/
            if($this->ci->uri->segment(1) != "login")
             {
                 if($this->ci->session->userdata('user_id') == FALSE)

@@ -1,4 +1,3 @@
-<h2>Nuevo Role</h2>
 
 <form  action="" method="post">
     <input type="hidden" name="guardar_nuevo_rol" value="1" />

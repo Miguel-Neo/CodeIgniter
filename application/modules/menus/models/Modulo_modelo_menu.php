@@ -26,17 +26,21 @@ class Modulo_modelo_menu extends CI_Model {
         $menu['navigation'] = 
         [
             [
-                'id' => 'dss',
-                'title'  => 'ds', 
-                'link'   => 'index.php/about'
+                'id' => 'home',
+                'title'  => 'home', 
+                'link'   => ''
+            ],[
+                'id' => 'roles',
+                'title'  => 'roles', 
+                'link'   => 'roles'
             ],[
                 'id' => '324',
                 'title'  => '324', 
                 'link'   => '#ancla-cabecera'
             ],[
-                'id' => 'about',
-                'title'  => 'Users', 
-                'link'   => 'index.php/Users/login'
+                'id' => 'nuevo_rol',
+                'title'  => 'nuevo_rol', 
+                'link'   => 'roles/nuevo_rol'
             ],[
                 'id' => 'about',
                 'title'  => 'About Us', 
