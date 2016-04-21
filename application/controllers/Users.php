@@ -10,7 +10,7 @@ class Users extends MY_Controller {
         $this->load->model('Model_Acl');
     }
     public function index(){
-        echo "mi function index";
+        $this->login();
     }
 	public function login()
     {
