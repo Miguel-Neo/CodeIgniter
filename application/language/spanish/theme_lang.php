@@ -19,4 +19,9 @@ $lang['theme_role'] = 'Rol';
 $lang['theme_save'] = 'Guardar';
 $lang['theme_edit'] = 'Editar';
 $lang['theme_delete'] = 'Borrar';
+$lang['theme_permissions'] = 'Permisos';
+
+$lang['theme_model_role_edit_error'] = 'Error de edicion o el nombre ya existe.';
+$lang['theme_model_role_edit_success'] = 'Cambio realizado satisfactoriamente.';
+
 
