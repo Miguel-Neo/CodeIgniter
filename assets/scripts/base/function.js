@@ -7,7 +7,7 @@
  */
 function setLenguage(lenguage){
     $.ajax({
-        url: $('body').data('baseurl')+'Languaje/change/'+lenguage,
+        url: $('body').data('baseurl')+'login/changeLanguage/'+lenguage,
         success:function (a){
             location.reload();
         }
