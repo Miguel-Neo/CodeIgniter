@@ -142,7 +142,13 @@ class Template {
                 }
             }
         }
-
+        
+        /**
+         * Guardo en session la url, ya que si el usuario itenta accedes a un direccion 
+         * a la cual no tiene permisos, inmediatamente se redireccionara 
+         * a la url en la cual se encontraba.
+         */
+        $this->CI->session->set_userdata('uri_string', uri_string());
         $this->_set_assets();
         $this->_set_messages();
         $this->data['_views'] = $routes;
