@@ -42,9 +42,9 @@ class Modulo_modelo_menu extends CI_Model {
                 'title'  => 'nuevo_rol', 
                 'link'   => 'roles/nuevo_rol'
             ],[
-                'id' => 'about',
-                'title'  => 'About Us', 
-                'link'   => 'index.php/about'
+                'id' => 'permisos',
+                'title'  => 'permisos', 
+                'link'   => 'permisos'
             ],[
                 'id' => 'about',
                 'title'  => 'About Us', 
