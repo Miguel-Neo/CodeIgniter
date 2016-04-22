@@ -25,17 +25,19 @@ class HomeHooks {
             if ($this->CI->session->userdata('user_id') == FALSE) {
                 redirect(base_url('login'));
             }
-
-            /**
-             * Verificando que el usuario tenga permiso para acceder 
-             * al controlador y función deseados 
-             */
-            $controlador = $this->CI->uri->rsegments[1];
-            $funcion = $this->CI->uri->rsegments[2];
-            $permission = $controlador . '/' . $funcion;
-            if (!$this->CI->user->has_permission($permission)) {
-                $this->CI->template->set_flash_message(['error' => 'No autorizado ']);
-                redirect($this->CI->session->userdata('uri_string'));
+            
+            if (!$this->CI->user->has_permission('root')) {
+                /**
+                 * Verificando que el usuario tenga permiso para acceder 
+                 * al controlador y función deseados 
+                 */
+                $controlador = $this->CI->uri->rsegments[1];
+                $funcion = $this->CI->uri->rsegments[2];
+                $permission = $controlador . '/' . $funcion;
+                if (!$this->CI->user->has_permission($permission)) {
+                    $this->CI->template->set_flash_message(['error' => 'No autorizado ']);
+                    redirect($this->CI->session->userdata('uri_string'));
+                }
             }
         }
     }
