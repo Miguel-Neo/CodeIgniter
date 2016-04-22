@@ -20,11 +20,13 @@ class Model_Roles extends CI_Model {
     }
 
     public function getRoles() {
-
+        $this->db->where('role !=', 'root');
         return $this->db->get($this->tables['roles'])->result_array();
     }
 
     public function getPermissionsAll() {
+        $this->db->where('name !=', 'root');
+        
         $query = $this->db->get($this->tables['permissions']);
 
         foreach ($query->result() as $row) {
@@ -34,14 +36,6 @@ class Model_Roles extends CI_Model {
                 'value' => 'x',
                 'id' => $row->id,
             ];
-            /*
-              $data[$row->title] = [
-              'key' => $row->title,
-              'value' => 'x',
-              'name' => $row->name,
-              'id' => $row->id
-              ];
-              // */
         }
         if (!isset($data)) {
             show_error("empty permissions");
@@ -53,7 +47,13 @@ class Model_Roles extends CI_Model {
 
     public function getPermissionsRole($roleID) {
         $data = array();
+        
+        $idRoot = $this->_getIdPermission('root');
+        $this->db->where('permission !=', $idRoot);
+        
         $where['role'] = $roleID;
+        
+        
         $query = $this->db->get_where($this->tables['role_permissions'], $where);
         foreach ($query->result() as $row) {
             $key = $this->getPermissionsKey($row->permission);
@@ -69,17 +69,13 @@ class Model_Roles extends CI_Model {
                 'value' => $v,
                 'id' => $row->permission,
             ];
-            /*
-              $data[$key] = [
-              'key' => $key,
-              'value' => $v,
-              'name' => $this->getPermissionsName($row->permission),
-              'id' => $row->permission
-              ];
-              // */
         }
         $data = array_merge($this->getPermissionsAll(), $data);
         return $data;
+    }
+    private function _getIdPermission($name){
+        $where['name'] = $name;
+        return $this->db->get_where($this->tables['permissions'], $where)->row()->id;
     }
 
     public function removePermissionsRole($roleID, $permissionsID) {
