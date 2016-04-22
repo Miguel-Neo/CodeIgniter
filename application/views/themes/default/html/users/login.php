@@ -1,4 +1,4 @@
-<?php select_Languge();?>
+
 
 <?= form_open('', ['id' => 'form_login', 'style' => 'width:300px; margin:0 auto 0 auto'], ['login' => 1]) ?>
 <?= form_fieldset('Datos de usuario') ?>
