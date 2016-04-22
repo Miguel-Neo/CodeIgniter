@@ -46,9 +46,9 @@ class Modulo_modelo_menu extends CI_Model {
                 'title'  => 'permisos', 
                 'link'   => 'permisos'
             ],[
-                'id' => 'about',
-                'title'  => 'About Us', 
-                'link'   => 'index.php/about'
+                'id' => 'Usuario',
+                'title'  => 'Usuario', 
+                'link'   => 'Usuario'
             ],[
                 'id' => 'about',
                 'title'  => 'About Us', 

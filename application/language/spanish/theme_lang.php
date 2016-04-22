@@ -27,6 +27,9 @@ $lang['theme_id'] = 'ID';
 $lang['theme_enabled'] = 'Habilitado';
 $lang['theme_denied'] = 'Denegado';
 $lang['theme_unknown'] = 'Ignorar';
+$lang['theme_inherited'] = 'Heredado';
+
+
 
 $lang['theme_model_role_edit_error'] = 'Error de edicion o el nombre ya existe.';
 $lang['theme_model_role_edit_success'] = 'Cambio realizado satisfactoriamente.';

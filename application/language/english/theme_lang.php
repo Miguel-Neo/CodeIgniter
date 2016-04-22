@@ -27,6 +27,8 @@ $lang['theme_id'] = 'ID';
 $lang['theme_enabled'] = 'Enabled';
 $lang['theme_denied'] = 'Denied';
 $lang['theme_unknown'] = 'Unknown';
+$lang['theme_inherited'] = 'Inherited';
+
 
 $lang['theme_model_role_edit_error'] = 'Error editing or name already exists.';
 $lang['theme_model_role_edit_success'] = 'Change completed successfully.';
