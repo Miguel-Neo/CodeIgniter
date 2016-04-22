@@ -40,4 +40,4 @@
     </table>
 <?php endif; ?>
 
-<p><a href="<?php echo base_url('roles/nuevo_rol'); ?>">Agregar Role</a></p>
+<p><a href="<?php echo base_url('roles/nuevo'); ?>">Agregar Role</a></p>

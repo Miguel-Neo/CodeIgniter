@@ -10,21 +10,21 @@ class Roles extends MY_Controller {
     
     public function index(){
         $this->template->set('roles', $this->Model_Roles->getRoles());
-        $this->template->render('acl/roles');
+        $this->template->render('acl/rol/roles');
     }
-    public function nuevo_rol() {
+    public function nuevo() {
 
         if (isset($_POST['guardar_nuevo_rol']) && $_POST['guardar_nuevo_rol'] == 1) {
 
             if (!$this->Model_Roles->insertarRole($_POST['role'])) {
                 $this->template->add_message(['error' => [dictionary('acl_error_rol_duplicate')]]);
 
-                $this->template->render('acl/nuevo_rol');
+                $this->template->render('acl/rol/nuevo_rol');
             } else {
                 redirect('roles');
             }
         } else {
-            $this->template->render('acl/nuevo_rol');
+            $this->template->render('acl/rol/nuevo_rol');
         }
     }
     public function editar(){
@@ -48,7 +48,7 @@ class Roles extends MY_Controller {
             redirect('roles');
         }
         $row = $this->Model_Roles->getRole($roleID);
-
+        
         if (!$row) {
             redirect('roles');
         }
@@ -99,7 +99,7 @@ class Roles extends MY_Controller {
         
         $this->template->set('role', $row);
         $this->template->set('permisos', $this->Model_Roles->getPermissionsRole($roleID));
-        $this->template->render('acl/permisos_rol');
+        $this->template->render('acl/rol/permisos_rol');
     }
     
 }

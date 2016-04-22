@@ -9,6 +9,7 @@ $lang['theme_txt_00'] = 'Administrator access control list';
 
 $lang['theme_txt_add_user'] = 'Add user';
 $lang['theme_txt_add_permission'] = 'Add permission';
+$lang['theme_txt_add_role'] = 'Add role';
 
 $lang['theme_name'] = 'Name';
 $lang['theme_description'] = 'Description';
