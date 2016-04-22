@@ -25,14 +25,12 @@
                 </td>
             </form>
             <td>
-                <a href="<?php echo base_url('roles/eliminar') . '/' . $role['id']; ?>">
-                    <?= dictionary('theme_delete') ?>
-                </a>
+                <?= anchor('roles/eliminar/'. $role['id'] , dictionary('theme_delete'));?>
+                
             </td>
             <td>
-                <a href="<?php echo base_url('roles/permisos') . '/' . $role['id']; ?>">
-                    <?= dictionary('theme_permissions') ?>
-                </a>
+                <?= anchor('roles/permisos/'. $role['id'] , dictionary('theme_permissions'));?>
+                
             </td>
         </tr>
 
@@ -40,4 +38,4 @@
     </table>
 <?php endif; ?>
 
-<p><a href="<?php echo base_url('roles/nuevo'); ?>">Agregar Role</a></p>
+<?= anchor('roles/nuevo' , dictionary('theme_txt_add_role'));?>
