@@ -1,5 +1,5 @@
 
-<h3><?php echo $role->role; ?></h3>
+<h3><?php echo dictionary('theme_role').": ".$role->role; ?></h3>
 
 
 <form action="" method="post">
@@ -7,11 +7,11 @@
     <?php if (isset($permisos)): ?>
         <table>
             <tr>
-                <th>id</th>
-                <th>Permiso</th>
-                <th>Habilitado</th>
-                <th>Denegado</th>
-                <th>ignorar</th>
+                <th><?= dictionary('theme_id'); ?></th>
+                <th><?= dictionary('theme_permission'); ?></th>
+                <th><?= dictionary('theme_enabled'); ?></th>
+                <th><?= dictionary('theme_denied'); ?></th>
+                <th><?= dictionary('theme_unknown'); ?></th>
             </tr>
             <?php foreach ($permisos as $permiso): ?>
                 <tr>

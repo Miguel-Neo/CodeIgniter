@@ -3,8 +3,8 @@
 <?php if (isset($roles)): ?>
     <table>
         <tr>
-            <th>ID</th>
-            <th>Role</th>
+            <th><?= dictionary('theme_id'); ?></th>
+            <th><?= dictionary('theme_role'); ?></th>
             <th></th>
             <th></th>
         </tr>
