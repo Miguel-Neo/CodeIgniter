@@ -14,17 +14,21 @@ class Usuario extends MY_Controller {
         $this->template->render('acl/usuario/usuarios');
     }
     public function nuevo(){
-        if (isset($_POST['nuevo_usuario']) && $_POST['nuevo_usuario'] == 1) {
+        if ($this->input->post('nuevo_usuario') == 1) {
+            
             $user = array(
                 'idcreator' =>$this->user->id,
-                'name' => $_POST['name'],
-                'email' => $_POST['email'],
-                'user' => $_POST['user'],
-                'password' => $_POST['password'],
-                'role' => $_POST['role']
+                'name' => $this->input->post('name'),
+                'email' => $this->input->post('email'),
+                'user' => $this->input->post('user'),
+                'password' => $this->input->post('password'),
+                'role' => $this->input->post('role')
             );
-            $this->Model_Users->insertUser($user);
-            redirect('usuario');
+            if($this->Model_Users->insertUser($user)){
+                redirect('usuario');
+            }
+            $this->template->add_message(['error' => dictionary('theme_error_duplicate_user')]);
+            $this->template->set('user',$user);
         }
         
         $this->template->set('roles', $this->Model_Roles->getRoles());
@@ -41,8 +45,8 @@ class Usuario extends MY_Controller {
         }
 
 
-        if (isset($_POST['save_permissionsUser']) && $_POST['save_permissionsUser'] == 1) {
-            $values = array_keys($_POST);
+        if ($this->input->post('save_permissionsUser') == 1) {
+            $values = array_keys($this->input->post());
 
             $replace = array();
             $eliminar = array();

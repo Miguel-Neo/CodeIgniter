@@ -20,13 +20,16 @@ class Model_Roles extends CI_Model {
     }
 
     public function getRoles() {
+        /*
         $this->db->where('role !=', 'root');
+        //*/
         return $this->db->get($this->tables['roles'])->result_array();
     }
 
     public function getPermissionsAll() {
+        /*
         $this->db->where('name !=', 'root');
-        
+        //*/
         $query = $this->db->get($this->tables['permissions']);
 
         foreach ($query->result() as $row) {
@@ -47,10 +50,10 @@ class Model_Roles extends CI_Model {
 
     public function getPermissionsRole($roleID) {
         $data = array();
-        
+        /*
         $idRoot = $this->_getIdPermission('root');
         $this->db->where('permission !=', $idRoot);
-        
+        //*/
         $where['role'] = $roleID;
         
         

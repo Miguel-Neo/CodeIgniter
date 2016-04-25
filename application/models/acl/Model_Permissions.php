@@ -22,7 +22,9 @@ class Model_Permissions extends CI_Model {
     
     
     public function getPermissions() {
+        /*
         $this->db->where('name !=', 'root');
+        //*/
         return $this->db->get($this->tables['permissions'])->result();
     }
     public function editPermissions($permission){

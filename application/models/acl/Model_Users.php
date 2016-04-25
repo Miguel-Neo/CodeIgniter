@@ -8,67 +8,67 @@ class Model_Users extends CI_Model {
         'roles' => 'acl_roles',
         'permissions' => 'acl_permissions',
         'role_permissions' => 'acl_role_permissions',
-        'user_permissions'=>'acl_user_permissions',
-        'users'=>'acl_users'
+        'user_permissions' => 'acl_user_permissions',
+        'users' => 'acl_users'
     ];
 
     public function __construct() {
         parent::__construct();
     }
-    
-    function setUser(){
-         
+
+    function setUser() {
+
         date_default_timezone_set('America/Mexico_City');
-	$now = time();
+        $now = time();
         ///*
-        $this->db->insert('users',[
-            'name'=>'back-end',
-              'created_at'=>unix_to_human($now, TRUE, 'eu')// Es un formato Europeo 24 horas y con seconds
-          ]);
+        $this->db->insert('users', [
+            'name' => 'back-end',
+            'created_at' => unix_to_human($now, TRUE, 'eu')// Es un formato Europeo 24 horas y con seconds
+        ]);
         //*/
     }
+
     function get_users() {
         $this->load->helper('date');
         /*
           SELECT * FROM wp_posts
-WHERE post_date >= '2014-03-19 00:00:00'
-AND post_date <= '2014-03-19 23:59:59'
-AND post_status = 'publish'
-ORDER BY post_date ASC
+          WHERE post_date >= '2014-03-19 00:00:00'
+          AND post_date <= '2014-03-19 23:59:59'
+          AND post_status = 'publish'
+          ORDER BY post_date ASC
           // */
 //			/*
-        
+
         date_default_timezone_set('America/Mexico_City');
-	$fechaDeRegistro = time();
-        
-$now = time();
-echo unix_to_human($fechaDeRegistro, TRUE,'eu'); // Euro time with seconds
- echo '<br>';
-echo unix_to_human($now, TRUE, 'us'); // U.S. time with seconds
- echo '<br>';
-echo unix_to_human($now, TRUE, 'eu'); // Euro time with seconds
-echo '<br>';
-$datestring = 'Year: %Y Month: %m Day: %d - %h:%i %a';
-$time = time();
-echo mdate($datestring, $time);
-          echo '<br>';
+        $fechaDeRegistro = time();
+
+        $now = time();
+        echo unix_to_human($fechaDeRegistro, TRUE, 'eu'); // Euro time with seconds
+        echo '<br>';
+        echo unix_to_human($now, TRUE, 'us'); // U.S. time with seconds
+        echo '<br>';
+        echo unix_to_human($now, TRUE, 'eu'); // Euro time with seconds
+        echo '<br>';
+        $datestring = 'Year: %Y Month: %m Day: %d - %h:%i %a';
+        $time = time();
+        echo mdate($datestring, $time);
+        echo '<br>';
         print_r(time());
         echo '<br>';
         print_r(date('Y'));
         echo '<br>';
         echo '<br>';
-       $query = $this->db->query("SELECT * FROM users
+        $query = $this->db->query("SELECT * FROM users
 WHERE created_at >= '2016-04-01 11:00:00'
 AND created_at <= '2016-04-02 23:59:59'
 ORDER BY created_at ASC");
-       
-       $query = $this->db->query("SELECT  * FROM users
+
+        $query = $this->db->query("SELECT  * FROM users
 ");
 
-foreach ($query->result() as $row)
-{
-    print_r($row);
-}
+        foreach ($query->result() as $row) {
+            print_r($row);
+        }
 //*/
         //return $this->db->get('users')->row();
     }
@@ -109,18 +109,15 @@ foreach ($query->result() as $row)
           // */
     }
 
-    
-/*****************************************************************************/    
-    
-    
-    
+    /*     * ************************************************************************** */
+
     public function getUsuarios() {
-        $usuarios = $this->db->query("select u.*,r.role from ".$this->tables['users']." u, ".$this->tables['roles']." r where u.role = r.id");
+        $usuarios = $this->db->query("select u.*,r.role from " . $this->tables['users'] . " u, " . $this->tables['roles'] . " r where u.role = r.id");
         return $usuarios->result();
     }
 
     public function getUsuario($usuarioID) {
-        $usuarios = $this->db->query("select u.name,r.role from ".$this->tables['users']." u, ".$this->tables['roles']." r where u.role = r.id AND u.id = $usuarioID");
+        $usuarios = $this->db->query("select u.name,r.role from " . $this->tables['users'] . " u, " . $this->tables['roles'] . " r where u.role = r.id AND u.id = $usuarioID");
         return $usuarios->row();
     }
 
@@ -155,38 +152,49 @@ foreach ($query->result() as $row)
 
     public function eliminarPermiso($usuarioID, $permisoID) {
         $this->db->query(
-                "delete from ".$this->tables['user_permissions']." where " .
+                "delete from " . $this->tables['user_permissions'] . " where " .
                 "user = $usuarioID and 	permission = $permisoID"
         );
     }
 
     public function editarPermiso($usuarioID, $permisoID, $valor) {
         $this->db->query(
-                "replace into ".$this->tables['user_permissions']." set " .
+                "replace into " . $this->tables['user_permissions'] . " set " .
                 "user = $usuarioID , permission = $permisoID, value ='$valor'"
         );
     }
-    function insertUser($user){
-        $this->load->helper('date');
-        $this->load->library('encrypt');
-        
-        date_default_timezone_set('America/Mexico_City');
-	$now = time();
-        ///*
-        $this->db->insert($this->tables['users'],[
-            'name'=>$user['name'],
-            'email'=>$user['email'],
-            'user'=>$user['user'],
-            'password'=>$this->encrypt->password($user['password']),
-            'role'=>$user['role'],
-            'status'=>'1',
-            'active'=>'1',
-            #'last_login'=>'',# Guarda la fecha y hora del ultimo inicio de sesion.
-            'created'=>$user['idcreator'],# Guarda el ID de quien creo a este usuario
-            'created_at'=>unix_to_human($now, TRUE, 'eu'),// Es un formato Europeo 24 horas y con seconds # Guarda fecha de creacion
-            'modified'=>$user['idcreator'],# Guarda el ID de quien modifico a este usuario
-            'modified_at'=>unix_to_human($now, TRUE, 'eu')// Es un formato Europeo 24 horas y con seconds # Guarda fecha de modificacion
-          ]);
+
+    /**
+     * Inserta un usuario nuevo.
+     * Verifica que el user sea unico
+     * @param type $user Datos del usuarion en un Array
+     * @return boolean true si logro insertar y false si no inserto al usuario
+     */
+    function insertUser($user) {
+        $where['user'] = $user['user'];
+        $existe = $this->db->get_where($this->tables['users'], $where)->row();
+        if (!$existe) {
+            $this->load->helper('date');
+            $this->load->library('encrypt');
+            date_default_timezone_set('America/Mexico_City');
+            $now = time();
+            $this->db->insert($this->tables['users'], [
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'user' => $user['user'],
+                'password' => $this->encrypt->password($user['password']),
+                'role' => $user['role'],
+                'status' => '1',
+                'active' => '1',
+                #'last_login'=>'',# Guarda la fecha y hora del ultimo inicio de sesion.
+                'created' => $user['idcreator'], # Guarda el ID de quien creo a este usuario
+                'created_at' => unix_to_human($now, TRUE, 'eu'), // Es un formato Europeo 24 horas y con seconds # Guarda fecha de creacion
+                'modified' => $user['idcreator'], # Guarda el ID de quien modifico a este usuario
+                'modified_at' => unix_to_human($now, TRUE, 'eu')// Es un formato Europeo 24 horas y con seconds # Guarda fecha de modificacion
+            ]);
+            return true;
+        }
+        return false;
     }
 
 }
