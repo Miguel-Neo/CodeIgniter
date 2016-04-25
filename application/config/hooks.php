@@ -15,8 +15,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $hook['post_controller_constructor'] = array(
     'class' => 'HomeHooks',
-    # 'function' => 'check_login',
-    'function' => 'ignoreAll',
+    'function' => 'check_login',
+    #'function' => 'ignoreAll',
     'filename' => 'HomeHooks.php',
     'filepath' => 'hooks',
     'params' => array('beer', 'wine', 'snacks')
