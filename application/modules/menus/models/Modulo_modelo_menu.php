@@ -54,9 +54,9 @@ class Modulo_modelo_menu extends CI_Model {
                 'title'  => 'logout', 
                 'link'   => 'login/logout'
             ],[
-                'id' => 'about',
-                'title'  => 'About Us', 
-                'link'   => 'index.php/about'
+                'id' => 'servicio',
+                'title'  => 'Servicios', 
+                'link'   => 'Servicio'
             ],[
                 'id' => 'about',
                 'title'  => 'About Us', 

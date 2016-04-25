@@ -31,14 +31,14 @@ http://bootsnipp.com/snippets/featured/multi-level-dropdown-menu-bs3
 	public function widgetMenuHeader($selected='home'){
             $controlador = $this->uri->rsegments[1];
             $funcion = $this->uri->rsegments[2];
-            print_r($controlador.'--'.$funcion.'---');
+            //print_r($controlador.'--'.$funcion.'---');
 	//	mod_menu_ul();
 	//	modmenusDelnavo();
 		$menu = $this->modulo_modelo_menu->get_items('navigation');
 
 		$data['menu'] = $this
 			->modulo_menus_libraries_menu
-			->get_menu_ul($menu,$selected);
+			->get_menu_ul($menu,$controlador);
 
 	//	$this->load->view('modulo_menu_test');
 	//	$this->load->view('menuHeader',$data);
