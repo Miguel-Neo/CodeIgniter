@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Esta es la vista principal de los servicion 
+ * Aqui se listan todos los servicio esn formato de tabla
+ * tienen links para ir a {editar}, {eliminar} y {nuevo}
+ * 
+ * @param type $servicios Es un array con todos los registros de los servicios
+ */
 if (isset($servicios)) {
     $this->load->library('table');
     $template = array(

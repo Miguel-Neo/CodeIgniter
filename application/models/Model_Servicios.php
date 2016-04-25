@@ -23,6 +23,11 @@ class Model_Servicios extends CI_Model {
     public function getServicios() {
         return $this->db->get($this->tables['servicios'])->result_array();
     }
+    /**
+     * Obtiene un registro buscado por su ID 
+     * @param type $id
+     * @return type
+     */
     public function getServicio($id){
         $this->db->where(['id' => $id]);
         return $this->db->get($this->tables['servicios'])->row_array();

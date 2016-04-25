@@ -1,4 +1,9 @@
-
+<?php
+/**
+ * Esta es la vista para EDITAR los datos de un servicio del crm
+ * Envia mediante POST los datos de {nobre} , {descripcion} y {id}
+ */
+?>
 <form action="" method="post">
     <input type="hidden" name="editar_servicio" value="1" />
     <input type="hidden" name="id" value="<?php echo $servicio['id']; ?>">

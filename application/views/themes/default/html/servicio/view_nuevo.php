@@ -1,4 +1,9 @@
-
+<?php
+/**
+ * Esta es la vista para crear un NUEVO servicio 
+ * Solo envia mediante POST los datos de {nobre} y {descripcion}
+ */
+?>
 <form action="" method="post">
     <input type="hidden" name="nuevo_servicio" value="1" />
 
