@@ -41,6 +41,9 @@ class HomeHooks {
             }
         }
     }
+    public function ignoreAll(){
+        
+    }
 
 }
 
