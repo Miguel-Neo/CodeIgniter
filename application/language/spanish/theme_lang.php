@@ -30,6 +30,7 @@ $lang['theme_unknown'] = 'Ignorar';
 $lang['theme_inherited'] = 'Heredado';
 
 
+$lang['theme_error_duplicate_user'] = 'Error, Este usuario ya existe.';
 
 $lang['theme_model_role_edit_error'] = 'Error de edicion o el nombre ya existe.';
 $lang['theme_model_role_edit_success'] = 'Cambio realizado satisfactoriamente.';

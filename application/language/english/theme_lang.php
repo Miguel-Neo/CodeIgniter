@@ -30,6 +30,8 @@ $lang['theme_unknown'] = 'Unknown';
 $lang['theme_inherited'] = 'Inherited';
 
 
+$lang['theme_error_duplicate_user'] = 'Error, this user already exists.';
+
 $lang['theme_model_role_edit_error'] = 'Error editing or name already exists.';
 $lang['theme_model_role_edit_success'] = 'Change completed successfully.';
 
