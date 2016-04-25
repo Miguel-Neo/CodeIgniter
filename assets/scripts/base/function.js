@@ -13,3 +13,11 @@ function setLenguage(lenguage){
         }
     });
 }
+
+/**
+ * Ventana de confirmacion para ir al area de elimiar algun elemento
+ * @returns boolean true si se acepto pa peticion y false si se rechaso
+ */
+function confirm_delete(){
+    return confirm("¿Está seguro de que desea eliminar permanentemente el elemento?");
+}
