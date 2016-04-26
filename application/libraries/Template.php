@@ -142,7 +142,7 @@ class Template {
                 }
             }
         }
-        
+
         /**
          * Guardo en session la url, ya que si el usuario itenta accedes a un direccion 
          * a la cual no tiene permisos, inmediatamente se redireccionara 
@@ -225,9 +225,20 @@ class Template {
             $styles = $this->css;
             $this->css = [];
 
+            $configModules = $this->configs_modules;
+            $this->configs_modules = [];
+
+            # Cargo y uno los elementos de configuracion de los modlos 
+            # estos se definen el el config/template o dentro del controlador q lo use 
+            if (isset($this->configs[$panel][$this->name]['config_modules']) && sizeof($this->configs[$panel][$this->name]['config_modules']) > 0) {
+                foreach ($this->configs[$panel][$this->name]['config_modules'] as $modules) {
+                    $this->load_config_modules($modules['value']);
+                }
+            }
+            $this->configs_modules = array_merge_recursive($this->configs_modules, $configModules);
+            
+            
             if (isset($this->configs[$panel][$this->name]['scripts']) && sizeof($this->configs[$panel][$this->name]['scripts']) > 0) {
-
-
                 # lee los elementos del archivo de configuracion.
                 foreach ($this->configs[$panel][$this->name]['scripts'] as $script) {
                     $this->_add_asset(
@@ -235,6 +246,7 @@ class Template {
                     );
                 }
             }
+            
             # lee los elementos del archivo de configuracion de los MODULOS definidos
             if (isset($this->configs_modules['scripts']) && sizeof($this->configs_modules['scripts']) > 0) {
 
