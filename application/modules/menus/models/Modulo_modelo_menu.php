@@ -38,10 +38,6 @@ class Modulo_modelo_menu extends CI_Model {
                 'title'  => '324', 
                 'link'   => '#ancla-cabecera'
             ],[
-                'id' => 'nuevo_rol',
-                'title'  => 'nuevo_rol', 
-                'link'   => 'roles/nuevo'
-            ],[
                 'id' => 'permisos',
                 'title'  => 'permisos', 
                 'link'   => 'permisos'
@@ -58,9 +54,9 @@ class Modulo_modelo_menu extends CI_Model {
                 'title'  => 'Servicios', 
                 'link'   => 'Servicio'
             ],[
-                'id' => 'about',
-                'title'  => 'About Us', 
-                'link'   => 'index.php/about'
+                'id' => 'Cliente',
+                'title'  => 'Clientes', 
+                'link'   => 'Cliente'
             ],[
                 'id' => 'services',
                 'title'  => 'services', 
