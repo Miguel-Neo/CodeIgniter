@@ -40,3 +40,6 @@ $lang['theme_model_role_edit_error'] = 'Error de edicion o el nombre ya existe.'
 $lang['theme_model_role_edit_success'] = 'Cambio realizado satisfactoriamente.';
 
 
+$lang['theme_cliente_razon_social'] = 'Razón Social';
+$lang['theme_cliente_razon_direccion'] = 'Direccion';
+

@@ -40,3 +40,5 @@ $lang['theme_model_role_edit_error'] = 'Error editing or name already exists.';
 $lang['theme_model_role_edit_success'] = 'Change completed successfully.';
 
 
+$lang['theme_cliente_razon_social'] = 'Business name';
+$lang['theme_cliente_razon_direccion'] = 'Address';

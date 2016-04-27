@@ -6,7 +6,6 @@ class Login extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->lang->load('form_validation');
     }
 
     public function index() {
@@ -17,7 +16,7 @@ class Login extends MY_Controller {
           // */
 
         if ($this->input->post('login') == 1) {
-            $this->load->library('form_validation');
+            $this->load->library('form_validation');#tiene su archivo de idiomas 
 
             $rules = [
                 [
