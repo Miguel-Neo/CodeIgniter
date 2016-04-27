@@ -31,7 +31,7 @@ class Model_Cliente extends CI_Model {
     public function insertinfo($idCliente,$atributo,$valor){
         $this->db->query(
                 "replace into " . $this->tables['detallesCliente'] . " set " .
-                "idcliente = $idCliente , atributo = '$atributo', valor ='$valor', "
+                "idcliente = $idCliente , atributo = '$atributo', valor ='$valor' "
         );
     }
     public function insert($cliente){
