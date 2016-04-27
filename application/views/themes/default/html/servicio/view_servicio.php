@@ -28,7 +28,10 @@ if (isset($servicios)) {
                 $servicio['fechaRegistro'], 
                 $servicio['nombre'], 
                 $servicio['descripcion'],
-                anchor('Servicio/editar/'. $servicio['id'] , dictionary('theme_edit')),
+                anchor(
+                        'Servicio/editar/'. $servicio['id'] , 
+                        dictionary('theme_edit')
+                        ),
                 anchor(
                         'Servicio/eliminar/'. $servicio['id'] , 
                         dictionary('theme_delete'),
