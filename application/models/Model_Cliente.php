@@ -34,7 +34,7 @@ class Model_Cliente extends CI_Model {
                 "idcliente = $idCliente , atributo = '$atributo', valor ='$valor' "
         );
     }
-    public function insert($cliente){
+    public function insert($cliente,$info){
         $where['razonSocial'] = $cliente['razonSocial'];
         $existe = $this->db->get_where($this->tables['clientes'], $where)->row();
        
@@ -42,7 +42,10 @@ class Model_Cliente extends CI_Model {
             $this->load->helper('date');
             date_default_timezone_set('America/Mexico_City');
             $now = time();
-           
+            
+            
+            $this->db->trans_start();
+            
             $this->db->insert(
                     $this->tables['clientes'],
                     [
@@ -57,8 +60,18 @@ class Model_Cliente extends CI_Model {
                         'modified_at'=>unix_to_human($now, TRUE, 'eu')
                     ]
                     );
+            $IDEmpresa = $this->getIDCliente($cliente['razonSocial']);
+            foreach ($info as $key => $valor) {
+                $this->insertinfo($IDEmpresa,$key,$valor);
+            }
             
+            $this->db->trans_complete();
             
+            if ($this->db->trans_status() === FALSE)
+            {
+                return false;
+                    // generate an error... or use the log_message() function to log your error
+            }
             return true;
         }
         return false;

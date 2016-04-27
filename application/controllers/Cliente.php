@@ -26,19 +26,14 @@ class Cliente extends MY_Controller {
                     'created'=>$this->user->id,
                 );
                 
-                if($this->Model_Cliente->insert($newEmpresa)){
-                    $IDEmpresa = $this->Model_Cliente->getIDCliente($razonSocial);
-                    foreach ($this->input->post('ext') as $key => $valor) {
-                        $this->Model_Cliente->insertinfo($IDEmpresa,$key,$valor);
-                    }
+                if($this->Model_Cliente->insert($newEmpresa,$this->input->post('ext'))){
+                    
                     redirect('Cliente');
                 }
                 $this->template->add_message(['error' => [dictionary('theme_error_duplicate_element')]]);
             
             
             
-        }else{
-            //echo 'invalido';exit;
         }
         $this->template->render('cliente/v_nuevo');
         
