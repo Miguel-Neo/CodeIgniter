@@ -8,7 +8,7 @@ $tipos_de_empresa = array(
     'Agencia' => 'Agencia',
 );
 ?>
-<?= form_open('', '', $hidden); ?>
+<?= form_open_multipart('', '', $hidden); ?>
 <p>
     <?= form_label(dictionary('theme_cliente_razon_social'), 'razon_social') ?>
     <?= form_input(['id' => 'razon_social', 'name' => 'here[razon_social]'], set_value('here[razon_social]')) ?>
@@ -43,6 +43,9 @@ $tipos_de_empresa = array(
     <?= form_label('Sitio web', 'sitio_web') ?>
     <?= form_input(['id' => 'sitio_web', 'name' => 'ext[sitio_web]'], set_value('ext[sitio_web]')) ?>
     <?= form_error('ext[sitio_web]') ?>
+</p>
+<p>
+   <?php //form_upload('img[img_logo]');?> 
 </p>
 <?= form_submit(['value' => dictionary('cms_general_label_button_access')]) ?>
 <?= form_close() ?>

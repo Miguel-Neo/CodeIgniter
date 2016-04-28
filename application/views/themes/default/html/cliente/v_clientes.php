@@ -18,19 +18,14 @@ if (isset($clientes)) {
             dictionary('theme_id'),
             dictionary('theme_created'),
             dictionary('theme_name'),
-            dictionary('theme_description'),
             dictionary('theme_edit'),
             dictionary('theme_delete')
             );
     foreach ($clientes as $cliente) {
         $this->table->add_row(
                 $cliente['id'], 
-                $cliente['razonSocial'], 
-                $cliente['estadoActivoInactivo'],
                 $cliente['created'],
-                $cliente['created_at'],
-                $cliente['modified'],
-                $cliente['modified_at'],
+                $cliente['razonSocial'], 
                 anchor(
                         'Cliente/editar/'. $cliente['id'] , 
                         dictionary('theme_edit')
