@@ -13,36 +13,23 @@ class Cliente extends MY_Controller {
         $this->template->render('cliente/v_clientes');
     }
     public function nuevo(){
-        
-        
-        
         if($this->_validarCliente()){
             $razonSocial = $this->input->post('here')['razon_social'];
-            
-    
-                $newEmpresa = array(
-                    'razonSocial'=>$razonSocial,
-                    'tipoDeEmpresa'=>$this->input->post('here')['tipo_de_empresa'],
-                    'created'=>$this->user->id,
-                );
-                
-                if($this->Model_Cliente->insert($newEmpresa,$this->input->post('ext'))){
-                    
-                    redirect('Cliente');
-                }
-                $this->template->add_message(['error' => [dictionary('theme_error_duplicate_element')]]);
-            
-            
-            
+            if($this->Model_Cliente->insert($razonSocial,$this->input->post('ext'))){
+                redirect('Cliente');
+            }
+            $this->template->add_message(['error' => [dictionary('theme_error_duplicate_element')]]);
         }
         $this->template->render('cliente/v_nuevo');
         
     }
     public function editar($ID){
-        $this->template->render('cliente/v_editar');
+        $this->Model_Cliente->updateinsertinfo(5,'sitio_web','kkk');
+        redirect('Cliente');
     }
     public function eliminar($ID){
-        
+        $this->Model_Cliente->delete($ID);
+        redirect('Cliente');
     }
     private function _validarCliente(){
         

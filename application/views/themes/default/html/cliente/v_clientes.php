@@ -25,11 +25,8 @@ if (isset($clientes)) {
     foreach ($clientes as $cliente) {
         $this->table->add_row(
                 $cliente['id'], 
-                $cliente['fechaRegistro'], 
                 $cliente['razonSocial'], 
-                $cliente['tipoDeEmpresa'],
                 $cliente['estadoActivoInactivo'],
-                $cliente['logotipo'],
                 $cliente['created'],
                 $cliente['created_at'],
                 $cliente['modified'],

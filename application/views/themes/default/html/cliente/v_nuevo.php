@@ -26,7 +26,7 @@ $tipos_de_empresa = array(
 </p>
 <p>
     <?= form_label('Tipo de empresa', 'tipo_de_empresa'); ?>
-    <?= form_dropdown('here[tipo_de_empresa]', $tipos_de_empresa, '0'); ?>
+    <?= form_dropdown('ext[tipo_de_empresa]', $tipos_de_empresa, '0'); ?>
 
 </p>
 <p>
