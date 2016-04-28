@@ -22,7 +22,7 @@
                         'title' => 'That was quite a night',
                         'rel'   => 'lightbox'
                 );
-                echo img($image_properties);
+               // echo img($image_properties);
                 ?>
             </a>
         </div><!-- ./ .navbar-header" -->

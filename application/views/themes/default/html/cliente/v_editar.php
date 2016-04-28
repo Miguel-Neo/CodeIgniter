@@ -1,7 +1,28 @@
 <?php
-$this->load->helper('form');
 
-echo form_open('email/send');
-echo form_hidden('username', 'johndoe');
+if (isset($cliente)) {
+
+    
+    
+}
 ?>
-<?= form_close() ?>
+<html>
+<head>
+<title>Upload Form</title>
+</head>
+<body>
+
+<?php if(isset($error))echo $error;?>
+
+<?php echo form_open_multipart('cliente/do_upload');?>
+
+<input type="file" name="userfile" size="20" />
+
+<br /><br />
+
+<input type="submit" value="upload" />
+
+</form>
+
+</body>
+</html>

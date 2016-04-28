@@ -23,7 +23,25 @@ class Model_Cliente extends CI_Model {
      * @return Un Array con los registros en tipo Array
      */
     public function getClientes() {
-        return $this->db->get($this->tables['clientes'])->result_array();
+        $clientes = $this->db->get($this->tables['clientes'])->result_array();
+        for ($i = 0; $i < count($clientes); $i ++) {
+            $clientes[$i]['detalles']=
+                    $this->db->get_where(
+                            $this->tables['detallesCliente'], 
+                            ['idCliente'=>$clientes[$i]['id']])->result_array();
+        }
+        return $clientes;
+    }
+    public function getCliente($id){
+        $cliente = $this->db->get_where(
+                $this->tables['clientes'],
+                ['id'=>$id]
+                )->row_array();
+        $cliente['detalles'] = 
+                $this->db->get_where(
+                            $this->tables['detallesCliente'], 
+                            ['idCliente'=>$id])->result_array();
+        return $cliente;
     }
     public function getIDCliente($razonSocial){
         $where['razonSocial'] = $razonSocial;
@@ -108,7 +126,6 @@ class Model_Cliente extends CI_Model {
     public function delete($id){
         $this->db->delete($this->tables['detallesCliente'],array('idCliente'=>$id));
         $this->db->delete($this->tables['clientes'],array('id'=>$id));
-        
     }
     
     public function update($cliente,$info){

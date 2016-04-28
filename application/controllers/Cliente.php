@@ -6,6 +6,7 @@ class Cliente extends MY_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Model_Cliente');
+        $this->load->helper(array('form', 'url'));
     }
     
     public function index(){
@@ -24,8 +25,12 @@ class Cliente extends MY_Controller {
         
     }
     public function editar($ID){
+        /*
         $this->Model_Cliente->updateinsertinfo(5,'sitio_web','kkk');
         redirect('Cliente');
+        //*/
+        $this->template->set('cliente',$this->Model_Cliente->getCliente($ID));
+        $this->template->render('cliente/v_editar');
     }
     public function eliminar($ID){
         $this->Model_Cliente->delete($ID);
@@ -53,4 +58,31 @@ class Cliente extends MY_Controller {
         }
         return false;
     }
+    public function do_upload()
+        {
+                $config['upload_path']          = './assets/archivos/';
+                $config['allowed_types']        = 'gif|jpg|jpeg|png|zip';
+                $config['max_size']             = 400048;
+                $config['max_width']            = 0;
+                $config['max_height']           = 0;
+                $config['remove_spaces']        = true;
+
+                $this->load->library('upload', $config);
+
+                if ( ! $this->upload->do_upload('userfile'))
+                {
+                        $error = array('error' => $this->upload->display_errors());
+                        
+                        $this->template->set('error',$error);
+                        $this->template->render('cliente/v_editar');
+                        
+                }
+                else
+                {
+                        $data =  $this->upload->data();
+                        
+                        $this->template->set('upload_data',$data);
+                        $this->template->render('cliente/upload_success');
+                }
+        }
 }

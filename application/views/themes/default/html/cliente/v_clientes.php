@@ -16,7 +16,6 @@ if (isset($clientes)) {
     
     $this->table->set_heading(
             dictionary('theme_id'),
-            dictionary('theme_created'),
             dictionary('theme_name'),
             dictionary('theme_edit'),
             dictionary('theme_delete')
@@ -24,7 +23,6 @@ if (isset($clientes)) {
     foreach ($clientes as $cliente) {
         $this->table->add_row(
                 $cliente['id'], 
-                $cliente['created'],
                 $cliente['razonSocial'], 
                 anchor(
                         'Cliente/editar/'. $cliente['id'] , 
