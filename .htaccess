@@ -4,8 +4,8 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 php_value upload_max_filesize 900M
 php_value post_max_size 900M
-php_value max_execution_time 9000
-php_value max_input_time 9000
+php_value max_execution_time 900
+php_value max_input_time 900
 
 php_value output_buffering off
 
