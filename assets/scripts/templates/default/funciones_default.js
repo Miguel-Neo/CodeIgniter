@@ -35,5 +35,38 @@ $('.menu_con_efecto_scroll').click(function () {
 
 });
 
+function upload_Archivo(){
+
+
+        
+        var formData = new FormData($("#formulario_archivos_proyecto")[0]);
+        var message = ""; 
+        //hacemos la petición ajax  
+        $.ajax({
+            url: 'do_upload', 
+            type: 'POST',
+            // Form data
+            //datos del formulario
+            data: formData,
+            //necesario para subir archivos via ajax
+            cache: false,
+            contentType: false,
+            processData: false,
+            //mientras enviamos el archivo
+            beforeSend: function(){
+                
+
+            },
+            //una vez finalizado correctamente
+            success: function(data){
+                console.log(data);
+                
+            },
+            //si ha ocurrido un error
+            error: function(){
+            }
+        });
+  
+}
 
 /*  ./SUAVIZAR LA TRANSICIÓN QUE SE DA MEDIANTE LAS ANCLAS DE LA BARRA DE MENU  */
