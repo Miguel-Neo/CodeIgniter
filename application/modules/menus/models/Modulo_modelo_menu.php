@@ -58,9 +58,9 @@ class Modulo_modelo_menu extends CI_Model {
                 'title'  => 'Clientes', 
                 'link'   => 'Cliente'
             ],[
-                'id' => 'services',
-                'title'  => 'services', 
-                'link'   => 'index.php/about'
+                'id' => 'File',
+                'title'  => 'File', 
+                'link'   => 'File'
             ],
             [
                 'id' => 'services',

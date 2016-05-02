@@ -30,6 +30,7 @@ $lang['theme_enabled'] = 'Habilitado';
 $lang['theme_denied'] = 'Denegado';
 $lang['theme_unknown'] = 'Ignorar';
 $lang['theme_inherited'] = 'Heredado';
+$lang['theme_contact'] = 'Contacto';
 
 $lang['theme_confirm_delete'] = '¿Está seguro de que desea eliminar permanentemente el elemento?';
 
@@ -42,4 +43,6 @@ $lang['theme_model_role_edit_success'] = 'Cambio realizado satisfactoriamente.';
 
 $lang['theme_cliente_razon_social'] = 'Razón Social';
 $lang['theme_cliente_razon_direccion'] = 'Direccion';
+
+$lang['theme_contacto_apellidos'] = 'Apellidos';
 

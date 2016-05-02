@@ -6,18 +6,17 @@ class Model_Cliente extends CI_Model {
 
     private $tables = [
         'clientes' => 'crm_cliente',
-        'detallesCliente'=>'crm_detallesCliente'
+        'detallesCliente' => 'crm_detallesCliente',
+        'cliente_contacto'=>'crm_cliente_contacto',
+        'detallesContacto'=>'crm_detallesContacto'
     ];
 
     public function __construct() {
         parent::__construct();
-        
     }
-    
 
-/*****************************************************************************/    
-    
-    
+    /*     * ************************************************************************** */
+
     /**
      * Obtiene todos los Clientes
      * @return Un Array con los registros en tipo Array
@@ -25,113 +24,141 @@ class Model_Cliente extends CI_Model {
     public function getClientes() {
         $clientes = $this->db->get($this->tables['clientes'])->result_array();
         for ($i = 0; $i < count($clientes); $i ++) {
-            $clientes[$i]['detalles']=
-                    $this->db->get_where(
-                            $this->tables['detallesCliente'], 
-                            ['idCliente'=>$clientes[$i]['id']])->result_array();
+            $clientes[$i]['detalles'] = $this->db->get_where(
+                            $this->tables['detallesCliente'], ['idCliente' => $clientes[$i]['id']])->result_array();
         }
         return $clientes;
     }
-    public function getCliente($id){
+
+    public function getCliente($id) {
         $cliente = $this->db->get_where(
-                $this->tables['clientes'],
-                ['id'=>$id]
+                        $this->tables['clientes'], ['id' => $id]
                 )->row_array();
-        $cliente['detalles'] = 
-                $this->db->get_where(
-                            $this->tables['detallesCliente'], 
-                            ['idCliente'=>$id])->result_array();
+        $cliente['detalles'] = $this->db->get_where(
+                        $this->tables['detallesCliente'], ['idCliente' => $id])->result_array();
         return $cliente;
     }
-    public function getIDCliente($razonSocial){
+
+    public function getIDCliente($razonSocial) {
         $where['razonSocial'] = $razonSocial;
         return $this->db->get_where($this->tables['clientes'], $where)->row()->id;
     }
-    private function _insertinfo($idCliente,$atributo,$valor){
+
+    private function _insertinfo($idCliente, $atributo, $valor) {
         $this->load->helper('date');
         date_default_timezone_set('America/Mexico_City');
-        
-        $this->db->replace($this->tables['detallesCliente'],
-        [
-            'idcliente'=>$idCliente,
-            'atributo'=>$atributo,
-            'valor'=>$valor,
-            'created'=>$this->user->id,
-            'created_at'=>unix_to_human(time(), TRUE, 'eu'),
-            'modified'=>$this->user->id,
-            'modified_at'=>unix_to_human(time(), TRUE, 'eu'),
+
+        $this->db->replace($this->tables['detallesCliente'], [
+            'idcliente' => $idCliente,
+            'atributo' => $atributo,
+            'valor' => $valor,
+            'created' => $this->user->id,
+            'created_at' => unix_to_human(time(), TRUE, 'eu'),
+            'modified' => $this->user->id,
+            'modified_at' => unix_to_human(time(), TRUE, 'eu'),
         ]);
     }
-    public function updateinsertinfo($idCliente,$atributo,$valor){
+
+    public function updateinsertinfo($idCliente, $atributo, $valor) {
         $this->load->helper('date');
         date_default_timezone_set('America/Mexico_City');
-        
+
         $set = array(
-            'valor'=>$valor,
-            'modified'=>$this->user->id,
-            'modified_at'=>unix_to_human(time(), TRUE, 'eu'),
+            'valor' => $valor,
+            'modified' => $this->user->id,
+            'modified_at' => unix_to_human(time(), TRUE, 'eu'),
         );
         $where = array(
-            'idcliente '=>$idCliente,
-            'atributo'=>$atributo
+            'idcliente ' => $idCliente,
+            'atributo' => $atributo
         );
         $this->db->update(
-                $this->tables['detallesCliente'],
-                $set,
-                $where
-                );
-        
-        
+                $this->tables['detallesCliente'], $set, $where
+        );
     }
-    public function insert($razonSocial,$info){
+
+    public function insert($razonSocial, $info) {
         $where['razonSocial'] = $razonSocial;
         $existe = $this->db->get_where($this->tables['clientes'], $where)->row();
-       
+
         if (!$existe) {
             $this->load->helper('date');
             date_default_timezone_set('America/Mexico_City');
             $now = time();
-            
-            
+
+
             $this->db->trans_start();
-            
+
             $this->db->insert(
-                    $this->tables['clientes'],
-                    [
-                        'razonSocial'=>$razonSocial, 
-                        'estadoActivoInactivo'=>1,
-                        'created'=>$this->user->id,
-                        'created_at'=>unix_to_human($now, TRUE, 'eu'), // Es un formato Europeo 24 horas y con seconds # Guarda fecha de creacion                        
-                        'modified'=>$this->user->id,
-                        'modified_at'=>unix_to_human($now, TRUE, 'eu')
+                    $this->tables['clientes'], [
+                'razonSocial' => $razonSocial,
+                'estadoActivoInactivo' => 1,
+                'created' => $this->user->id,
+                'created_at' => unix_to_human($now, TRUE, 'eu'), // Es un formato Europeo 24 horas y con seconds # Guarda fecha de creacion                        
+                'modified' => $this->user->id,
+                'modified_at' => unix_to_human($now, TRUE, 'eu')
                     ]
-                    );
+            );
             $IDEmpresa = $this->getIDCliente($razonSocial);
             foreach ($info as $key => $valor) {
-                $this->_insertinfo($IDEmpresa,$key,$valor);
+                $this->_insertinfo($IDEmpresa, $key, $valor);
             }
-            
+
             $this->db->trans_complete();
-            
-            if ($this->db->trans_status() === FALSE)
-            {
+
+            if ($this->db->trans_status() === FALSE) {
                 return false;
-                    // generate an error... or use the log_message() function to log your error
+                // generate an error... or use the log_message() function to log your error
             }
             return true;
         }
         return false;
     }
-    
-    public function delete($id){
-        $this->db->delete($this->tables['detallesCliente'],array('idCliente'=>$id));
-        $this->db->delete($this->tables['clientes'],array('id'=>$id));
+
+    public function delete($id) {
+        $this->db->delete($this->tables['detallesCliente'], array('idCliente' => $id));
+        $this->db->delete($this->tables['cliente_contacto'], array('idcliente' => $id));
+        $this->db->delete($this->tables['clientes'], array('id' => $id));
     }
-    
-    public function update($cliente,$info){
-        
+
+    public function update($cliente, $info) {
         
     }
-    
-    
+
+    public function getClienteContactos($idCliente) {
+        
+        $idsContacto = $this->_get_ids_contactos($idCliente);
+        
+        if(count($idsContacto)>0){
+            $contactos = $this->db
+                ->from('crm_contacto')
+                ->select('*')
+                ->where_in('id', $idsContacto ) # WHERE id IN (1,2,3)
+                ->get()->result_array();
+
+            for ($i = 0; $i < count($contactos); $i ++) {
+                $contactos[$i]['detalles'] = $this->db->get_where(
+                                $this->tables['detallesContacto'], ['idContacto' => $contactos[$i]['id']])->result_array();
+            }
+
+            return $contactos;
+        }
+    }
+
+    private function _get_ids_contactos($idCliente) {
+        $ids = [];
+        
+            $perms = $this->db
+                    ->select('*')
+                    ->get_where($this->tables['cliente_contacto'], ['idcliente' => $idCliente])
+                    ->result_array();
+            
+            $ids = array_map(function ($item) {
+                return $item['idcontacto']; # RETORNA EL VALOR DE CADA REGISTRO
+            }, $perms);
+            array_filter($perms); # ELIMINA LOS ELEMENTOS VACIOS EN CASO DE QUE EXISTA ALGUNO
+        
+        return $ids;
+    }
+
 }

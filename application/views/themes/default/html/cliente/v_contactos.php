@@ -6,7 +6,7 @@
  * 
  * @param type $servicios Es un array con todos los registros de los servicios
  */
-if (isset($clientes)) {
+if (isset($contactos)) {
     $this->load->library('table');
     $template = array(
         'table_open'            => '<table border="1" cellpadding="4" cellspacing="0">',
@@ -20,27 +20,24 @@ if (isset($clientes)) {
             dictionary('theme_edit'),
             dictionary('theme_delete')
             );
-    foreach ($clientes as $cliente) {
+    foreach ($contactos as $contacto) {
         $this->table->add_row(
-                $cliente['id'], 
-                $cliente['razonSocial'], 
+                $contacto['id'], 
+                $contacto['nombre'], 
+                $contacto['apellidos'], 
                 anchor(
-                        'Cliente/editar/'. $cliente['id'] , 
+                        'Contacto/editar/'. $contacto['id'] , 
                         dictionary('theme_edit')
                         ),
                 anchor(
-                        'Cliente/eliminar/'. $cliente['id'] , 
+                        'Contacto/eliminar/'. $contacto['id'].'/'.$idCliente , 
                         dictionary('theme_delete'),
                         array('onclick' => 'return confirm_delete();')
-                        ),
-                anchor(
-                        'Cliente/contactos/'. $cliente['id'] , 
-                        dictionary('theme_contact')
                         )
                 );
         
     }
     echo $this->table->generate();
 }
-echo anchor('Cliente/nuevo' , dictionary('theme_txt_add_element'));
+echo anchor('Contacto/nuevo/'.$idCliente , dictionary('theme_txt_add_element'));
 ?>

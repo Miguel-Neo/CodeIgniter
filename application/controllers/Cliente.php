@@ -36,6 +36,12 @@ class Cliente extends MY_Controller {
         $this->Model_Cliente->delete($ID);
         redirect('Cliente');
     }
+    public function contactos($idCliente){
+        $contactos = $this->Model_Cliente->getClienteContactos($idCliente);
+        $this->template->set('contactos',$contactos);
+        $this->template->set('idCliente',$idCliente);
+        $this->template->render('cliente/v_contactos');
+    }
     private function _validarCliente(){
         
         if($this->input->post('nuevo_cliente') == 1){

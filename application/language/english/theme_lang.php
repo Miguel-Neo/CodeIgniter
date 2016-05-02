@@ -30,6 +30,7 @@ $lang['theme_enabled'] = 'Enabled';
 $lang['theme_denied'] = 'Denied';
 $lang['theme_unknown'] = 'Unknown';
 $lang['theme_inherited'] = 'Inherited';
+$lang['theme_contact'] = 'Contact';
 
 $lang['theme_confirm_delete'] = 'Are you sure you want to permanently delete the item?';
 
@@ -42,3 +43,5 @@ $lang['theme_model_role_edit_success'] = 'Change completed successfully.';
 
 $lang['theme_cliente_razon_social'] = 'Business name';
 $lang['theme_cliente_razon_direccion'] = 'Address';
+
+$lang['theme_contacto_apellidos'] = 'surnames';
