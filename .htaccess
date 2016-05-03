@@ -2,11 +2,12 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-php_value upload_max_filesize 900M
-php_value post_max_size 900M
-php_value max_execution_time 900
-php_value max_input_time 900
-
-php_value output_buffering off
+#Las 5 lineas siguientes son para poder subir archivos grandes al servidor 
+#Para el servidor de neo no es requerida esta configuracion ya esta por defecto
+#php_value upload_max_filesize 900M
+#php_value post_max_size 900M
+#php_value max_execution_time 900
+#php_value max_input_time 900
+#php_value output_buffering off
 
 RewriteRule ^(.*)$ index.php/$1 [L]
