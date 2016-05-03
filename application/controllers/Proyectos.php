@@ -39,6 +39,12 @@ class Proyectos extends MY_Controller {
     public function detalles($id){
         $this->load->model('Model_Proyectos');
         $proyecto = $this->Model_Proyectos->get($id);
+        
+        if($this->user->has_permission('desarrollador')){
+            $proyecto['desarrollador']='desarrollador';
+        }
+        
+        
         $this->template->set('proyecto',$proyecto);
         $this->template->render('proyectos/detalles');
     }
