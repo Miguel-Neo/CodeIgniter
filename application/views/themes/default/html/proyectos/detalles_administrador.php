@@ -1,0 +1,2 @@
+
+Vista detalles del administrador

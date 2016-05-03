@@ -40,13 +40,19 @@ class Proyectos extends MY_Controller {
         $this->load->model('Model_Proyectos');
         $proyecto = $this->Model_Proyectos->get($id);
         
-        if($this->user->has_permission('desarrollador')){
-            $proyecto['desarrollador']='desarrollador';
+        if($this->user->has_permission('admin')){
+            $this->template->render('proyectos/detalles_administrador');
+        }
+        if($this->user->has_permission($id.'_admin')){
+            $this->template->render('proyectos/detalles_administrador');
+        }
+        if($this->user->has_permission($id.'_desarrollador')){
+            $this->template->render('proyectos/detalles_desarrollador');
         }
         
         
         $this->template->set('proyecto',$proyecto);
-        $this->template->render('proyectos/detalles');
+        $this->template->render('proyectos/detalles_publico');
     }
     private function _validar_nuevo(){
         if($this->input->post('nuevo_proyecto') == 1){
