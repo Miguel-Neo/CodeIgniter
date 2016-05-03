@@ -170,15 +170,18 @@ class User
         	# si existen errores retorna false 
             return FALSE;
         }
-        
-        $this->CI->load->library('encrypt');#para enciptar las contraseñas
-        #Esta libreria es MY_Encrypt.php
-        
-        # peticion de un usuario
-        $row = $this->_row(['user' => $user, 'password' => $this->CI->encrypt->password($password, $hash)]);
+       
+        $row = null;
+        $query = $this->CI->db->query("SELECT * FROM $this->table WHERE user = '$user'")->result();
+        foreach ($query as $fila)
+        {
+            if (password_verify($password, $fila->password)) {
+                $row = $fila;
+            }
+        }
         
         # Si no hay usuario o no esta activado o avilitado genera un mensaje de error
-        if(sizeof($row) == 0 || $row->active != 1 || $row->status != 1)
+        if($row == null || sizeof($row) == 0 || $row->active != 1 || $row->status != 1)
         {
             $this->errors[] = $this->CI->lang->line('user_error_wrong_credentials');
             return FALSE;

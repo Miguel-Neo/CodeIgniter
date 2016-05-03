@@ -175,14 +175,14 @@ ORDER BY created_at ASC");
         $existe = $this->db->get_where($this->tables['users'], $where)->row();
         if (!$existe) {
             $this->load->helper('date');
-            $this->load->library('encrypt');
             date_default_timezone_set('America/Mexico_City');
             $now = time();
+            
             $this->db->insert($this->tables['users'], [
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'user' => $user['user'],
-                'password' => $this->encrypt->password($user['password']),
+                'password' => password_hash($user['password'], PASSWORD_DEFAULT),
                 'role' => $user['role'],
                 'status' => '1',
                 'active' => '1',
