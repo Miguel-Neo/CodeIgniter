@@ -39,9 +39,9 @@ class Model_Cliente extends CI_Model {
         return $cliente;
     }
 
-    public function getIDCliente($razonSocial) {
+    public function getClientexnombre($razonSocial) {
         $where['razonSocial'] = $razonSocial;
-        return $this->db->get_where($this->tables['clientes'], $where)->row()->id;
+        return $this->db->get_where($this->tables['clientes'], $where)->row();
     }
 
     private function _insertinfo($idCliente, $atributo, $valor) {
@@ -99,7 +99,7 @@ class Model_Cliente extends CI_Model {
                 'modified_at' => unix_to_human($now, TRUE, 'eu')
                     ]
             );
-            $IDEmpresa = $this->getIDCliente($razonSocial);
+            $IDEmpresa = $this->getClientexnombre($razonSocial)->id;
             foreach ($info as $key => $valor) {
                 $this->_insertinfo($IDEmpresa, $key, $valor);
             }

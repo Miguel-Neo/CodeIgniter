@@ -61,7 +61,13 @@ class Modulo_modelo_menu extends CI_Model {
                 'id' => 'File',
                 'title'  => 'File', 
                 'link'   => 'File'
+            ],[
+                'id' => 'Proyectos',
+                'title'  => 'Proyectos', 
+                'link'   => 'Proyectos'
             ],
+            
+            
             [
                 'id' => 'services',
                 'title'  => 'services', 

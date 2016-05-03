@@ -24,9 +24,8 @@ class File extends MY_Controller {
         $this->load->library('upload', $config);
 
         if (!$this->upload->do_upload('userfile')) {
-            $error = array('error' => $this->upload->display_errors());
-
-            $this->template->set('error', $error);
+            $this->template->add_message(['error' => $this->upload->display_errors()]);
+            
             $this->template->render('file/subir');
         } else {
             $data = $this->upload->data();
