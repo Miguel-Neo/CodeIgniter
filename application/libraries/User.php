@@ -119,6 +119,9 @@ class User
     */
     public function has_permission($name)
     {
+        if($this->acl->has_permissions('root')){
+            return true;
+        }
         return $this->acl->has_permissions($name);
     }
     /**
