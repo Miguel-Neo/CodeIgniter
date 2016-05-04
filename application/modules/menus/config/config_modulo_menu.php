@@ -8,6 +8,6 @@ $config['config_module']= [
 	],
 	'styles'  =>[
 		['type'=>'lib','value'=>'bootstrap_3.3.6/css/bootstrap.min'],
-		['type'=>'modules','value'=>'menus/menu_multiples_niveles']
+		['type'=>'modules','value'=>'menus/styles/menu_multiples_niveles']
 	]
 ];

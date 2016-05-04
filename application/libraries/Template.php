@@ -318,7 +318,7 @@ class Template {
                         $src .= 'views/' . $js['value'] . '.js';
                         break;
                     case 'modules':
-                        $src .= 'modules/' . $js['value'] . '.js';
+                        $src = base_url() .'assets/modules/' . $js['value'] . '.js';
                         break;
                     case 'url':
                         $src = $js['values'];
@@ -358,7 +358,7 @@ class Template {
                         $href .= 'views/' . $css['value'] . '.css';
                         break;
                     case 'modules':
-                        $href .= 'modules/' . $css['value'] . '.css';
+                        $href = base_url() . 'assets/modules/' . $css['value'] . '.css';
                         break;
                     case 'url':
                         $href = $css['value'];
