@@ -5,7 +5,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Model_Proyectos extends CI_Model {
 
     private $tables = [
-        'proyectos' => 'crm_proyecto'
+        'proyectos' => 'crm_proyecto',
+        'ptr_user'  => 'crm_proyecto_users',
+        'users'     => 'acl_users'
     ];
 
     public function __construct() {
@@ -40,40 +42,36 @@ class Model_Proyectos extends CI_Model {
     public function get($id){
         return $this->db->get_where($this->tables['proyectos'],['id'=>$id])->row_array();
     }
-    
-    /**
-     * Obtiene todos los servicios
-     * @return Un Array con los registros en tipo Array
-     */
-    public function getServicios() {
-        return $this->db->get($this->tables['servicios'])->result_array();
-    }
-    /**
-     * Obtiene un registro buscado por su ID 
-     * @param type $id
-     * @return type
-     */
-    public function getServicio($id){
-        $this->db->where(['id' => $id]);
-        return $this->db->get($this->tables['servicios'])->row_array();
-    }
-    public function delete($id){
-        $this->db->delete($this->tables['servicios'],array('id'=>$id));
-    }
-    
-    public function update($servicio){
-        
-        $set = array(
-            'nombre'=>$servicio['nombre'],
-            'descripcion'=>$servicio['descripcion']
-        );
-        $where = 'id ='.$servicio['id'];
-        $this->db->update(
-                $this->tables['servicios'],
-                $set,
-                $where
+    public function getuser($idProyecto){
+        $this->db->select(
+                  'p.idProyecto up_idProyecto,'
+                . 'p.idUsuario  up_idUsuario,'
+                . 'p.rol up_rol,'
+                . 'p.created up_created,'
+                . 'p.created_at up_created_at,'
+                . 'p.modified up_modified,'
+                . 'p.modified_at up_modified_at,'
+                . 'u.id u_id,'
+                . 'u.name u_name,'
+                . 'u.email u_email,'
+                . 'u.user u_user,'
+                . 'u.password u_password,'
+                . 'u.role u_role,'
+                . 'u.active u_active,'
+                . 'u.last_login u_last_login,'
+                . 'u.created u_created,'
+                . 'u.created_at u_created_at,'
+                . 'u.modified u_modified,'
+                . 'u.modified_at u_modified_at'
+                
                 );
+        $this->db->from($this->tables['ptr_user']." p");
+        $this->db->join($this->tables['users']." u", 'p.idUsuario = u.id');
+        $this->db->where('p.idProyecto',$idProyecto);
+        $this->db->where('u.active !=',0);
+        
+        $query = $this->db->get()->result_array();
+        
+        return $query;
     }
-    
-    
 }

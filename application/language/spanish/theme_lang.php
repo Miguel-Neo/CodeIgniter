@@ -31,6 +31,7 @@ $lang['theme_denied'] = 'Denegado';
 $lang['theme_unknown'] = 'Ignorar';
 $lang['theme_inherited'] = 'Heredado';
 $lang['theme_contact'] = 'Contacto';
+$lang['theme_not_authorized'] = 'No autorizado';
 
 $lang['theme_confirm_delete'] = '¿Está seguro de que desea eliminar permanentemente el elemento?';
 
