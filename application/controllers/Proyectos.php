@@ -48,6 +48,7 @@ class Proyectos extends MY_Controller {
     }
 
     public function detalles($id) {
+        $this->load->model('Model_Cliente');
         $proyecto = $this->Model_Proyectos->get($id);
 
         $this->template->set('proyecto', $proyecto);
@@ -56,6 +57,7 @@ class Proyectos extends MY_Controller {
 
         if ($this->user->has_permission('administrador') || $this->user->has_permission($id . '_administrador')) {
             $this->template->set('idProyecto', $id);
+            $this->template->set('cliente',$this->Model_Cliente->getCliente($proyecto['idCliente']));
             $this->template->set('users', $this->Model_Proyectos->getuser($id));
             $this->template->render('proyectos/detalles_administrador');
             return NULL;
