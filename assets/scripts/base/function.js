@@ -1,7 +1,7 @@
 /**
  * Cambiara el idioma haciendo una peticion al controlador Language
  * 
- * Es requerido que el template tenga <body data-baseurl="<?php echo base_url(); ?>">
+ * Es requerido que el template tenga <body data-baseurl=base_url();">
  * @param {type} lenguage Es el idioma selecionado
  * @returns {undefined} Solo actualiza la pantalla
  */

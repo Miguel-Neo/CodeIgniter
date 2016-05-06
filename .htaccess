@@ -1,13 +1,30 @@
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+
 
 #Las 5 lineas siguientes son para poder subir archivos grandes al servidor 
 #Para el servidor de neo no es requerida esta configuracion ya esta por defecto
+########################################
 #php_value upload_max_filesize 900M
 #php_value post_max_size 900M
 #php_value max_execution_time 900
 #php_value max_input_time 900
 #php_value output_buffering off
+########################################
 
+########################################
+# permitir que los archivos .js puedan ejecutar codigo php
+########################################
+AddType application/x-httpd-php .js
+AddHandler x-httpd-php5 .js
+
+<FilesMatch ".(js|php)$">
+SetHandler application/x-httpd-php
+</FilesMatch>
+########################################
+
+#Para enviar todas las rutas al index 
+########################################
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L]
+########################################

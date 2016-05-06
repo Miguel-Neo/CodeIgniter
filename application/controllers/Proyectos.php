@@ -44,6 +44,7 @@ class Proyectos extends MY_Controller {
 
         $this->template->set('servicios', $servicios);
         $this->template->set('clientes', $clientes);
+        $this->template->set('hola', "Hola mundo cruel");
         $this->template->render('proyectos/nuevo');
     }
 
