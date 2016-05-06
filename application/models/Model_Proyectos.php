@@ -25,7 +25,7 @@ class Model_Proyectos extends CI_Model {
                     'nombre'       => $proyecto['titulo'],
                     'descripcion'  => $proyecto['descripcion'],
                     'idServicio'   => $proyecto['servicio'],
-                    'idCliente'    => $proyecto['cliente'],
+                    'idCliente'    => explode("_",$proyecto['cliente'])[0],
                     'estado'       => 1,
                     'fechaInicio'  => $proyecto['fecha_de_inicio'],
                     'fechaEntrega' => $proyecto['fecha_de_entrega'],

@@ -15,7 +15,6 @@ class Proyectos extends MY_Controller {
         $this->template->set('proyectos', $proyectos);
         $this->template->render('proyectos/proyectos');
     }
-
     public function nuevo() {
         if ($this->_validar_nuevo()) {
             $proyecto = $this->input->post();
@@ -31,8 +30,16 @@ class Proyectos extends MY_Controller {
         foreach ($this->Model_Servicios->getServicios() as $servicio) {
             $servicios[$servicio['id']] = $servicio['nombre'];
         }
-        foreach ($this->Model_Cliente->getClientes() as $cliente) {
+        /*foreach ($this->Model_Cliente->getClientes() as $cliente) {
             $clientes[$cliente['id']] = $cliente['razonSocial'];
+        }//*/
+        foreach ($this->Model_Cliente->getClientes() as $cliente){
+            $contactos = $this->Model_Cliente->getClienteContactos($cliente['id']);
+            foreach ($contactos as $contacto){
+                $clientes['Cliente: '.$cliente['razonSocial']]=[
+                    $cliente['id']."_".$contacto['id']=>'contacto: '.$contacto['nombre']
+                ];
+            }
         }
 
         $this->template->set('servicios', $servicios);
@@ -63,11 +70,7 @@ class Proyectos extends MY_Controller {
 
     public function nuevo_desarrollador($idProyecto = null) {
         if($this->_validar_nuevo_desarrollador()){
-            echo '<pre>';
-            print_r($this->input->post());
-            exit;
-            
-            redirect('Proyectos/detalles/'.$this->input->post('proyecto'));
+            $this->_inserta_nuevo_desarrollador();
         }
 
         if ($this->user->has_permission('administrador') || $this->user->has_permission($idProyecto . '_administrador') || $this->user->id == $this->Model_Proyectos->get($idProyecto)['created'])
@@ -83,9 +86,14 @@ class Proyectos extends MY_Controller {
                 'desarrollador' => 'Desarrollador',
                 'administrador' => 'Administrador'
             ];
+            $hidden = array(
+                'nuevo_dearrollador' => 1,
+                'proyecto'=>$idProyecto
+            );
             
             $this->template->set('idProyecto',$idProyecto);
             $this->template->set('rol', $rol);
+            $this->template->set('hidden', $hidden);
             $this->template->set('usuarios', $usuarios);
             $this->template->render('proyectos/nuevo_desarrollador');
 
@@ -107,6 +115,32 @@ class Proyectos extends MY_Controller {
             return true;
         }
         return false;
+    }
+    private function _inserta_nuevo_desarrollador(){
+        $this->load->model('acl/Model_Permissions');
+        $this->load->model('Model_Proyectos_User');
+        $this->load->model('acl/Model_Users');
+        
+         
+        $permiso = $this->Model_Permissions->getPermisoname($this->input->post('proyecto').'_'.$this->input->post('Rol'));
+        #cargar permiso
+        if(!$permiso){
+            $newPresmission = [
+                'title'=>'Presmiso para desarrollador de proyecto',
+                'name'=> $this->input->post('proyecto').'_'.$this->input->post('Rol')
+            ];
+            $this->Model_Permissions->insertpermission($newPresmission);
+            $permiso = $this->Model_Permissions->getPermisoname($this->input->post('proyecto').'_'.$this->input->post('Rol'));
+        
+        }
+        #insertar usuario al grupo de trabajo
+        $this->Model_Proyectos_User->insert($this->input->post());
+        
+        #le asigno el permiso al usuario,
+        $this->Model_Users->editarPermiso($this->input->post('user'), $permiso['id'], 1);
+       
+            
+        redirect('Proyectos/detalles/'.$this->input->post('proyecto'));
     }
 
 }

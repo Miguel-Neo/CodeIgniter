@@ -156,7 +156,13 @@ ORDER BY created_at ASC");
                 "user = $usuarioID and 	permission = $permisoID"
         );
     }
-
+    
+    /**
+     * 
+     * @param type $usuarioID
+     * @param type $permisoID
+     * @param type $valor         1 = habilitado 0 = desabilitado
+     */
     public function editarPermiso($usuarioID, $permisoID, $valor) {
         $this->db->query(
                 "replace into " . $this->tables['user_permissions'] . " set " .

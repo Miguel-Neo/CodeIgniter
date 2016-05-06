@@ -1,11 +1,5 @@
 <?php
 $this->load->helper('form');
-
-$hidden = array(
-    'nuevo_dearrollador' => 1,
-    'proyecto'=>$idProyecto
-    );
-
 ?>
 <?= form_open('Proyectos/nuevo_desarrollador','',$hidden)?>
 

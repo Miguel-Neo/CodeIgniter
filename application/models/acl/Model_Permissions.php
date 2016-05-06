@@ -28,6 +28,10 @@ class Model_Permissions extends CI_Model {
         }
         return $this->db->get($this->tables['permissions'])->result();
     }
+    public function getPermisoname($name){
+        $row = $this->db->get_where($this->tables['permissions'],['name'=>$name])->row_array();
+        return  $row;
+    }
     public function editPermissions($permission){
         $id = $permission['id'];
         $title = $permission['title'];
@@ -37,6 +41,10 @@ class Model_Permissions extends CI_Model {
                 "id = $id , title = '$title', name ='$name'"
         );
     }
+    /**
+     * 
+     * @param type $permission array asociativo 
+     */
     public function insertpermission($permission){
         $this->db->insert($this->tables['permissions'],[
             'title'=>$permission['title'],
