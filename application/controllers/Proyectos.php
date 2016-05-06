@@ -128,7 +128,7 @@ class Proyectos extends MY_Controller {
         #cargar permiso
         if(!$permiso){
             $newPresmission = [
-                'title'=>'Presmiso para desarrollador de proyecto',
+                'title'=>$this->input->post('Rol').' de proyecto',
                 'name'=> $this->input->post('proyecto').'_'.$this->input->post('Rol')
             ];
             $this->Model_Permissions->insertpermission($newPresmission);

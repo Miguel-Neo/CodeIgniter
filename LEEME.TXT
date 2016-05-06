@@ -31,3 +31,9 @@ acl
 user
 
 https://forums.cpanel.net/threads/php-warning-php-startup-unable-to-load-dynamic-library-no-debug-non-zts.207682/
+
+
+
+
+proyecto publico dejar mensaje y ver status
+al crear proyecto select de clientes y select de contacto
