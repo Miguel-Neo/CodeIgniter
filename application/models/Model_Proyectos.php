@@ -17,24 +17,31 @@ class Model_Proyectos extends CI_Model {
 
 /*****************************************************************************/    
     public function insert($proyecto){
-        $this->load->helper('date');
-        date_default_timezone_set('America/Mexico_City');
-        $this->db->insert(
-                $this->tables['proyectos'],
-                [
-                    'nombre'       => $proyecto['titulo'],
-                    'descripcion'  => $proyecto['descripcion'],
-                    'idServicio'   => $proyecto['servicio'],
-                    'idCliente'    => explode("_",$proyecto['cliente'])[0],
-                    'estado'       => 1,
-                    'fechaInicio'  => $proyecto['fecha_de_inicio'],
-                    'fechaEntrega' => $proyecto['fecha_de_entrega'],
-                    'created'      => $this->user->id,
-                    'created_at'   => unix_to_human(time(), TRUE, 'eu'),
-                    'modified'     => $this->user->id,
-                    'modified_at'  => unix_to_human(time(), TRUE, 'eu'),
-                ]
-                );
+        $where['nombre'] = $proyecto['titulo'];
+        $existe = $this->db->get_where($this->tables['proyectos'], $where)->row();
+        if (!$existe) {
+        
+            $this->load->helper('date');
+            date_default_timezone_set('America/Mexico_City');
+            $this->db->insert(
+                    $this->tables['proyectos'],
+                    [
+                        'nombre'       => $proyecto['titulo'],
+                        'descripcion'  => $proyecto['descripcion'],
+                        'idServicio'   => $proyecto['servicio'],
+                        'idCliente'    => explode("_",$proyecto['cliente'])[0],
+                        'estado'       => 1,
+                        'fechaInicio'  => $proyecto['fecha_de_inicio'],
+                        'fechaEntrega' => $proyecto['fecha_de_entrega'],
+                        'created'      => $this->user->id,
+                        'created_at'   => unix_to_human(time(), TRUE, 'eu'),
+                        'modified'     => $this->user->id,
+                        'modified_at'  => unix_to_human(time(), TRUE, 'eu'),
+                    ]
+                    );
+            return true;
+        }
+        return false;
     }
     public function getall(){
         return $this->db->get($this->tables['proyectos'])->result_array();

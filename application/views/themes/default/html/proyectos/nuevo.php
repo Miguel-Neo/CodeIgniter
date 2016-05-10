@@ -1,8 +1,7 @@
 <?php
 $this->load->helper('form');
-$hidden = array('nuevo_proyecto' => 1);
 ?>
-<?= form_open('Proyectos/nuevo','',$hidden)?>
+<?= form_open($action,'',$input_hidden)?>
 <p>
     <?= form_label('Titulo', 'titulo') ?>
     <?= form_input(['id'=>'titulo','name'=>'titulo'],set_value('titulo'))?>
@@ -19,7 +18,11 @@ $hidden = array('nuevo_proyecto' => 1);
 </p>
 <p>
     <?= form_label('Cliente', 'cliente'); ?>
-    <?= form_dropdown('cliente', $clientes,'','onchange=function()'); ?>
+    <?= form_dropdown('cliente', $clientes,$cliente_selected,['onchange'=>'get_contactos(this.value)']); ?>
+</p>
+<p>
+    <?= form_label('Contacto', 'contacto'); ?>
+    <?= form_dropdown('contacto', $contactos,'',['id'=>'contactos']); ?>
 </p>
 <p>
     <?= form_label('fecha de inicio','fecha_de_inicio')?>

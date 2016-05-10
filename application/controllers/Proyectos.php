@@ -15,11 +15,15 @@ class Proyectos extends MY_Controller {
         $this->template->set('proyectos', $proyectos);
         $this->template->render('proyectos/proyectos');
     }
-    public function nuevo() {
+    
+    public function nuevo($id_cliente = null) {
+        
         if ($this->_validar_nuevo()) {
             $proyecto = $this->input->post();
-            $this->Model_Proyectos->insert($proyecto);
-            redirect('Proyectos');
+            if($this->Model_Proyectos->insert($proyecto)){
+                redirect('Proyectos');
+            }
+            $this->template->set_flash_message(['error' => dictionary('theme_model_erro')]);   
         }
 
         $this->load->model('Model_Servicios');
@@ -27,23 +31,34 @@ class Proyectos extends MY_Controller {
 
         $servicios = [];
         $clientes = [];
+        $contactos= [];
         foreach ($this->Model_Servicios->getServicios() as $servicio) {
             $servicios[$servicio['id']] = $servicio['nombre'];
         }
-        /*foreach ($this->Model_Cliente->getClientes() as $cliente) {
+        
+        foreach ($this->Model_Cliente->getClientes() as $cliente) {
             $clientes[$cliente['id']] = $cliente['razonSocial'];
-        }//*/
-        foreach ($this->Model_Cliente->getClientes() as $cliente){
-            $contactos = $this->Model_Cliente->getClienteContactos($cliente['id']);
-            foreach ($contactos as $contacto){
-                $clientes['Cliente: '.$cliente['razonSocial']]=[
-                    $cliente['id']."_".$contacto['id']=>'contacto: '.$contacto['nombre']
-                ];
+            if($id_cliente == null)$id_cliente=$cliente['id'];
+        }
+        $contact = $this->Model_Cliente->getClienteContactos($id_cliente);
+        if(count($contact)>0){
+            foreach ($contact as $contacto){
+                $contactos[$contacto['id']]=$contacto['nombre'];
             }
         }
-
+        
+        $this->template->add_js('view','proyectos/new_proyect');
+        
+        $this->template->set('action','Proyectos/nuevo');
+        $this->template->set('input_hidden',['nuevo'=>1]);
+        
         $this->template->set('servicios', $servicios);
         $this->template->set('clientes', $clientes);
+        $this->template->set('cliente_selected', $id_cliente);
+        $this->template->set('contactos', $contactos);
+        
+        
+        
         $this->template->set('hola', "Hola mundo cruel");
         $this->template->render('proyectos/nuevo');
     }
@@ -93,7 +108,7 @@ class Proyectos extends MY_Controller {
                 'nuevo_dearrollador' => 1,
                 'proyecto'=>$idProyecto
             );
-            
+            $this->template->set('action','Proyectos/nuevo_desarrollador');
             $this->template->set('idProyecto',$idProyecto);
             $this->template->set('rol', $rol);
             $this->template->set('hidden', $hidden);
@@ -108,7 +123,7 @@ class Proyectos extends MY_Controller {
     }
 
     private function _validar_nuevo() {
-        if ($this->input->post('nuevo_proyecto') == 1) {
+        if ($this->input->post('nuevo') == 1) {
             return true;
         }
         return false;
@@ -146,4 +161,19 @@ class Proyectos extends MY_Controller {
         redirect('Proyectos/detalles/'.$this->input->post('proyecto'));
     }
 
+    
+    
+    public function ajax_get_contactos($id_Cliente){
+        $this->load->model('Model_Cliente');
+        $contactos="";
+        $contact = $this->Model_Cliente->getClienteContactos($id_Cliente);
+        if(count($contact)>0){
+            foreach ($contact as $contacto){
+                $contactos .="<option value='".$contacto['id']."'>".$contacto['nombre']."</option>"; 
+            }
+        }else{
+            $contactos ="<option value=''></option>"; 
+        }
+        echo $contactos;
+    }
 }

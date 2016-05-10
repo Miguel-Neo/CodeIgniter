@@ -1,7 +1,7 @@
 <?php
 $this->load->helper('form');
 ?>
-<?= form_open('Proyectos/nuevo_desarrollador','',$hidden)?>
+<?= form_open($action,'',$hidden)?>
 
 
 <p>

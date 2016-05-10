@@ -92,6 +92,5 @@ $db['default'] = array(
 	'compress' => FALSE,
 	'stricton' => FALSE,
 	'failover' => array(),
-	'save_queries' => TRUE,
-	'db_debug' => FALSE
+	'save_queries' => TRUE
 );
