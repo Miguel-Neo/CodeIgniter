@@ -8,10 +8,15 @@ class File extends MY_Controller {
         parent::__construct();
     }
 
-    public function index() {
-
-        $this->template->render('file/subir');
+    public function index($name = '') {
+        $this->load->helper('file');
+        $contenido = get_dir_file_info(APPPATH."../assets/".$name);
+        
+        
+        $this->template->set('contenido',$contenido);
+        $this->template->render('file/archivos');
     }
+    
 
     public function do_upload() {
         $config['upload_path'] = './assets/archivos/';
