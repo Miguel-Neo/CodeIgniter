@@ -7,7 +7,8 @@ class Model_Roles extends CI_Model {
     private $tables = [
         'roles' => 'acl_roles',
         'permissions' => 'acl_permissions',
-        'role_permissions' => 'acl_role_permissions'
+        'role_permissions' => 'acl_role_permissions',
+        'users'=>'acl_users'
     ];
 
     public function __construct() {
@@ -99,7 +100,16 @@ class Model_Roles extends CI_Model {
     }
 
     public function removeRole($id) {
-        $this->db->delete($this->tables['roles'], array('id' => $id));
+        # No podra eliminar si un usuario tiene asignado el rol
+        $where['role'] = $id;
+        $existe = $this->db->get_where($this->tables['users'], $where)->row();
+        if (!$existe) {
+            $this->db->delete($this->tables['roles'], array('id' => $id));
+            return true;
+        }
+        return false;
+        
+                
     }
 
     public function getPermissionsKey($permissionsID) {

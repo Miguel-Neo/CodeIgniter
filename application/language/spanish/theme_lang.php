@@ -33,6 +33,11 @@ $lang['theme_inherited'] = 'Heredado';
 $lang['theme_contact'] = 'Contacto';
 $lang['theme_not_authorized'] = 'No autorizado';
 
+
+$lang['theme_model_erro'] = 'Error al ejecutar la accion';
+$lang['theme_model_success'] = 'Ejecucion exitosa';
+
+
 $lang['theme_confirm_delete'] = '¿Está seguro de que desea eliminar permanentemente el elemento?';
 
 $lang['theme_error_duplicate_user'] = 'Error, Este usuario ya existe.';

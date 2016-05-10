@@ -14,33 +14,43 @@ class Roles extends MY_Controller {
     }
     public function nuevo() {
 
-        if (isset($_POST['guardar_nuevo_rol']) && $_POST['guardar_nuevo_rol'] == 1) {
-
-            if (!$this->Model_Roles->insertarRole($_POST['role'])) {
+        if ($this->input->post('nuevo') == 1) {
+            if (!$this->Model_Roles->insertarRole($this->input->post('role'))) {
                 $this->template->add_message(['error' => [dictionary('acl_error_rol_duplicate')]]);
-
-                $this->template->render('acl/rol/nuevo_rol');
             } else {
                 redirect('roles');
             }
-        } else {
-            $this->template->render('acl/rol/nuevo_rol');
         }
+        $this->template->set('action','roles/nuevo');
+        $this->template->set('input_hidden',['nuevo'=>1]);
+        $this->template->render('acl/rol/nuevo_rol');
+        
     }
-    public function editar(){
+    public function editar($idRol = null){
+        if ($idRol == null){
+            redirect('roles');
+        }
         if ($this->input->post('edit_role') == 1) {
-            $id = $this->input->post('id');
-            $name = $this->input->post('role');
-            if($this->Model_Roles->editnameRole($id, $name)){
+            if($this->Model_Roles->editnameRole($idRol, $this->input->post('role'))){
                 $this->template->set_flash_message(['success' => dictionary('theme_model_role_edit_success')]);
             }else{
                 $this->template->set_flash_message(['error' => dictionary('theme_model_role_edit_error')]);
             }
+            redirect('roles');
         }
-        redirect('roles');
+        
+        $this->template->set('role',$this->Model_Roles->getRole($idRol)->role);
+        $this->template->set('action','roles/editar/'.$idRol);
+        $this->template->set('input_hidden',['edit_role'=>1]);
+        $this->template->render('acl/rol/editar');
+        
     }
     public function eliminar($ID){
-        $this->Model_Roles->removeRole($ID);
+        if(!$this->Model_Roles->removeRole($ID)){
+            $this->template->set_flash_message(['error' => dictionary('theme_model_erro')]);         
+        }else{
+            $this->template->set_flash_message(['success' => dictionary('theme_model_success')]);
+        }    
         redirect('roles');
     }
     public function permisos($roleID){

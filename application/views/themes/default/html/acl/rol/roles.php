@@ -1,41 +1,32 @@
-
-
-<?php if (isset($roles)): ?>
-    <table>
-        <tr>
-            <th><?= dictionary('theme_id'); ?></th>
-            <th><?= dictionary('theme_role'); ?></th>
-            <th></th>
-            <th></th>
-        </tr>
-        <?php foreach ($roles as $role): ?>
-
-            <tr>
-            <form action="<?= base_url() . 'roles/editar' ?>" method="post">
-                <input type="hidden" name="edit_role" value="1" />
-                <input type="hidden" name="id" value="<?php echo $role['id']; ?>">
-                <td>
-                    <?php echo $role['id']; ?>
-                </td>
-                <td>
-                    <input type="input" name="role" value="<?php echo $role['role']; ?>"/>
-                </td>
-                <td>
-                    <input type="submit" value="<?= dictionary('theme_edit'); ?>" />
-                </td>
-            </form>
-            <td>
-                <?= anchor('roles/eliminar/'. $role['id'] , dictionary('theme_delete'));?>
+<?php
+    if (isset($roles)):
+        $this->load->library('table');
+        $this->table->set_heading(
+                dictionary('theme_id'),
+                dictionary('theme_role')
+                );
+        foreach($roles as $role){
+            $this->table->add_row(
+                    $role['id'],
+                    $role['role'],
+                    anchor('roles/editar/'.$role['id'],
+                            dictionary('theme_edit')
+                            ),
+                    anchor('roles/permisos/'. $role['id'] ,
+                            dictionary('theme_permissions')
+                            ),
                 
-            </td>
-            <td>
-                <?= anchor('roles/permisos/'. $role['id'] , dictionary('theme_permissions'));?>
+                    anchor('roles/eliminar/'. $role['id'] ,
+                            dictionary('theme_delete'),
+                            array('onclick' => 'return confirm_delete();')
+                            )
                 
-            </td>
-        </tr>
-
-    <?php endforeach; ?>
-    </table>
-<?php endif; ?>
-
-<?= anchor('roles/nuevo' , dictionary('theme_txt_add_role'));?>
+                    );
+        }
+        echo $this->table->generate();
+    endif;
+    
+    echo anchor('roles/nuevo' , 
+            dictionary('theme_txt_add_role')
+            );
+?>
