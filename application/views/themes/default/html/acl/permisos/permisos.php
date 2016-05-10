@@ -22,7 +22,11 @@
                         <input type="submit" value="<?= dictionary('theme_save'); ?>" />
                     </td>
                     <td>
-                        <?= anchor('permisos/eliminar/'.$permission->id, dictionary('theme_delete'));?>
+                        <?= anchor(
+                                'permisos/eliminar/'.$permission->id,
+                                dictionary('theme_delete'),
+                                array('onclick' => 'return confirm_delete();')
+                                );?>
                         
                     </td>
                 </tr>

@@ -1,14 +1,18 @@
+<?php 
+$this->load->helper('form');
+?>
 
-<form action="" method="post">
-    <input type="hidden" name="new_permission" value="1" />
-    
-    <label for="title"><?= dictionary('theme_description'); ?></label>
-    <input type="input" name="title" /><br />
-    
-    <label for="name"><?= dictionary('theme_permission'); ?></label>
-    <input type="input" name="name" /><br />
-    
-    <p>
-        <input type="submit" value="<?= dictionary('theme_save'); ?>" />
-    </p>
-</form>
+<?= form_open($action,'',$input_hidden); ?>
+<p>
+    <?= form_label(dictionary('theme_description'), 'title') ?>
+    <?= form_input(['id' => 'title', 'name' => 'title'], set_value('title')) ?>
+    <?= form_error('title') ?>
+</p>
+<p>
+    <?= form_label(dictionary('theme_permission'), 'name') ?>
+    <?= form_input(['id' => 'name', 'name' => 'name'], set_value('name')) ?>
+    <?= form_error('name') ?>
+</p>
+    <?= form_submit(['value' => dictionary('theme_save')]) ?>
+
+<?= form_close(); ?>

@@ -22,14 +22,21 @@ class Permisos extends MY_Controller {
         
     }
     public function nuevo(){
-        if(isset($_POST['new_permission']) && $_POST['new_permission']==1){
+        if($this->input->post('nuevo')==1){
             $perm = array(
                 'title' =>$_POST['title'],
                 'name' => $_POST['name']
             );
-            $this->Model_Permissions->insertpermission($perm);
+            if(!$this->Model_Permissions->insertpermission($perm)){
+                $this->template->set_flash_message(['error' => dictionary('theme_model_erro')]);         
+            }else{
+                $this->template->set_flash_message(['success' => dictionary('theme_model_success')]);
+            }
             redirect('permisos');
         }
+        
+        $this->template->set('action','Permisos/nuevo');
+        $this->template->set('input_hidden',['nuevo'=>1]);
         $this->template->render('acl/permisos/nuevo_permiso');
     }
     public function eliminar($IDpermission){

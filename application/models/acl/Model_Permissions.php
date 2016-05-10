@@ -46,10 +46,16 @@ class Model_Permissions extends CI_Model {
      * @param type $permission array asociativo 
      */
     public function insertpermission($permission){
-        $this->db->insert($this->tables['permissions'],[
-            'title'=>$permission['title'],
-            'name'=>$permission['name']
-        ]);
+        $where['name'] = $permission['name'];
+        $existe = $this->db->get_where($this->tables['permissions'], $where)->row();
+        if (!$existe) {
+            $this->db->insert($this->tables['permissions'],[
+                'title'=>$permission['title'],
+                'name'=>$permission['name']
+            ]);
+            return true;
+        }
+        return false;
     }
     public function eliminarpermiso($IDpermission){
         if($this->db->delete($this->tables['permissions'], array('id' => $IDpermission))){
