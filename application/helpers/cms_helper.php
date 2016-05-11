@@ -60,4 +60,12 @@ if(!function_exists('dictionary')){
     }
 }
 
+if(!function_exists('debugger')){
+    function debugger($msg){
+        echo '<pre>';
+        print_r($msg);
+        exit;
+    }
+}
+
    
