@@ -13,13 +13,14 @@ RewriteEngine On
 
 ########################################
 # permitir que los archivos .js puedan ejecutar codigo php
+# Causo conflicto en el servidor dedicado
 ########################################
-AddType application/x-httpd-php .js
-AddHandler x-httpd-php5 .js
+#AddType application/x-httpd-php .js
+#AddHandler x-httpd-php5 .js
 
-<FilesMatch ".(js|php)$">
-SetHandler application/x-httpd-php
-</FilesMatch>
+#<FilesMatch ".(js|php)$">
+#SetHandler application/x-httpd-php
+#</FilesMatch>
 ########################################
 
 #Para enviar todas las rutas al index 

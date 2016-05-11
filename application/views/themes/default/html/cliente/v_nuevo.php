@@ -40,7 +40,7 @@ $this->load->helper('form');
     <?= form_error('ext[sitio_web]') ?>
 </p>
 <p>
-   <?php //form_upload('img[img_logo]');?> 
+   <?= form_upload(['name'=>'logo']);?> 
 </p>
 <?= form_submit(['value' => dictionary('cms_general_label_button_access')]) ?>
 <?= form_close() ?>

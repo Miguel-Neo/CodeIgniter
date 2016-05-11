@@ -7,7 +7,7 @@ class Cliente extends MY_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Model_Cliente');
-        $this->load->helper(array('form', 'url'));
+        $this->load->helper(array('form', 'url','html'));
     }
 
     public function index() {
@@ -16,8 +16,11 @@ class Cliente extends MY_Controller {
         for ($i = 0; $i < count($clientes); $i++) {
             unset($clientes[$i]['detalles']);
             unset($clientes[$i]['estadoActivoInactivo']);
-
-
+            
+            $logotipo = $this->Model_Cliente->getlogo($clientes[$i]['id']);
+            $clientes[$i]['logo'] = $logotipo ? img($logotipo):"";
+           
+            
             $clientes[$i][dictionary('theme_edit')] = anchor(
                     'Cliente/editar/' . $clientes[$i]['id'], dictionary('theme_edit')
             );
@@ -35,11 +38,39 @@ class Cliente extends MY_Controller {
         $this->template->set('tab_clientes', $clientes);
         $this->template->render('cliente/v_clientes');
     }
+    private function subirLogo($razonSocial){
+        $cliente = str_replace(" ", "_", $razonSocial);
+        $cliente = str_replace(".", "_", $cliente);
+        
+        $config['upload_path'] = 'access_public/imagenes/logo/'.$cliente."/";
+        $config['allowed_types'] = 'gif|jpg|jpeg|png';
+        $config['max_size'] = 6048;
+        $config['max_width'] = 0;
+        $config['max_height'] = 0;
+        $config['remove_spaces'] = true;
+        
+        //debugger($config['upload_path']);
+        if(!is_dir($config['upload_path'])){
+            mkdir($config['upload_path'], 0777,TRUE);
+        }
+        
+        $this->load->library('upload', $config);
 
+        if ($this->upload->do_upload('logo')){
+            $data = $this->upload->data();
+            $file_name = $data['file_name'];
+            $value = $config['upload_path'].$file_name;
+            $this->Model_Cliente->insertLogotipo(
+                    $razonSocial,
+                    $value
+                    );
+        }
+    }
     public function nuevo() {
         if ($this->_validarCliente()) {
             $razonSocial = $this->input->post('here')['razon_social'];
             if ($this->Model_Cliente->insert($razonSocial, $this->input->post('ext'))) {
+                $this->subirLogo($razonSocial);
                 redirect('Cliente');
             }
             $this->template->add_message(['error' => [dictionary('theme_error_duplicate_element')]]);

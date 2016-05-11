@@ -10,6 +10,9 @@ class Model_Cliente extends CI_Model {
         'cliente_contacto'=>'crm_cliente_contacto',
         'detallesContacto'=>'crm_detallesContacto'
     ];
+    private $atributo = [
+        'logotipo'=>'logotipo'
+    ];
 
     public function __construct() {
         parent::__construct();
@@ -43,8 +46,25 @@ class Model_Cliente extends CI_Model {
         $where['razonSocial'] = $razonSocial;
         return $this->db->get_where($this->tables['clientes'], $where)->row();
     }
-
-    private function _insertinfo($idCliente, $atributo, $valor) {
+    
+    public function getlogo($idCliente){
+        $where['idCliente'] = $idCliente;
+        $where['atributo'] = $this->atributo['logotipo'];
+        
+        $logo = $this->db->get_where($this->tables['detallesCliente'], $where)->row();
+        if($logo){
+            return $logo->valor;
+        }
+        return null;
+    }
+    public function insertLogotipo($razonSocial,$value){
+        $this->insertinfo(
+                    $this->getClientexnombre($razonSocial)->id,
+                    $this->atributo['logotipo'],
+                    $value
+                    );
+    }
+    public function insertinfo($idCliente, $atributo, $valor) {
         $this->load->helper('date');
         date_default_timezone_set('America/Mexico_City');
 
@@ -101,7 +121,7 @@ class Model_Cliente extends CI_Model {
             );
             $IDEmpresa = $this->getClientexnombre($razonSocial)->id;
             foreach ($info as $key => $valor) {
-                $this->_insertinfo($IDEmpresa, $key, $valor);
+                $this->insertinfo($IDEmpresa, $key, $valor);
             }
 
             $this->db->trans_complete();
