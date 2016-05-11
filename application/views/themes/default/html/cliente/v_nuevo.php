@@ -1,14 +1,9 @@
 <?php
 $this->load->helper('form');
-$hidden = array('nuevo_cliente' => 1);
-$tipos_de_empresa = array(
-    'AAA' => 'AAA',
-    'AA' => 'AA',
-    'A' => 'A',
-    'Agencia' => 'Agencia',
-);
+
+
 ?>
-<?= form_open_multipart('', '', $hidden); ?>
+<?= form_open_multipart($action, '', $input_hidden); ?>
 <p>
     <?= form_label(dictionary('theme_cliente_razon_social'), 'razon_social') ?>
     <?= form_input(['id' => 'razon_social', 'name' => 'here[razon_social]'], set_value('here[razon_social]')) ?>

@@ -10,7 +10,36 @@ class Cliente extends MY_Controller {
     }
     
     public function index(){
-        $this->template->set('clientes',$this->Model_Cliente->getClientes());
+        $clientes = $this->Model_Cliente->getClientes();
+        
+        for ($i = 0; $i < count($clientes); $i++ ){
+            unset($clientes[$i]['detalles']);
+            unset($clientes[$i]['estadoActivoInactivo']);
+            
+            
+            $clientes[$i][dictionary('theme_edit')]=
+            anchor(
+                        'Cliente/editar/'. $clientes[$i]['id'] , 
+                        dictionary('theme_edit')
+                        );
+            $clientes[$i][dictionary('theme_delete')]=
+            anchor(
+                        'Cliente/eliminar/'. $clientes[$i]['id'] , 
+                        dictionary('theme_delete'),
+                        array('onclick' => 'return confirm_delete();')
+                        );
+            $clientes[$i]['contactos']=
+            anchor(
+                        'Cliente/contactos/'. $clientes[$i]['id'] , 
+                        dictionary('theme_contact')
+                        );
+            
+        }
+        array_unshift($clientes, ["id", "razonSocial","created","created_at"]);
+        
+        //debugger($clientes);
+        
+        $this->template->set('tab_clientes',$clientes);
         $this->template->render('cliente/v_clientes');
     }
     public function nuevo(){
@@ -21,6 +50,17 @@ class Cliente extends MY_Controller {
             }
             $this->template->add_message(['error' => [dictionary('theme_error_duplicate_element')]]);
         }
+        
+        $tipos_de_empresa = array(
+            'AAA' => 'AAA',
+            'AA' => 'AA',
+            'A' => 'A',
+            'Agencia' => 'Agencia',
+        );
+        
+        $this->template->set('action','Cliente/nuevo/');
+        $this->template->set('input_hidden',['nuevo_cliente'=>1]);
+        $this->template->set('tipos_de_empresa',$tipos_de_empresa);
         $this->template->render('cliente/v_nuevo');
         
     }
