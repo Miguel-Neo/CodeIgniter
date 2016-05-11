@@ -14,6 +14,6 @@
 
     <input type="input" name="descripcion" value="<?php echo $servicio['descripcion']; ?>"/>
 
-    <input type="submit" value="<?= dictionary('theme_edit'); ?>" />
+    <input type="submit" value="<?= dictionary('theme_save'); ?>" />
 
 </form>
