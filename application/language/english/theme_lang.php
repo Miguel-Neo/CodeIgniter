@@ -32,6 +32,7 @@ $lang['theme_unknown'] = 'Unknown';
 $lang['theme_inherited'] = 'Inherited';
 $lang['theme_contact'] = 'Contact';
 $lang['theme_not_authorized'] = 'Not authorized';
+$lang['theme_details'] = 'Details';
 
 
 $lang['theme_model_erro'] = 'Error executing the action';
