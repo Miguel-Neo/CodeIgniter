@@ -7,65 +7,92 @@ class Cliente extends MY_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Model_Cliente');
-        $this->load->helper(array('form', 'url','html'));
+        $this->load->helper(array('form', 'url', 'html'));
     }
 
     public function index() {
         $clientes = $this->Model_Cliente->getClientes();
-
+        $idCliente = null;
         for ($i = 0; $i < count($clientes); $i++) {
+            $idCliente = $clientes[$i]['id'];
+            unset($clientes[$i]['id']);
+            unset($clientes[$i]['created']);
+            unset($clientes[$i]['created_at']);
+            unset($clientes[$i]['modified']);
+            unset($clientes[$i]['modified_at']);
             unset($clientes[$i]['detalles']);
             unset($clientes[$i]['estadoActivoInactivo']);
-            
-            $logotipo = $this->Model_Cliente->getlogo($clientes[$i]['id']);
-            $clientes[$i]['logo'] = $logotipo ? img($logotipo):"";
-           
-            
+
+            $logotipo = $this->Model_Cliente->getlogo($idCliente);
+            $clientes[$i]['logo'] = $logotipo ? $logotipo : null;
+
+            $clientes[$i]['contactos'] = anchor(
+                    'Cliente/contactos/' . $idCliente, 
+                    dictionary('theme_contact'),
+                    [
+                        'class'=>'link_a_contactos'
+                    ]
+            );
+            $clientes[$i]['detalles'] = anchor(
+                    'Cliente/detalles/' . $idCliente, 
+                    dictionary('theme_details'),
+                    [
+                        'class'=>'link_a_detalles'
+                    ]
+            );
             $clientes[$i][dictionary('theme_edit')] = anchor(
-                    'Cliente/editar/' . $clientes[$i]['id'], dictionary('theme_edit')
+                    'Cliente/editar/' . $idCliente, 
+                    dictionary('theme_edit'),
+                    [
+                        'class'=>'link_a_editar'
+                    ]
             );
             $clientes[$i][dictionary('theme_delete')] = anchor(
-                    'Cliente/eliminar/' . $clientes[$i]['id'], dictionary('theme_delete'), array('onclick' => 'return confirm_delete();')
+                    'Cliente/eliminar/' . $idCliente, 
+                    dictionary('theme_delete'), 
+                    [
+                        'onclick' => 'return confirm_delete();',
+                        'class'=>'link_a_eliminar'
+                    ]
             );
-            $clientes[$i]['contactos'] = anchor(
-                    'Cliente/contactos/' . $clientes[$i]['id'], dictionary('theme_contact')
-            );
+            
         }
-        array_unshift($clientes, ["id", "razonSocial", "created", "created_at"]);
+        array_unshift($clientes, ["razonSocial", "a img", "","",""]);
 
         //debugger($clientes);
-
+        //$this->template->set('clientes',$this->Model_Cliente->getClientes());
         $this->template->set('tab_clientes', $clientes);
         $this->template->render('cliente/v_clientes');
     }
-    private function subirLogo($razonSocial){
+
+    private function subirLogo($razonSocial) {
         $cliente = str_replace(" ", "_", $razonSocial);
         $cliente = str_replace(".", "_", $cliente);
-        
-        $config['upload_path'] = 'access_public/imagenes/logo/'.$cliente."/";
+
+        $config['upload_path'] = 'access_public/imagenes/logo/' . $cliente . "/";
         $config['allowed_types'] = 'gif|jpg|jpeg|png';
         $config['max_size'] = 6048;
         $config['max_width'] = 0;
         $config['max_height'] = 0;
         $config['remove_spaces'] = true;
-        
+
         //debugger($config['upload_path']);
-        if(!is_dir($config['upload_path'])){
-            mkdir($config['upload_path'], 0777,TRUE);
+        if (!is_dir($config['upload_path'])) {
+            mkdir($config['upload_path'], 0777, TRUE);
         }
-        
+
         $this->load->library('upload', $config);
 
-        if ($this->upload->do_upload('logo')){
+        if ($this->upload->do_upload('logo')) {
             $data = $this->upload->data();
             $file_name = $data['file_name'];
-            $value = $config['upload_path'].$file_name;
+            $value = $config['upload_path'] . $file_name;
             $this->Model_Cliente->insertLogotipo(
-                    $razonSocial,
-                    $value
-                    );
+                    $razonSocial, $value
+            );
         }
     }
+
     public function nuevo() {
         if ($this->_validarCliente()) {
             $razonSocial = $this->input->post('here')['razon_social'];
