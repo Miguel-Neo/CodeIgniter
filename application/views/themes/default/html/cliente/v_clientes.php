@@ -1,7 +1,6 @@
 <?php
 /**
- * @param type $tab_clientes 
- *              Es un array con todos los registros de los clientes
+ * @param $tab_clientes : Es un array con todos los registros de los clientes
  */
 if(isset($tab_clientes)){
     $this->load->library('table');

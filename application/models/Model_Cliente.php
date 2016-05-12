@@ -11,7 +11,14 @@ class Model_Cliente extends CI_Model {
         'detallesContacto'=>'crm_detallesContacto'
     ];
     private $atributo = [
-        'logotipo'=>'logotipo'
+        'logotipo'    =>'logotipo',
+        'empresa'     =>'tipo_de_empresa',
+        'cp'          => 'cp',
+        'direccion'   => 'direccion',
+        'sitio_web'   => 'sitio_web',
+        'telefono_1'  => 'telefono_1',
+        'telefono_2'  => 'telefono_2'
+        
     ];
 
     public function __construct() {
@@ -47,9 +54,9 @@ class Model_Cliente extends CI_Model {
         return $this->db->get_where($this->tables['clientes'], $where)->row();
     }
     
-    public function getlogo($idCliente){
+    public function getAtributo($idCliente,$atributo){
         $where['idCliente'] = $idCliente;
-        $where['atributo'] = $this->atributo['logotipo'];
+        $where['atributo'] = $this->atributo[$atributo];
         
         $logo = $this->db->get_where($this->tables['detallesCliente'], $where)->row();
         if($logo){
@@ -79,7 +86,7 @@ class Model_Cliente extends CI_Model {
         ]);
     }
 
-    public function updateinsertinfo($idCliente, $atributo, $valor) {
+    public function updateAtributo($idCliente, $atributo, $valor) {
         $this->load->helper('date');
         date_default_timezone_set('America/Mexico_City');
 
@@ -141,8 +148,17 @@ class Model_Cliente extends CI_Model {
         $this->db->delete($this->tables['clientes'], array('id' => $id));
     }
 
-    public function update($cliente, $info) {
-        
+    public function update($id, $razonSocial) {
+        $this->load->helper('date');
+        date_default_timezone_set('America/Mexico_City');
+            
+        $data = array(
+            'razonSocial' => $razonSocial,
+            'modified'=>$this->user->id,
+            'modified_at'=>unix_to_human(time(), TRUE, 'eu')
+        );
+        $this->db->where('id', $id);
+        return $this->db->update($this->tables['clientes'], $data);
     }
 
     public function getClienteContactos($idCliente) {

@@ -3,7 +3,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Cliente extends MY_Controller {
-
+    private $tipos_de_empresa = array(
+            'AAA' => 'AAA',
+            'AA' => 'AA',
+            'A' => 'A',
+            'Agencia' => 'Agencia',
+        );
     public function __construct() {
         parent::__construct();
         $this->load->model('Model_Cliente');
@@ -23,7 +28,7 @@ class Cliente extends MY_Controller {
             unset($clientes[$i]['detalles']);
             unset($clientes[$i]['estadoActivoInactivo']);
 
-            $logotipo = $this->Model_Cliente->getlogo($idCliente);
+            $logotipo = $this->Model_Cliente->getAtributo($idCliente,'logotipo');
             $clientes[$i]['logo'] = $logotipo ? $logotipo : null;
 
             $clientes[$i]['contactos'] = anchor(
@@ -65,7 +70,7 @@ class Cliente extends MY_Controller {
         $this->template->render('cliente/v_clientes');
     }
 
-    private function subirLogo($razonSocial) {
+    private function _subirLogo($razonSocial) {
         $cliente = str_replace(" ", "_", $razonSocial);
         $cliente = str_replace(".", "_", $cliente);
 
@@ -97,32 +102,59 @@ class Cliente extends MY_Controller {
         if ($this->_validarCliente()) {
             $razonSocial = $this->input->post('here')['razon_social'];
             if ($this->Model_Cliente->insert($razonSocial, $this->input->post('ext'))) {
-                $this->subirLogo($razonSocial);
+                $this->_subirLogo($razonSocial);
                 redirect('Cliente');
             }
             $this->template->add_message(['error' => [dictionary('theme_error_duplicate_element')]]);
         }
-
-        $tipos_de_empresa = array(
-            'AAA' => 'AAA',
-            'AA' => 'AA',
-            'A' => 'A',
-            'Agencia' => 'Agencia',
-        );
-
+        
+        $default=[];
+        $default['rs'] = "";
+        $default['emp']= "";
+        $default['cp'] = "";
+        $default['dir']= "";
+        $default['t1'] = "";
+        $default['t2'] = "";
+        $default['web']= "";
+        
+        $this->template->set('default', $default);
         $this->template->set('action', 'Cliente/nuevo/');
         $this->template->set('input_hidden', ['nuevo_cliente' => 1]);
-        $this->template->set('tipos_de_empresa', $tipos_de_empresa);
+        $this->template->set('tipos_de_empresa', $this->tipos_de_empresa);
         $this->template->render('cliente/v_nuevo');
     }
 
     public function editar($ID) {
-        /*
-          $this->Model_Cliente->updateinsertinfo(5,'sitio_web','kkk');
-          redirect('Cliente');
-          // */
-        $this->template->set('cliente', $this->Model_Cliente->getCliente($ID));
-        $this->template->render('cliente/v_editar');
+        if ($this->_validarCliente()) {
+            $razonSocial = $this->input->post('here')['razon_social'];
+            $this->Model_Cliente->update($ID,$razonSocial);
+            foreach($this->input->post('ext') as $key => $valor){
+                $this->Model_Cliente->updateAtributo($ID,$key,$valor);
+            }
+            $this->_subirLogo($razonSocial);
+        }
+        
+        
+        $cliente = $this->Model_Cliente->getCliente($ID);
+        $default=[];
+        $default['rs'] = $cliente['razonSocial'];
+        $default['emp']= $this->Model_Cliente->getAtributo($ID,'empresa');
+        $default['cp'] = $this->Model_Cliente->getAtributo($ID,'cp');
+        $default['dir']= $this->Model_Cliente->getAtributo($ID,'direccion');
+        $default['t1'] = $this->Model_Cliente->getAtributo($ID,'telefono_1');
+        $default['t2'] = $this->Model_Cliente->getAtributo($ID,'telefono_2');
+        $default['web']= $this->Model_Cliente->getAtributo($ID,'sitio_web');
+        
+        
+        
+        
+        
+        
+        $this->template->set('default', $default);
+        $this->template->set('action', 'Cliente/editar/'.$ID);
+        $this->template->set('input_hidden', ['nuevo_cliente' => 1]);
+        $this->template->set('tipos_de_empresa', $this->tipos_de_empresa);
+        $this->template->render('cliente/v_nuevo');
     }
 
     public function eliminar($ID) {
@@ -136,7 +168,11 @@ class Cliente extends MY_Controller {
         $this->template->set('idCliente', $idCliente);
         $this->template->render('cliente/v_contactos');
     }
-
+    public function detalles($idCliente){
+        $cliente = $this->Model_Cliente->getCliente($idCliente);
+        $this->template->set('cliente',$cliente);
+        $this->template->render('cliente/v_detalles');
+    }
     private function _validarCliente() {
 
         if ($this->input->post('nuevo_cliente') == 1) {
