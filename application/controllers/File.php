@@ -9,6 +9,7 @@ class File extends MY_Controller {
     }
 
     public function index($name = '') {
+        redirect('File/do_upload');
         $this->load->helper('file');
         $contenido = get_dir_file_info(APPPATH."../assets/".$name);
         
@@ -19,7 +20,7 @@ class File extends MY_Controller {
     
 
     public function do_upload() {
-        $config['upload_path'] = './assets/archivos/';
+        $config['upload_path'] = 'access_public/imagenes';
         $config['allowed_types'] = 'gif|jpg|jpeg|png|zip';
         $config['max_size'] = 400048;
         $config['max_width'] = 0;
