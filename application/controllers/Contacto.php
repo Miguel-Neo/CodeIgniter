@@ -34,7 +34,24 @@ class Contacto extends MY_Controller {
                 $idCliente = $cliente['id'];
             }
         }
-        //print_r($idCliente);exit;
+        
+        
+        $default=[];
+        $default['nombre'] = "";
+        $default['apellidos']= "";
+        $default['cliente'] = "";
+        $default['puesto']= "";
+        $default['t1'] = "";
+        $default['t1ext'] = "";
+        $default['t2'] = "";
+        $default['t2ext'] = "";
+        $default['celular']= "";
+        $default['e-mail']= "";
+        
+        
+        $this->template->set('default', $default);
+        $this->template->set('action','Contacto/nuevo/'.$idCliente);
+        $this->template->set('input_hidden',['editar'=>1]);
         $this->template->set('clientes',$clientes);
         $this->template->set('idcliente',$idCliente);
         $this->template->render('cliente/v_nuevocontacto');
@@ -43,15 +60,38 @@ class Contacto extends MY_Controller {
         $this->Model_Contacto->delete($id);
         redirect('Cliente/contactos/'.$idcliente);
     }
-    public function editar($id){
+    public function editar($idContacto,$idCliente){
         
+        $clientes = [];
+        foreach ($this->Model_Cliente->getClientes() as $cliente){
+            $clientes[$cliente['id']]=$cliente['razonSocial'];
+        }
+        $default=[];
+        $default['nombre'] = "1";
+        $default['apellidos']= "1";
+        $default['cliente'] = "1";
+        $default['puesto']= "1";
+        $default['t1'] = "1";
+        $default['t1ext'] = "1";
+        $default['t2'] = "1";
+        $default['t2ext'] = "1";
+        $default['celular']= "1";
+        $default['e-mail']= "1";
+        
+        
+        $this->template->set('default', $default);
+        $this->template->set('action','Contacto/editar/'.$idContacto.'/'.$idCliente);
+        $this->template->set('input_hidden',['editar'=>1]);
+        $this->template->set('clientes',$clientes);
+        $this->template->set('idcliente',$idCliente);
+        $this->template->render('cliente/v_nuevocontacto');
     }
 
 
     
     
     private function _validarContacto(){
-        if($this->input->post('nuevo_contacto') == 1){
+        if($this->input->post('editar') == 1){
             return true;
         }
         return false;

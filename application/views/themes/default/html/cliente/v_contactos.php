@@ -26,7 +26,7 @@ if (isset($contactos)) {
                 $contacto['nombre'], 
                 $contacto['apellidos'], 
                 anchor(
-                        'Contacto/editar/'. $contacto['id'] , 
+                        'Contacto/editar/'. $contacto['id'].'/'.$idCliente , 
                         dictionary('theme_edit')
                         ),
                 anchor(
