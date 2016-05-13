@@ -104,6 +104,7 @@ class Model_Roles extends CI_Model {
         $where['role'] = $id;
         $existe = $this->db->get_where($this->tables['users'], $where)->row();
         if (!$existe) {
+            $this->db->delete($this->tables['role_permissions'], array('role' => $id));
             $this->db->delete($this->tables['roles'], array('id' => $id));
             return true;
         }
