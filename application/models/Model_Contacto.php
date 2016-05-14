@@ -24,6 +24,19 @@ class Model_Contacto extends CI_Model {
         $this->db->delete($this->tables['cliente_contacto'], array('idcontacto' => $id));
         $this->db->delete($this->tables['contacto'],array('id' => $id));
     }
+    public function getcontacto($idcontacto){
+        $cliente = $this->db->get_where(
+                        $this->tables['contacto'], ['id' => $idcontacto]
+                )->row_array();
+        $detalles = $this->db->get_where(
+                        $this->tables['detallesContacto'], ['idContacto' => $idcontacto])->result_array();
+        
+        foreach($detalles as $detalle){
+            $cliente[$detalle['atributo']] = $detalle['valor'];
+        }
+        return $cliente;
+    }
+    
     public function insert($idCliente,$here, $info) {
         
             $this->load->helper('date');

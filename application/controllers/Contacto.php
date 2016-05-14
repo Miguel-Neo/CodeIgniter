@@ -19,8 +19,8 @@ class Contacto extends MY_Controller {
             $info = $this->input->post('ext');
             $id_cliente = $this->input->post('id_cliente');
             foreach ($this->input->post('tel') as $key => $val){
-                $valor=$val[1]." ext. ".$val[2];
-                $info[$key]=$valor;
+                $info[$key]=$val[1];
+                $info[$key."_ext"]=$val[2];
             }
             if($this->Model_Contacto->insert($id_cliente,$here,$info)){
                 redirect('Cliente/contactos/'.$idCliente);
@@ -39,7 +39,6 @@ class Contacto extends MY_Controller {
         $default=[];
         $default['nombre'] = "";
         $default['apellidos']= "";
-        $default['cliente'] = "";
         $default['puesto']= "";
         $default['t1'] = "";
         $default['t1ext'] = "";
@@ -66,17 +65,20 @@ class Contacto extends MY_Controller {
         foreach ($this->Model_Cliente->getClientes() as $cliente){
             $clientes[$cliente['id']]=$cliente['razonSocial'];
         }
+        
+        $contacto = $this->Model_Contacto->getcontacto($idContacto);
+     
+        
         $default=[];
-        $default['nombre'] = "1";
-        $default['apellidos']= "1";
-        $default['cliente'] = "1";
-        $default['puesto']= "1";
-        $default['t1'] = "1";
-        $default['t1ext'] = "1";
-        $default['t2'] = "1";
-        $default['t2ext'] = "1";
-        $default['celular']= "1";
-        $default['e-mail']= "1";
+        $default['nombre'] = $contacto['nombre'];
+        $default['apellidos']= $contacto['apellidos'];
+        $default['puesto']= $contacto['puesto'];
+        $default['t1'] = $contacto['telefono_1'];
+        $default['t1ext'] = $contacto['telefono_1_ext'];
+        $default['t2'] = $contacto['telefono_2'];
+        $default['t2ext'] = $contacto['telefono_2_ext'];
+        $default['celular']= $contacto['celular'];
+        $default['e-mail']= $contacto['e-mail'];
         
         
         $this->template->set('default', $default);
