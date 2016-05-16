@@ -76,6 +76,7 @@ class Proyectos extends MY_Controller {
 
         if ($this->user->has_permission('administrador') || $this->user->has_permission($id . '_administrador')) {
             $contacto = [];
+            
             $this->template->set('idProyecto', $id);
             $this->template->set('cliente',$this->Model_Cliente->getCliente($proyecto['idCliente']));
             
@@ -83,7 +84,10 @@ class Proyectos extends MY_Controller {
             foreach ($conP as $con) {
                 $contacto[] = $this->Model_Contacto->getcontacto($con['id']);
             }
+            $tinymce = $this->Model_Proyectos->getatributo($id,'tinymce')['valor'];
             
+            $this->template->set('action_tinymce','/proyectos/insert_tinymce/'.$id);
+            $this->template->set('tinymce',$tinymce);
             $this->template->set('contactos',$contacto);
             $this->template->set('users', $this->Model_Proyectos->getuser($id));
             $this->template->render('proyectos/detalles_administrador');
@@ -211,5 +215,9 @@ class Proyectos extends MY_Controller {
             $contactos ="<option value=''></option>"; 
         }
         echo $contactos;
+    }
+    public function insert_tinymce($id){
+        $this->Model_Proyectos->setatributo($id,'tinymce',$this->input->post('div_tinymce'));
+        redirect('proyectos/detalles/'.$id);
     }
 }

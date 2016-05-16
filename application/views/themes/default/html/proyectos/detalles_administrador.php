@@ -1,4 +1,7 @@
 <?php
+$this->load->helper('form');
+?>
+<?php
 echo '<br>Proyecto:<br>';
 echo '<pre>';
 print_r($proyecto);
@@ -18,7 +21,7 @@ echo '<br>Contactos:<br>';
 echo '<pre>';
 print_r($contactos);
 echo '</pre>';
-echo anchor('Proyectos/nuevo_contacto/'.$idProyecto.'/'.$cliente['id'],'nuevo contacto');
+echo anchor('Proyectos/nuevo_contacto/' . $idProyecto . '/' . $cliente['id'], 'nuevo contacto');
 ?>
 
 
@@ -27,8 +30,12 @@ echo '<br>Desarrolladores:<br>';
 echo '<pre>';
 print_r($users);
 echo '</pre>';
-echo anchor('Proyectos/nuevo_desarrollador/'.$idProyecto,'nuevo desarrollador');
+echo anchor('Proyectos/nuevo_desarrollador/' . $idProyecto, 'nuevo desarrollador');
 ?>
-<form method="post">
-    <textarea id="mytextarea">Hello, World!</textarea>
-  </form>
+
+<div>
+    <?= form_open_multipart($action_tinymce); ?>
+    <div id="div_tinymce" contenteditable="true" ><?php if(isset($tinymce)) echo $tinymce;?></div>
+    <?= form_submit(['value' => dictionary('cms_general_label_button_access')]) ?>
+    <?= form_close() ?>
+</div>
