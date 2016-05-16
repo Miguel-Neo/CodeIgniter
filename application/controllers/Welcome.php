@@ -34,4 +34,22 @@ class Welcome extends MY_Controller {
 		$this->template->render(['welcome_message']);
                 
 	}
+        public function dbclear(){
+            $sql = [];
+            $sql[] =  "TRUNCATE TABLE crm_cliente; ";
+            $sql[] =  "TRUNCATE TABLE crm_cliente_contacto; ";
+            $sql[] =  "TRUNCATE TABLE crm_contacto; ";
+            $sql[] =  "TRUNCATE TABLE crm_detallesCliente; ";
+            $sql[] =  "TRUNCATE TABLE crm_detallesContacto; ";
+            $sql[] =  "TRUNCATE TABLE crm_proyecto; ";
+            $sql[] =  "TRUNCATE TABLE crm_proyecto_contactos; ";
+            $sql[] =  "TRUNCATE TABLE crm_proyecto_users; ";
+            $sql[] =  "TRUNCATE TABLE crm_servicio;";
+            
+            foreach($sql as $s){
+                $this->db->query($s);
+            }
+            
+
+        }
 }
