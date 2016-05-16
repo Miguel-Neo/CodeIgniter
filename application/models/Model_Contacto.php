@@ -7,7 +7,11 @@ class Model_Contacto extends CI_Model {
     private $tables = [
         'contacto' => 'crm_contacto',
         'detallesContacto'=>'crm_detallesContacto',
-        'cliente_contacto'=>'crm_cliente_contacto'
+        'cliente_contacto'=>'crm_cliente_contacto',
+        'proyectos' => 'crm_proyecto',
+        'ptr_user'  => 'crm_proyecto_users',
+        'ptr_contacto'  => 'crm_proyecto_contactos',
+        'users'     => 'acl_users'
     ];
 
     public function __construct() {
@@ -35,6 +39,18 @@ class Model_Contacto extends CI_Model {
             $cliente[$detalle['atributo']] = $detalle['valor'];
         }
         return $cliente;
+    }
+    public function getcontactos_proyecto($idProyecto){
+        $this->db->select(
+                  'c.*'
+                );
+        $this->db->from($this->tables['ptr_contacto']." pc");
+        $this->db->join($this->tables['contacto']." c", 'pc.idContacto = c.id');
+        $this->db->where('pc.idProyecto',$idProyecto);
+        
+        $query = $this->db->get()->result_array();
+        
+        return $query;
     }
     
     public function insert($idCliente,$here, $info) {

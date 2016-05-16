@@ -65,6 +65,7 @@ class Proyectos extends MY_Controller {
 
     public function detalles($id) {
         $this->load->model('Model_Cliente');
+        $this->load->model('Model_Contacto');
         $proyecto = $this->Model_Proyectos->get($id);
 
         $this->template->set('proyecto', $proyecto);
@@ -72,8 +73,16 @@ class Proyectos extends MY_Controller {
 
 
         if ($this->user->has_permission('administrador') || $this->user->has_permission($id . '_administrador')) {
+            $contacto = [];
             $this->template->set('idProyecto', $id);
             $this->template->set('cliente',$this->Model_Cliente->getCliente($proyecto['idCliente']));
+            
+            $conP = $this->Model_Contacto->getcontactos_proyecto($id);
+            foreach ($conP as $con) {
+                $contacto[] = $this->Model_Contacto->getcontacto($con['id']);
+            }
+            
+            $this->template->set('contactos',$contacto);
             $this->template->set('users', $this->Model_Proyectos->getuser($id));
             $this->template->render('proyectos/detalles_administrador');
             return NULL;
@@ -86,6 +95,31 @@ class Proyectos extends MY_Controller {
         $this->template->render('proyectos/detalles_publico');
     }
 
+    public function nuevo_contacto($idProyecto, $idCliente){
+         if ($this->input->post('nuevo_contacto') == 1) {
+            $this->Model_Proyectos->insertContacto($idProyecto,$this->input->post('contacto'));
+            redirect('Proyectos/detalles/'.$idProyecto);
+        }
+        
+        $this->load->model('Model_Cliente');
+        $contactos = [];
+        $contact = $this->Model_Cliente->getClienteContactos($idCliente);
+        if(count($contact)>0){
+            foreach ($contact as $contacto){
+                $contactos[$contacto['id']]=$contacto['nombre'];
+            }
+        }
+        
+        
+        $this->template->set('action','Proyectos/nuevo_contacto/'.$idProyecto.'/'.$idCliente);
+        $this->template->set('contactos', $contactos);
+        $this->template->set('input_hidden', ['nuevo_contacto'=>1]);
+        $this->template->render('proyectos/nuevo_contacto');
+    }
+    public function eliminar_contacto($idProyecto,$idContacto){
+        $this->Model_Proyectos->eliminar_contacto($idProyecto,$idContacto);
+        redirect('Proyectos/detalles/'.$idProyecto);
+    }
     public function nuevo_desarrollador($idProyecto = null) {
         if($this->_validar_nuevo_desarrollador()){
             $this->_inserta_nuevo_desarrollador();

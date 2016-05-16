@@ -7,6 +7,8 @@ class Model_Proyectos extends CI_Model {
     private $tables = [
         'proyectos' => 'crm_proyecto',
         'ptr_user'  => 'crm_proyecto_users',
+        'ptr_contacto'  => 'crm_proyecto_contactos',
+        'contacto'  => 'crm_contacto',
         'users'     => 'acl_users'
     ];
 
@@ -29,7 +31,7 @@ class Model_Proyectos extends CI_Model {
                         'nombre'       => $proyecto['titulo'],
                         'descripcion'  => $proyecto['descripcion'],
                         'idServicio'   => $proyecto['servicio'],
-                        'idCliente'    => explode("_",$proyecto['cliente'])[0],
+                        'idCliente'    => $proyecto['cliente'],
                         'estado'       => 1,
                         'fechaInicio'  => $proyecto['fecha_de_inicio'],
                         'fechaEntrega' => $proyecto['fecha_de_entrega'],
@@ -39,9 +41,55 @@ class Model_Proyectos extends CI_Model {
                         'modified_at'  => unix_to_human(time(), TRUE, 'eu'),
                     ]
                     );
+            
+            $idproyecto = $this->db->get_where(
+                    $this->tables['proyectos'],['nombre'=>$proyecto['titulo']]
+                    )->row()->id;
+                    
+        
+            $this->db->insert(
+                    $this->tables['ptr_contacto'],
+                    [
+                        'idProyecto'   => $idproyecto,
+                        'idContacto'   => $proyecto['contacto'],
+                        'created'      => $this->user->id,
+                        'created_at'   => unix_to_human(time(), TRUE, 'eu'),
+                        'modified'     => $this->user->id,
+                        'modified_at'  => unix_to_human(time(), TRUE, 'eu'),
+                    ]
+                    );
             return true;
         }
         return false;
+    }
+    public function insertContacto($idproyecto, $idContacto){
+        $where['idProyecto'] = $idproyecto;
+        $where['idContacto'] = $idContacto;
+        $existe = $this->db->get_where($this->tables['ptr_contacto'], $where)->row();
+        if (!$existe) {
+            
+        
+            $this->load->helper('date');
+            date_default_timezone_set('America/Mexico_City');
+
+            $this->db->insert(
+                        $this->tables['ptr_contacto'],
+                        [
+                            'idProyecto'   => $idproyecto,
+                            'idContacto'   => $idContacto,
+                            'created'      => $this->user->id,
+                            'created_at'   => unix_to_human(time(), TRUE, 'eu'),
+                            'modified'     => $this->user->id,
+                            'modified_at'  => unix_to_human(time(), TRUE, 'eu'),
+                        ]
+                        );
+            return true;
+        }
+        return false;
+    }
+    public function eliminar_contacto($idProyecto,$idContacto){
+            $this->db->simple_query("DELETE FROM " . $this->tables['ptr_contacto'] . " WHERE idProyecto = $idProyecto AND idContacto = $idContacto");
+    
     }
     public function getall(){
         return $this->db->get($this->tables['proyectos'])->result_array();
@@ -81,4 +129,5 @@ class Model_Proyectos extends CI_Model {
         
         return $query;
     }
+    
 }

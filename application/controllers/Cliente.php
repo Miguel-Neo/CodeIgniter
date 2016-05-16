@@ -109,13 +109,13 @@ class Cliente extends MY_Controller {
         }
         
         $default=[];
-        $default['rs'] = "";
+        $default['rs'] = "neommunications";
         $default['emp']= "";
-        $default['cp'] = "";
-        $default['dir']= "";
-        $default['t1'] = "";
+        $default['cp'] = "05000";
+        $default['dir']= "Jose Maria Castorena 324 Poniente  officina 19";
+        $default['t1'] = "62680538";
         $default['t2'] = "";
-        $default['web']= "";
+        $default['web']= "neommunications.com";
         
         $this->template->set('default', $default);
         $this->template->set('action', 'Cliente/nuevo/');
