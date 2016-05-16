@@ -73,6 +73,21 @@ class Model_Contacto extends CI_Model {
             return true;
         
     }
+    
+    public function update($contacto) {
+        $this->load->helper('date');
+        date_default_timezone_set('America/Mexico_City');
+            
+        $data = array(
+            'nombre' => $contacto['nombre'],
+            'apellidos' => $contacto['apellidos'],
+            'modified'=>$this->user->id,
+            'modified_at'=>unix_to_human(time(), TRUE, 'eu')
+        );
+        $this->db->where('id', $contacto['id']);
+        return $this->db->update($this->tables['contacto'], $data);
+    }
+    
     private function _insertclienteContacto($idCliente,$idcontacto){
         $this->db->insert(
                     $this->tables['cliente_contacto'], [
@@ -102,6 +117,23 @@ class Model_Contacto extends CI_Model {
             'modified' => $this->user->id,
             'modified_at' => unix_to_human(time(), TRUE, 'eu'),
         ]);
+    }
+    public function updateAtributo($idContacto, $atributo, $valor) {
+        $this->load->helper('date');
+        date_default_timezone_set('America/Mexico_City');
+
+        $set = array(
+            'valor' => $valor,
+            'modified' => $this->user->id,
+            'modified_at' => unix_to_human(time(), TRUE, 'eu'),
+        );
+        $where = array(
+            'idContacto ' => $idContacto,
+            'atributo' => $atributo
+        );
+        $this->db->update(
+                $this->tables['detallesContacto'], $set, $where
+        );
     }
     
 }

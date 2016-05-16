@@ -60,11 +60,29 @@ class Contacto extends MY_Controller {
         redirect('Cliente/contactos/'.$idcliente);
     }
     public function editar($idContacto,$idCliente){
+        if($this->_validarContacto()){
+            $here = $this->input->post('here');
+            $here['id'] = $idContacto;
+            //debugger($here);
+            $info = $this->input->post('ext');
+            
+            foreach ($this->input->post('tel') as $key => $val){
+                $info[$key]=$val[1];
+                $info[$key."_ext"]=$val[2];
+            }
+            $this->Model_Contacto->update($here);
+            foreach($info as $key => $valor){
+                $this->Model_Contacto->updateAtributo($here['id'],$key,$valor);
+            }
+            redirect('Cliente/contactos/'.$idCliente);
+            
+        }
         
+        /*
         $clientes = [];
         foreach ($this->Model_Cliente->getClientes() as $cliente){
             $clientes[$cliente['id']]=$cliente['razonSocial'];
-        }
+        }*/
         
         $contacto = $this->Model_Contacto->getcontacto($idContacto);
      
@@ -84,9 +102,9 @@ class Contacto extends MY_Controller {
         $this->template->set('default', $default);
         $this->template->set('action','Contacto/editar/'.$idContacto.'/'.$idCliente);
         $this->template->set('input_hidden',['editar'=>1]);
-        $this->template->set('clientes',$clientes);
-        $this->template->set('idcliente',$idCliente);
-        $this->template->render('cliente/v_nuevocontacto');
+        //$this->template->set('clientes',$clientes);
+        //$this->template->set('idcliente',$idCliente);
+        $this->template->render('cliente/v_editarcontacto');
     }
 
 
