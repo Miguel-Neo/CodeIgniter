@@ -64,6 +64,8 @@ class Proyectos extends MY_Controller {
     }
 
     public function detalles($id) {
+        $this->template->add_js('lib','tinymce_4.3.12/tinymce.min');
+        $this->template->add_js('view','proyectos/detalles');
         $this->load->model('Model_Cliente');
         $this->load->model('Model_Contacto');
         $proyecto = $this->Model_Proyectos->get($id);

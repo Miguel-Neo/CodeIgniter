@@ -29,3 +29,6 @@ print_r($users);
 echo '</pre>';
 echo anchor('Proyectos/nuevo_desarrollador/'.$idProyecto,'nuevo desarrollador');
 ?>
+<form method="post">
+    <textarea id="mytextarea">Hello, World!</textarea>
+  </form>
