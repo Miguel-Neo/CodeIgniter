@@ -132,6 +132,7 @@ class Cliente extends MY_Controller {
                 $this->Model_Cliente->updateAtributo($ID,$key,$valor);
             }
             $this->_subirLogo($razonSocial);
+            redirect('Cliente');
         }
         
         
