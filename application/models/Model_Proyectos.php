@@ -157,10 +157,12 @@ class Model_Proyectos extends CI_Model {
                 'modified' => $this->user->id,
                 'modified_at' => unix_to_human(time(), TRUE, 'eu')
             );
+            $where = [
+                'idProyecto'=>$idProyecto,
+                'atributo'=>$name
+            ];
             
-            $where['idProyecto'] = $idProyecto;
-            $where['atributo'] = $name;
-            return $this->db->update($this->tables['attr'], $data);
+            return $this->db->update($this->tables['attr'], $data,$where);
         }
     }
 

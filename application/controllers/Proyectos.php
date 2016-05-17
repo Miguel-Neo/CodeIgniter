@@ -15,15 +15,15 @@ class Proyectos extends MY_Controller {
         $this->template->set('proyectos', $proyectos);
         $this->template->render('proyectos/proyectos');
     }
-    
+
     public function nuevo($id_cliente = null) {
-        
+
         if ($this->_validar_nuevo()) {
             $proyecto = $this->input->post();
-            if($this->Model_Proyectos->insert($proyecto)){
+            if ($this->Model_Proyectos->insert($proyecto)) {
                 redirect('Proyectos');
             }
-            $this->template->set_flash_message(['error' => dictionary('theme_model_erro')]);   
+            $this->template->set_flash_message(['error' => dictionary('theme_model_erro')]);
         }
 
         $this->load->model('Model_Servicios');
@@ -31,65 +31,78 @@ class Proyectos extends MY_Controller {
 
         $servicios = [];
         $clientes = [];
-        $contactos= [];
+        $contactos = [];
         foreach ($this->Model_Servicios->getServicios() as $servicio) {
             $servicios[$servicio['id']] = $servicio['nombre'];
         }
-        
+
         foreach ($this->Model_Cliente->getClientes() as $cliente) {
             $clientes[$cliente['id']] = $cliente['razonSocial'];
-            if($id_cliente == null)$id_cliente=$cliente['id'];
+            if ($id_cliente == null)
+                $id_cliente = $cliente['id'];
         }
         $contact = $this->Model_Cliente->getClienteContactos($id_cliente);
-        if(count($contact)>0){
-            foreach ($contact as $contacto){
-                $contactos[$contacto['id']]=$contacto['nombre'];
+        if (count($contact) > 0) {
+            foreach ($contact as $contacto) {
+                $contactos[$contacto['id']] = $contacto['nombre'];
             }
         }
-        
-        $this->template->add_js('view','proyectos/new_proyect');
-        
-        $this->template->set('action','Proyectos/nuevo');
-        $this->template->set('input_hidden',['nuevo'=>1]);
-        
+
+        $this->template->add_js('view', 'proyectos/new_proyect');
+
+        $this->template->set('action', 'Proyectos/nuevo');
+        $this->template->set('input_hidden', ['nuevo' => 1]);
+
         $this->template->set('servicios', $servicios);
         $this->template->set('clientes', $clientes);
         $this->template->set('cliente_selected', $id_cliente);
         $this->template->set('contactos', $contactos);
-        
-        
-        
+
+
+
         $this->template->set('hola', "Hola mundo cruel");
         $this->template->render('proyectos/nuevo');
     }
 
     public function detalles($id) {
-        $this->template->add_js('lib','tinymce_4.3.12/tinymce.min');
-        $this->template->add_js('view','proyectos/detalles');
         $this->load->model('Model_Cliente');
         $this->load->model('Model_Contacto');
+
+        $this->template->add_js('lib', 'tinymce_4.3.12/tinymce.min');
+        $this->template->add_js('view', 'proyectos/detalles');
+
+
         $proyecto = $this->Model_Proyectos->get($id);
+        $cliente = $this->Model_Cliente->getCliente($proyecto['idCliente']);
+        $contactos = [];
+        foreach ($this->Model_Contacto->getcontactos_proyecto($id) as $con) {
+            $contactos[] = $this->Model_Contacto->getcontacto($con['id']);
+        }
+        $usuarios = $this->Model_Proyectos->getuser($id);
+        $tinymce = $this->Model_Proyectos->getatributo($id, 'tinymce')['valor'];
+        $estatus = $this->Model_Proyectos->getatributo($id, 'estatus')['valor'];
+
 
         $this->template->set('proyecto', $proyecto);
-
-
+        $this->template->set('idProyecto', $id);
+        $this->template->set('cliente', $cliente);
+        $this->template->set('contactos', $contactos);
+        $this->template->set('users', $usuarios);
+        $this->template->set('action_tinymce', '/proyectos/insert_tinymce/' . $id);
+        $this->template->set('tinymce', $tinymce);
+        $this->template->set('estatus',$estatus);
+        $this->template->set('action_estatus','/proyectos/insert_status/' . $id);
 
         if ($this->user->has_permission('administrador') || $this->user->has_permission($id . '_administrador')) {
-            $contacto = [];
-            
-            $this->template->set('idProyecto', $id);
-            $this->template->set('cliente',$this->Model_Cliente->getCliente($proyecto['idCliente']));
-            
-            $conP = $this->Model_Contacto->getcontactos_proyecto($id);
-            foreach ($conP as $con) {
-                $contacto[] = $this->Model_Contacto->getcontacto($con['id']);
-            }
-            $tinymce = $this->Model_Proyectos->getatributo($id,'tinymce')['valor'];
-            
-            $this->template->set('action_tinymce','/proyectos/insert_tinymce/'.$id);
-            $this->template->set('tinymce',$tinymce);
-            $this->template->set('contactos',$contacto);
-            $this->template->set('users', $this->Model_Proyectos->getuser($id));
+
+
+
+
+
+
+
+
+
             $this->template->render('proyectos/detalles_administrador');
             return NULL;
         }
@@ -101,38 +114,39 @@ class Proyectos extends MY_Controller {
         $this->template->render('proyectos/detalles_publico');
     }
 
-    public function nuevo_contacto($idProyecto, $idCliente){
-         if ($this->input->post('nuevo_contacto') == 1) {
-            $this->Model_Proyectos->insertContacto($idProyecto,$this->input->post('contacto'));
-            redirect('Proyectos/detalles/'.$idProyecto);
+    public function nuevo_contacto($idProyecto, $idCliente) {
+        if ($this->input->post('nuevo_contacto') == 1) {
+            $this->Model_Proyectos->insertContacto($idProyecto, $this->input->post('contacto'));
+            redirect('Proyectos/detalles/' . $idProyecto);
         }
-        
+
         $this->load->model('Model_Cliente');
         $contactos = [];
         $contact = $this->Model_Cliente->getClienteContactos($idCliente);
-        if(count($contact)>0){
-            foreach ($contact as $contacto){
-                $contactos[$contacto['id']]=$contacto['nombre'];
+        if (count($contact) > 0) {
+            foreach ($contact as $contacto) {
+                $contactos[$contacto['id']] = $contacto['nombre'];
             }
         }
-        
-        
-        $this->template->set('action','Proyectos/nuevo_contacto/'.$idProyecto.'/'.$idCliente);
+
+
+        $this->template->set('action', 'Proyectos/nuevo_contacto/' . $idProyecto . '/' . $idCliente);
         $this->template->set('contactos', $contactos);
-        $this->template->set('input_hidden', ['nuevo_contacto'=>1]);
+        $this->template->set('input_hidden', ['nuevo_contacto' => 1]);
         $this->template->render('proyectos/nuevo_contacto');
     }
-    public function eliminar_contacto($idProyecto,$idContacto){
-        $this->Model_Proyectos->eliminar_contacto($idProyecto,$idContacto);
-        redirect('Proyectos/detalles/'.$idProyecto);
+
+    public function eliminar_contacto($idProyecto, $idContacto) {
+        $this->Model_Proyectos->eliminar_contacto($idProyecto, $idContacto);
+        redirect('Proyectos/detalles/' . $idProyecto);
     }
+
     public function nuevo_desarrollador($idProyecto = null) {
-        if($this->_validar_nuevo_desarrollador()){
+        if ($this->_validar_nuevo_desarrollador()) {
             $this->_inserta_nuevo_desarrollador();
         }
 
-        if ($this->user->has_permission('administrador') || $this->user->has_permission($idProyecto . '_administrador') || $this->user->id == $this->Model_Proyectos->get($idProyecto)['created'])
-        {
+        if ($this->user->has_permission('administrador') || $this->user->has_permission($idProyecto . '_administrador') || $this->user->id == $this->Model_Proyectos->get($idProyecto)['created']) {
 
             $this->load->model('acl/Model_Users');
 
@@ -146,10 +160,10 @@ class Proyectos extends MY_Controller {
             ];
             $hidden = array(
                 'nuevo_dearrollador' => 1,
-                'proyecto'=>$idProyecto
+                'proyecto' => $idProyecto
             );
-            $this->template->set('action','Proyectos/nuevo_desarrollador');
-            $this->template->set('idProyecto',$idProyecto);
+            $this->template->set('action', 'Proyectos/nuevo_desarrollador');
+            $this->template->set('idProyecto', $idProyecto);
             $this->template->set('rol', $rol);
             $this->template->set('hidden', $hidden);
             $this->template->set('usuarios', $usuarios);
@@ -168,56 +182,61 @@ class Proyectos extends MY_Controller {
         }
         return false;
     }
+
     private function _validar_nuevo_desarrollador() {
         if ($this->input->post('nuevo_dearrollador') == 1) {
             return true;
         }
         return false;
     }
-    private function _inserta_nuevo_desarrollador(){
+
+    private function _inserta_nuevo_desarrollador() {
         $this->load->model('acl/Model_Permissions');
         $this->load->model('Model_Proyectos_User');
         $this->load->model('acl/Model_Users');
-        
-         
-        $permiso = $this->Model_Permissions->getPermisoname($this->input->post('proyecto').'_'.$this->input->post('Rol'));
+
+
+        $permiso = $this->Model_Permissions->getPermisoname($this->input->post('proyecto') . '_' . $this->input->post('Rol'));
         #cargar permiso
-        if(!$permiso){
+        if (!$permiso) {
             $newPresmission = [
-                'title'=>$this->input->post('Rol').' de proyecto',
-                'name'=> $this->input->post('proyecto').'_'.$this->input->post('Rol')
+                'title' => $this->input->post('Rol') . ' de proyecto',
+                'name' => $this->input->post('proyecto') . '_' . $this->input->post('Rol')
             ];
             $this->Model_Permissions->insertpermission($newPresmission);
-            $permiso = $this->Model_Permissions->getPermisoname($this->input->post('proyecto').'_'.$this->input->post('Rol'));
-        
+            $permiso = $this->Model_Permissions->getPermisoname($this->input->post('proyecto') . '_' . $this->input->post('Rol'));
         }
         #insertar usuario al grupo de trabajo
         $this->Model_Proyectos_User->insert($this->input->post());
-        
+
         #le asigno el permiso al usuario,
         $this->Model_Users->editarPermiso($this->input->post('user'), $permiso['id'], 1);
-       
-            
-        redirect('Proyectos/detalles/'.$this->input->post('proyecto'));
+
+
+        redirect('Proyectos/detalles/' . $this->input->post('proyecto'));
     }
 
-    
-    
-    public function ajax_get_contactos($id_Cliente){
+    public function ajax_get_contactos($id_Cliente) {
         $this->load->model('Model_Cliente');
-        $contactos="";
+        $contactos = "";
         $contact = $this->Model_Cliente->getClienteContactos($id_Cliente);
-        if(count($contact)>0){
-            foreach ($contact as $contacto){
-                $contactos .="<option value='".$contacto['id']."'>".$contacto['nombre']."</option>"; 
+        if (count($contact) > 0) {
+            foreach ($contact as $contacto) {
+                $contactos .="<option value='" . $contacto['id'] . "'>" . $contacto['nombre'] . "</option>";
             }
-        }else{
-            $contactos ="<option value=''></option>"; 
+        } else {
+            $contactos = "<option value=''></option>";
         }
         echo $contactos;
     }
-    public function insert_tinymce($id){
-        $this->Model_Proyectos->setatributo($id,'tinymce',$this->input->post('div_tinymce'));
-        redirect('proyectos/detalles/'.$id);
+
+    public function insert_tinymce($id) {
+        $this->Model_Proyectos->setatributo($id, 'tinymce', $this->input->post('div_tinymce'));
+        redirect('proyectos/detalles/' . $id);
     }
+    public function insert_status($id){
+        $this->Model_Proyectos->setatributo($id, 'estatus', $this->input->post('estatus'));
+        redirect('proyectos/detalles/' . $id);
+    }
+
 }

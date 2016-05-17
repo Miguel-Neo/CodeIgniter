@@ -39,3 +39,12 @@ echo anchor('Proyectos/nuevo_desarrollador/' . $idProyecto, 'nuevo desarrollador
     <?= form_submit(['value' => dictionary('cms_general_label_button_access')]) ?>
     <?= form_close() ?>
 </div>
+
+
+
+<br>estatus:<br>
+    <?= form_open($action_estatus); ?>
+    <textarea rows="4" name="estatus"><?= $estatus; ?></textarea>
+<br>
+    <?= form_submit(['value' => dictionary('cms_general_label_button_access')]) ?>
+    <?= form_close() ?>
