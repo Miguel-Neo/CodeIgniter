@@ -44,3 +44,10 @@ footer {
 
 /* End of file custom.css */
 /* Location: ./assets/styles/templates/default/custom.css */
+
+
+#body_chat{
+    width: 160px;
+    height: 90px; 
+    border: solid 1px #000
+}

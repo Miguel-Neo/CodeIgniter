@@ -1,6 +1,22 @@
 <?php
 $this->load->helper('form');
 ?>
+
+<?php
+echo '<br>nombre_proyecto:<br>';
+echo '<pre>';
+print_r($nombre_proyecto);
+echo '</pre>';
+?>
+
+<?php
+echo '<br>nombre_cliente:<br>';
+echo '<pre>';
+print_r($nombre_cliente);
+echo '</pre>';
+?>
+
+
 <?php
 echo '<br>Proyecto:<br>';
 echo '<pre>';
@@ -41,10 +57,22 @@ echo anchor('Proyectos/nuevo_desarrollador/' . $idProyecto, 'nuevo desarrollador
 </div>
 
 
-
-<br>estatus:<br>
-    <?= form_open($action_estatus); ?>
-    <textarea rows="4" name="estatus"><?= $estatus; ?></textarea>
-<br>
-    <?= form_submit(['value' => dictionary('cms_general_label_button_access')]) ?>
-    <?= form_close() ?>
+<div>
+    <div>
+        <br>estatus:<br>
+        <?= form_open($action_estatus); ?>
+        <textarea rows="4" name="estatus"><?= $estatus; ?></textarea>
+        <br>
+        <?= form_submit(['value' => dictionary('cms_general_label_button_access')]) ?>
+        <?= form_close() ?>
+    </div>
+    <div>
+        <div id="body_chat" ></div>
+        <?= form_open($action_chat,['id'=>'form_chat']); ?>
+        <?= form_input(['name'=>'msg'])?>
+        <?= form_submit(['value' => dictionary('cms_general_label_button_access')]) ?>
+        <?= form_close() ?>
+    </div>
+</div>
+<?= anchor("", "hola", array('onclick' => 'return get_chat();'))?>
+    

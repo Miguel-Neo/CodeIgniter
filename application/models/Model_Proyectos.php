@@ -10,11 +10,14 @@ class Model_Proyectos extends CI_Model {
         'ptr_contacto' => 'crm_proyecto_contactos',
         'contacto' => 'crm_contacto',
         'users' => 'acl_users',
-        'attr' => 'crm_proyecto_atributos'
+        'attr' => 'crm_proyecto_atributos',
+        'chat' => 'crm_proyecto_chat'
     ];
 
     public function __construct() {
         parent::__construct();
+        $this->load->helper('date');
+        date_default_timezone_set('America/Mexico_City');
     }
 
     /*     * ************************************************************************** */
@@ -24,8 +27,6 @@ class Model_Proyectos extends CI_Model {
         $existe = $this->db->get_where($this->tables['proyectos'], $where)->row();
         if (!$existe) {
 
-            $this->load->helper('date');
-            date_default_timezone_set('America/Mexico_City');
             $this->db->insert(
                     $this->tables['proyectos'], [
                 'nombre' => $proyecto['titulo'],
@@ -67,10 +68,6 @@ class Model_Proyectos extends CI_Model {
         $where['idContacto'] = $idContacto;
         $existe = $this->db->get_where($this->tables['ptr_contacto'], $where)->row();
         if (!$existe) {
-
-
-            $this->load->helper('date');
-            date_default_timezone_set('America/Mexico_City');
 
             $this->db->insert(
                     $this->tables['ptr_contacto'], [
@@ -133,8 +130,7 @@ class Model_Proyectos extends CI_Model {
 
     public function setatributo($idProyecto, $name, $valor) {
 
-        $this->load->helper('date');
-        date_default_timezone_set('America/Mexico_City');
+        
 
         $where['idProyecto'] = $idProyecto;
         $where['atributo'] = $name;
@@ -173,6 +169,23 @@ class Model_Proyectos extends CI_Model {
         $this->db->where('atributo', $name);
 
         $query = $this->db->get()->row_array();
+        return $query;
+    }
+    public function set_chat($idProyecto,$msg){
+        $this->db->insert(
+                    $this->tables['chat'], [
+                'idProyecto' => $idProyecto,
+                'msg' => $msg,
+                'created' => $this->user->id,
+                'created_at' => unix_to_human(time(), TRUE, 'eu'),
+                    ]
+            );
+    }
+    public function get_chat($idProyecto){
+        $this->db->from($this->tables['chat']);
+        $this->db->where('idProyecto',$idProyecto);
+        $this->db->order_by('id', 'ASC');
+        $query = $this->db->get()->result_array();
         return $query;
     }
 

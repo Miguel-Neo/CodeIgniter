@@ -81,8 +81,9 @@ class Proyectos extends MY_Controller {
         $usuarios = $this->Model_Proyectos->getuser($id);
         $tinymce = $this->Model_Proyectos->getatributo($id, 'tinymce')['valor'];
         $estatus = $this->Model_Proyectos->getatributo($id, 'estatus')['valor'];
-
-
+        
+        $this->template->set('nombre_proyecto', $proyecto['nombre']);
+        $this->template->set('nombre_cliente', $cliente['razonSocial']);
         $this->template->set('proyecto', $proyecto);
         $this->template->set('idProyecto', $id);
         $this->template->set('cliente', $cliente);
@@ -92,6 +93,8 @@ class Proyectos extends MY_Controller {
         $this->template->set('tinymce', $tinymce);
         $this->template->set('estatus',$estatus);
         $this->template->set('action_estatus','/proyectos/insert_status/' . $id);
+        $this->template->set('action_chat','/proyectos/insert_chat/' . $id);
+        
 
         if ($this->user->has_permission('administrador') || $this->user->has_permission($id . '_administrador')) {
 
@@ -237,6 +240,14 @@ class Proyectos extends MY_Controller {
     public function insert_status($id){
         $this->Model_Proyectos->setatributo($id, 'estatus', $this->input->post('estatus'));
         redirect('proyectos/detalles/' . $id);
+    }
+    public function insert_chat($id){
+        $this->Model_Proyectos->set_chat($id,$this->input->post('msg'));
+    }
+    public function get_chat_ajax($id){
+        $msgs = $this->Model_Proyectos->get_chat($id);
+        print_r($msgs);
+        return false;
     }
 
 }
