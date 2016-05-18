@@ -10,7 +10,7 @@ if(isset($proyectos)){
         $this->table->add_row(
                 $proyecto['id'],
                 $proyecto['nombre'],
-                $this->user->has_permission('Proyectos/detalles') ? 
+                $this->user->has_permission('proyectos/detalles') ? 
                 anchor('Proyectos/detalles/'.$proyecto['id'],"Detalles"):''
                 );
     }
