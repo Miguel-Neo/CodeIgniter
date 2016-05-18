@@ -66,17 +66,17 @@ class Roles extends MY_Controller {
 
         if (isset($_POST['save_permissionsRole']) && $_POST['save_permissionsRole'] == 1) {
             $values = array_keys($_POST);
-
             $replace = array();
             $eliminar = array();
 
             for ($i = 0; $i < count($values); $i ++) {
                 if (substr($values[$i], 0, 5) == 'perm_') {
-                    $permiso = (strlen($values[$i]) - 5 );
+                    //$permiso = (strlen($values[$i]) - 5 );#no era valido para id de dos cifras
+                    $permiso = explode("perm_", $values[$i])[1];
                     if ($_POST[$values[$i]] == 'x') {
                         $eliminar[] = array(
                             'role' => $roleID,
-                            'permiso' => substr($values[$i], -$permiso),
+                            'permiso' => $permiso,
                         );
                     } else {
                         if ($_POST[$values[$i]] == 1) {
@@ -87,7 +87,7 @@ class Roles extends MY_Controller {
 
                         $replace[] = array(
                             'role' => $roleID,
-                            'permiso' => substr($values[$i], -1),
+                            'permiso' => $permiso,
                             'valor' => $v
                         );
                     }

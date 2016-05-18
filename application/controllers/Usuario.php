@@ -53,11 +53,12 @@ class Usuario extends MY_Controller {
 
             for ($i = 0; $i < count($values); $i ++) {
                 if (substr($values[$i], 0, 5) == 'perm_') {
-                    $permiso = (strlen($values[$i]) - 5 );
+                    //$permiso = (strlen($values[$i]) - 5 );
+                    $permiso = explode("perm_", $values[$i])[1];
                     if ($_POST[$values[$i]] == 'x') {
                         $eliminar[] = array(
                             'user' => $usuarioID,
-                            'permiso' => substr($values[$i], -$permiso),
+                            'permiso' => $permiso,
                         );
                     } else {
                         if ($_POST[$values[$i]] == 1) {
@@ -68,7 +69,7 @@ class Usuario extends MY_Controller {
 
                         $replace[] = array(
                             'user' => $usuarioID,
-                            'permiso' => substr($values[$i], -1),
+                            'permiso' => $permiso,
                             'valor' => $v
                         );
                     }
