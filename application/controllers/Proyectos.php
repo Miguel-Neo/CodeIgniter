@@ -17,10 +17,18 @@ class Proyectos extends MY_Controller {
     }
 
     public function nuevo($id_cliente = null) {
-
+        $this->load->model('Model_Proyectos_User');
+        
         if ($this->_validar_nuevo()) {
             $proyecto = $this->input->post();
             if ($this->Model_Proyectos->insert($proyecto)) {
+                $_usuario=[
+                    'proyecto' => $this->Model_Proyectos->getpornombre($proyecto['titulo'])['id'],
+                    'user'=>$this->user->id,
+                    'Rol'=>'administrador'
+                ];
+                
+                $this->Model_Proyectos_User->insert($_usuario);
                 redirect('Proyectos');
             }
             $this->template->set_flash_message(['error' => dictionary('theme_model_erro')]);
@@ -67,6 +75,7 @@ class Proyectos extends MY_Controller {
     public function detalles($id) {
         $this->load->model('Model_Cliente');
         $this->load->model('Model_Contacto');
+        $this->load->model('acl/Model_Users');
 
         $this->template->add_js('lib', 'tinymce_4.3.12/tinymce.min');
         $this->template->add_js('view', 'proyectos/detalles');
@@ -76,9 +85,28 @@ class Proyectos extends MY_Controller {
         $cliente = $this->Model_Cliente->getCliente($proyecto['idCliente']);
         $contactos = [];
         foreach ($this->Model_Contacto->getcontactos_proyecto($id) as $con) {
-            $contactos[] = $this->Model_Contacto->getcontacto($con['id']);
+            $contactos_tem= $this->Model_Contacto->getcontacto($con['id']);
+            $contactos_tem['link_eliminar']=anchor(
+                'Proyectos/eliminar_contacto/'.$id.'/'.$contactos_tem['id'],
+                'eliminar',
+                array('onclick' => 'return confirm_delete();')   
+                );
+            $contactos[]=$contactos_tem;
         }
-        $usuarios = $this->Model_Proyectos->getuser($id);
+        $usuarios=[];
+        foreach($this->Model_Proyectos->getuser_proyecto($id) as $_usuario){
+            $_usuario_temp = $this->Model_Users->getdetailUser($_usuario['idUsuario']);
+            $_usuario_temp['rel']=$_usuario;
+            $_usuario_temp['link_eliminar']=anchor(
+                'Proyectos/eliminar_usuario/'.$id.'/'.$_usuario_temp['id'],
+                'eliminar',
+                array('onclick' => 'return confirm_delete();')   
+                );
+            $usuarios[]=$_usuario_temp;
+        }
+        
+        //debugger($usuarios);
+        //debugger($this->Model_Proyectos->getuser($id));
         $tinymce = $this->Model_Proyectos->getatributo($id, 'tinymce')['valor'];
         $estatus = $this->Model_Proyectos->getatributo($id, 'estatus')['valor'];
         
@@ -141,6 +169,10 @@ class Proyectos extends MY_Controller {
 
     public function eliminar_contacto($idProyecto, $idContacto) {
         $this->Model_Proyectos->eliminar_contacto($idProyecto, $idContacto);
+        redirect('Proyectos/detalles/' . $idProyecto);
+    }
+    public function eliminar_usuario($idProyecto, $idusuario){
+        $this->Model_Proyectos->eliminar_usuario($idProyecto, $idusuario);
         redirect('Proyectos/detalles/' . $idProyecto);
     }
 
