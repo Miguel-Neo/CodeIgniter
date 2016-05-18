@@ -120,6 +120,9 @@ ORDER BY created_at ASC");
         $usuarios = $this->db->query("select u.name,r.role from " . $this->tables['users'] . " u, " . $this->tables['roles'] . " r where u.role = r.id AND u.id = $usuarioID");
         return $usuarios->row();
     }
+    public function getdetailUser($usuarioID){
+        return $this->db->get_where($this->tables['users'],['id'=>$usuarioID])->row_array();
+    }
 
     private function _getPermissionsAll() {
         $query = $this->db->get($this->tables['permissions']);

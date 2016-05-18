@@ -87,6 +87,9 @@ class Model_Proyectos extends CI_Model {
     public function eliminar_contacto($idProyecto, $idContacto) {
         $this->db->simple_query("DELETE FROM " . $this->tables['ptr_contacto'] . " WHERE idProyecto = $idProyecto AND idContacto = $idContacto");
     }
+    public function eliminar_usuario($idProyecto, $idUsuario){
+        $this->db->simple_query("DELETE FROM " . $this->tables['ptr_user'] . " WHERE idProyecto = $idProyecto AND idUsuario = $idUsuario");    
+    }
 
     public function getall() {
         return $this->db->get($this->tables['proyectos'])->result_array();
@@ -95,7 +98,12 @@ class Model_Proyectos extends CI_Model {
     public function get($id) {
         return $this->db->get_where($this->tables['proyectos'], ['id' => $id])->row_array();
     }
-
+    public function getpornombre($nombre){
+        return $this->db->get_where($this->tables['proyectos'], ['nombre' => $nombre])->row_array();
+    }
+    public function getuser_proyecto($id){
+        return $this->db->get_where($this->tables['ptr_user'], ['idProyecto' => $id])->result_array();
+    }
     public function getuser($idProyecto) {
         $this->db->select(
                 'p.idProyecto up_idProyecto,'
