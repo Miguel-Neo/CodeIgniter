@@ -37,6 +37,9 @@ class Model_Proyectos_User extends CI_Model {
         }
         return false;
     }
+    public function getmy($idProyecto){
+        return $this->db->get_where($this->tables['ptru'], ['idProyecto' => $idProyecto,'idUsuario'=>$this->user->id])->row_array();
+    }
 }
 
 

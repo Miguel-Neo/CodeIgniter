@@ -76,6 +76,7 @@ class Proyectos extends MY_Controller {
         $this->load->model('Model_Cliente');
         $this->load->model('Model_Contacto');
         $this->load->model('acl/Model_Users');
+        $this->load->model('Model_Proyectos_User');
 
         $this->template->add_js('lib', 'tinymce_4.3.12/tinymce.min');
         $this->template->add_js('view', 'proyectos/detalles');
@@ -123,21 +124,14 @@ class Proyectos extends MY_Controller {
         $this->template->set('action_estatus','/proyectos/insert_status/' . $id);
         $this->template->set('action_chat','/proyectos/insert_chat/' . $id);
         
-
-        if ($this->user->has_permission('administrador') || $this->user->has_permission($id . '_administrador')) {
-
-
-
-
-
-
-
-
-
+        $rel_p_u = $this->Model_Proyectos_User->getmy($id)['rol'];
+        
+        if ($this->user->has_permission('administrador') || $rel_p_u === 'administrador') {
+            
             $this->template->render('proyectos/detalles_administrador');
             return NULL;
         }
-        if ($this->user->has_permission($id . '_desarrollador')) {
+        if ($rel_p_u === 'desarrollador') {
             $this->template->render('proyectos/detalles_desarrollador');
             return NULL;
         }
@@ -226,28 +220,9 @@ class Proyectos extends MY_Controller {
     }
 
     private function _inserta_nuevo_desarrollador() {
-        $this->load->model('acl/Model_Permissions');
         $this->load->model('Model_Proyectos_User');
-        $this->load->model('acl/Model_Users');
-
-
-        $permiso = $this->Model_Permissions->getPermisoname($this->input->post('proyecto') . '_' . $this->input->post('Rol'));
-        #cargar permiso
-        if (!$permiso) {
-            $newPresmission = [
-                'title' => $this->input->post('Rol') . ' de proyecto',
-                'name' => $this->input->post('proyecto') . '_' . $this->input->post('Rol')
-            ];
-            $this->Model_Permissions->insertpermission($newPresmission);
-            $permiso = $this->Model_Permissions->getPermisoname($this->input->post('proyecto') . '_' . $this->input->post('Rol'));
-        }
         #insertar usuario al grupo de trabajo
         $this->Model_Proyectos_User->insert($this->input->post());
-
-        #le asigno el permiso al usuario,
-        $this->Model_Users->editarPermiso($this->input->post('user'), $permiso['id'], 1);
-
-
         redirect('Proyectos/detalles/' . $this->input->post('proyecto'));
     }
 
