@@ -28,9 +28,14 @@ $('#form_chat').submit(function () {
     return false;
 });
 
-
+window.addEventListener('load', function (){
+    get_chat();
+    setInterval(get_chat, 3000);
+    
+}, false);
 
 function get_chat() {
-    $("#body_chat").load($('body').data('baseurl')+"Proyectos/get_chat_ajax/2");
+    var idProyecto = document.getElementById('body_chat').getAttribute("data-idProyecto");
+    $("#body_chat").load($('body').data('baseurl')+"Proyectos/get_chat_ajax/"+idProyecto);
     return false;
 }

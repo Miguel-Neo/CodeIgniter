@@ -182,9 +182,14 @@ class Model_Proyectos extends CI_Model {
             );
     }
     public function get_chat($idProyecto){
-        $this->db->from($this->tables['chat']);
-        $this->db->where('idProyecto',$idProyecto);
-        $this->db->order_by('id', 'ASC');
+        $this->db->select(
+                'c.*,'
+                . 'u.name nombre_usuario'
+        );
+        $this->db->from($this->tables['chat']." c");
+        $this->db->join($this->tables['users'] . " u", 'c.created = u.id');
+        $this->db->where('c.idProyecto',$idProyecto);
+        $this->db->order_by('c.id', 'ASC');
         $query = $this->db->get()->result_array();
         return $query;
     }

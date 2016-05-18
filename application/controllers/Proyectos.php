@@ -244,9 +244,11 @@ class Proyectos extends MY_Controller {
     public function insert_chat($id){
         $this->Model_Proyectos->set_chat($id,$this->input->post('msg'));
     }
-    public function get_chat_ajax($id){
-        $msgs = $this->Model_Proyectos->get_chat($id);
-        print_r($msgs);
+    public function get_chat_ajax($id=null){
+        $msgs['msgs'] = $this->Model_Proyectos->get_chat($id);
+        $vista= $this->load->view('themes/default/html/proyectos/view_chat',$msgs,true);
+        print_r($vista);
+        //print_r($this->uri->rsegments);
         return false;
     }
 

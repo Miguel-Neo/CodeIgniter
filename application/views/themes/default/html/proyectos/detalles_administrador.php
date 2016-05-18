@@ -67,7 +67,7 @@ echo anchor('Proyectos/nuevo_desarrollador/' . $idProyecto, 'nuevo desarrollador
         <?= form_close() ?>
     </div>
     <div>
-        <div id="body_chat" ></div>
+        <div id="body_chat" data-idProyecto="<?= $idProyecto;?>"></div>
         <?= form_open($action_chat,['id'=>'form_chat']); ?>
         <?= form_input(['name'=>'msg'])?>
         <?= form_submit(['value' => dictionary('cms_general_label_button_access')]) ?>
