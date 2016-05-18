@@ -1,6 +1,7 @@
 <?php
 //debugger($msgs);
 ?>
+<div id="mensajes">
 <?php if(isset($msgs)):?>
     <?php foreach ($msgs as $msg):?>
         <?php $class="";?>
@@ -25,3 +26,4 @@
 </div>
     <?php endforeach;?>
 <?php endif;?>
+</div>

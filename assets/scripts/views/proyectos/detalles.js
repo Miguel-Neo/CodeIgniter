@@ -22,20 +22,32 @@ $('#form_chat').submit(function () {
         data: $(this).serialize(),
         // Mostramos un mensaje con la respuesta de PHP
         success: function (data) {
+            $('#input_msg_chat').val('');
             get_chat();
+
         }
     })
     return false;
 });
-
-window.addEventListener('load', function (){
+var chat;
+window.addEventListener('load', function () {
     get_chat();
     setInterval(get_chat, 3000);
-    
+    $("#body_chat").mouseover(function () {
+        chat = true;
+        console.log('entro el el div');
+    });
+    $("#body_chat").mouseout(function () {
+        chat = false;
+        console.log('salio el el div');
+    });
+
 }, false);
 
 function get_chat() {
     var idProyecto = document.getElementById('body_chat').getAttribute("data-idProyecto");
-    $("#body_chat").load($('body').data('baseurl')+"Proyectos/get_chat_ajax/"+idProyecto);
+    $("#body_chat").load($('body').data('baseurl') + "Proyectos/get_chat_ajax/" + idProyecto);
+    if (!chat)
+        document.getElementById('body_chat').scrollTop = ($('#mensajes').height());
     return false;
 }
