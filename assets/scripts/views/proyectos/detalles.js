@@ -26,7 +26,7 @@ $('#form_chat').submit(function () {
             get_chat();
 
         }
-    })
+    });
     return false;
 });
 var chat;
@@ -35,11 +35,9 @@ window.addEventListener('load', function () {
     setInterval(get_chat, 3000);
     $("#body_chat").mouseover(function () {
         chat = true;
-        console.log('entro el el div');
     });
     $("#body_chat").mouseout(function () {
         chat = false;
-        console.log('salio el el div');
     });
 
 }, false);

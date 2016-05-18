@@ -74,5 +74,5 @@ echo anchor('Proyectos/nuevo_desarrollador/' . $idProyecto, 'nuevo desarrollador
         <?= form_close() ?>
     </div>
 </div>
-<?= anchor("", "hola", array('onclick' => 'return get_chat();'))?>
+
     

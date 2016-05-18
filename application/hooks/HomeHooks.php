@@ -33,7 +33,7 @@ class HomeHooks {
                  */
                 $controlador = $this->CI->uri->rsegments[1];
                 $funcion = $this->CI->uri->rsegments[2];
-                $permission = $controlador . '/' . $funcion;
+                $permission = strtolower($controlador . '/' . $funcion);#paso todo a minusculas
                 if (!$this->CI->user->has_permission($permission)) {
                     $this->CI->template->set_flash_message(['error' => dictionary('theme_not_authorized')]);
                     redirect($this->CI->session->userdata('uri_string'));
