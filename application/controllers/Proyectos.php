@@ -87,8 +87,9 @@ class Proyectos extends MY_Controller {
         $contactos = [];
         foreach ($this->Model_Contacto->getcontactos_proyecto($id) as $con) {
             $contactos_tem= $this->Model_Contacto->getcontacto($con['id']);
+            $contactos_tem['url_eliminar']='Proyectos/eliminar_contacto/'.$id.'/'.$contactos_tem['id'];
             $contactos_tem['link_eliminar']=anchor(
-                'Proyectos/eliminar_contacto/'.$id.'/'.$contactos_tem['id'],
+                $contactos_tem['url_eliminar'],
                 'eliminar',
                 array('onclick' => 'return confirm_delete();')   
                 );
@@ -98,8 +99,9 @@ class Proyectos extends MY_Controller {
         foreach($this->Model_Proyectos->getuser_proyecto($id) as $_usuario){
             $_usuario_temp = $this->Model_Users->getdetailUser($_usuario['idUsuario']);
             $_usuario_temp['rel']=$_usuario;
+            $_usuario_temp['url_eliminar']='Proyectos/eliminar_usuario/'.$id.'/'.$_usuario_temp['id'];
             $_usuario_temp['link_eliminar']=anchor(
-                'Proyectos/eliminar_usuario/'.$id.'/'.$_usuario_temp['id'],
+                $_usuario_temp['url_eliminar'],
                 'eliminar',
                 array('onclick' => 'return confirm_delete();')   
                 );
